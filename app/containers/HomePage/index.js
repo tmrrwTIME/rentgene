@@ -10,16 +10,33 @@
  */
 
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import styles from './styles.css';
+import PowEmoji from 'assets/images/poo-emoji.png';
+import CowEmoji from 'assets/images/cow-emoji.png';
+
+import HomeSearch from 'components/HomeSearch';
 
 export default class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
   render() {
     return (
-      <h1>
-        <FormattedMessage {...messages.header} />
-      </h1>
+      <div className={styles.homepage}>
+        <div className="container-fluid">
+          <div className={`text-center ${styles.headText}`}>
+            Apartment hunting without the
+            <div className={styles.link}>
+              <a href="list.html"><img src={CowEmoji} alt="" /></a>
+              <a href="list.html"><img src={PowEmoji} alt="" /></a>
+            </div>
+          </div>
+
+          <HomeSearch />
+
+          <p className="text-center">
+            *No Scams. All listings are checked by us! for perfect listings with all details and perfect photos!
+          </p>
+        </div>
+      </div>
     );
   }
 }

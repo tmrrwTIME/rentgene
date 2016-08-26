@@ -1,0 +1,16 @@
+.headText {
+  line-height: 50px;
+  font-size: 16px;
+}
+
+.link {
+  display: inline-block;
+}
+
+.link a {
+  display: inline-block;
+}
+
+.link a img {
+  height: 50px;
+}

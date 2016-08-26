@@ -12,8 +12,12 @@
  */
 
 import React from 'react';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../../assets/css/global.css';
 import styles from './styles.css';
+
+import Navigation from 'components/Navigation';
+import Footer from 'components/Footer';
 
 export default class App extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
@@ -24,7 +28,9 @@ export default class App extends React.Component { // eslint-disable-line react/
   render() {
     return (
       <div className={styles.container}>
+        <Navigation />
         {React.Children.toArray(this.props.children)}
+        <Footer />
       </div>
     );
   }

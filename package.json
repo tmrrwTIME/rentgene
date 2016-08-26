@@ -2,10 +2,6 @@
   "name": "rentgene",
   "version": "0.0.1",
   "description": "",
-  "repository": {
-    "type": "http",
-    "url": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/rentgene"
-  },
   "engines": {
     "npm": ">=3"
   },

@@ -1,0 +1,38 @@
+.search { /* stylelint-disable */
+  text-align: center;
+}
+
+.content {
+  display: inline-block;
+  position: relative;
+}
+
+.image {
+  width: 20px;
+}
+
+.button {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  margin: 0px;
+  background: none;
+}
+
+.select {
+  border: solid 2px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  font-weight: bold;
+  padding-left: 5px;
+}
+
+.input {
+  font-weight: bold;
+  border: solid 2px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  width: 30em;
+  border-radius: 0;
+  display: inline-block;
+  margin-right: 7px;
+  margin-bottom: 7px;
+}

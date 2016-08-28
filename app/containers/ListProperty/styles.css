@@ -1,0 +1,32 @@
+.listProperty { /* stylelint-disable */
+}
+
+.button {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #000;
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 20px;
+}
+
+.fetText {
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10vh;
+}
+
+.border {
+  border-left: solid 2px rgba(0, 0, 0, 0.05);
+  padding-left: 15px;
+}
+
+.content {
+  margin-bottom: 10px;
+}
+
+.title {
+  display: inline-block;
+  margin-right: 7px;
+}

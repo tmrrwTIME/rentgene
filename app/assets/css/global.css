@@ -14,7 +14,7 @@
   list-style: none;
 }
 
-global(input.form-control) {
+:global(input.form-control) {
   background-color: rgba(0, 0, 0, 0.03);
   border: none;
   max-width: 100%;
@@ -27,7 +27,7 @@ global(input.form-control) {
   margin-bottom: 7px;
 }
 
-global(textarea.form-control) {
+:global(textarea.form-control) {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
@@ -35,7 +35,7 @@ global(textarea.form-control) {
   background-color: rgba(0, 0, 0, 0.03);
 }
 
-global(select.form-control) {
+:global(select.form-control) {
   border: solid 1px #000;
   color: #000;
   margin-bottom: 7px;
@@ -44,7 +44,23 @@ global(select.form-control) {
   margin-right: 7px;
 }
 
-/*global(.btn) {
+:global(.form-control::-webkit-input-placeholder) {
+  color: #000;
+}
+
+:global(.form-control::-moz-placeholder) {
+  color: #000;
+}
+
+:global(.form-control:-moz-placeholder) {
+  color: #000;
+}
+
+:global(.form-control:-ms-input-placeholder) {
+  color: #000;
+}
+
+:global(.btn) {
   background-color: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.5);
   padding: 5px;
@@ -52,4 +68,4 @@ global(select.form-control) {
   padding-right: 15px;
   text-transform: uppercase;
   margin-top: 20px;
-}*/
+}

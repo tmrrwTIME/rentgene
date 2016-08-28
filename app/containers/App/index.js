@@ -29,8 +29,10 @@ export default class App extends React.Component { // eslint-disable-line react/
     return (
       <div className={styles.container}>
         <Navigation />
-        {React.Children.toArray(this.props.children)}
-        <Footer />
+        <div className="container-fluid">
+          {React.Children.toArray(this.props.children)}
+          <Footer />
+        </div>
       </div>
     );
   }

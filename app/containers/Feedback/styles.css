@@ -1,0 +1,21 @@
+.feedback { /* stylelint-disable */
+
+}
+
+.button {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  text-transform: uppercase;
+  margin-top: 20px;
+}
+
+.textarea {
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  border: solid 1px rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.03);
+}

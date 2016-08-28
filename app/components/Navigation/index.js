@@ -14,19 +14,19 @@ function Navigation() {
   return (
     <div className={styles.navigation}>
       <div className="container-fluid">
-        <a href="index.html" className="logo">
+        <Link to={'/'} className="logo">
           <img className={styles.logo} src={Logo} alt="Rentgene" />
-        </a>
+        </Link>
         <div className="pull-right">
           <ul className={styles.list}>
-            <li><Link to={'/'}>Room</Link></li>
-            <li><Link to={'/'}>Apartments</Link></li>
-            <li><Link to={'/'}>Houses</Link></li>
+            <li><Link to={'/listings/rooms'}>Room</Link></li>
+            <li><Link to={'/listings/apartments'}>Apartments</Link></li>
+            <li><Link to={'/listings/houses'}>Houses</Link></li>
           </ul>
           <ul className={styles.list}>
-            <li><Link to={'/'}>List your property</Link></li>
-            <li><Link to={'/'}>Give us feedback</Link></li>
-            <li><Link to={'/'}>Blog</Link></li>
+            <li><Link to={'/add'}>List your property</Link></li>
+            <li><Link to={'/feedback'}>Give us feedback</Link></li>
+            <li><Link to={'/blog'}>Blog</Link></li>
           </ul>
         </div>
       </div>

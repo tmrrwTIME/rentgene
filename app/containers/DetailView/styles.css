@@ -1,0 +1,105 @@
+.detailView { /* stylelint-disable */
+
+}
+
+.detail {
+  color: #000;
+}
+
+.thumb {
+  position: relative;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.main {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+}
+
+.image {
+  width: auto;
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
+  margin: auto;
+  -webkit-transform: translate(0px, -51%);
+  -moz-transform: translate(0px, -51%);
+  -ms-transform: translate(0px, -51%);
+  -o-transform: translate(0px, -51%);
+  transform: translate(0px, -51%);
+  position: relative;
+  top: 50%;
+  vertical-align: top;
+}
+
+.thumbList {
+  margin-top: 0px;
+  margin-left: -5px;
+  margin-right: -5px;
+}
+
+.tl {
+  padding-left: 0px;
+  padding-right: 0px;
+  width: 20%;
+  float: left;
+}
+
+.line {
+  border-top: solid 1px #000000;
+  width: 100%;
+  height: 2px;
+  background-color: #000;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.lineLeft {
+  border-top: solid 1px #000000;
+  width: 50%;
+  background-color: #000;
+}
+
+.strong {
+  font-weight: bold;
+}
+
+.strong span {
+  text-transform: uppercase;
+  color: #1c9d19;
+}
+
+.map {
+  width: 100% !important;
+}
+
+.option {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-top: solid 2px rgba(0, 0, 0, 0.1);
+  border-bottom: solid 2px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.option a {
+  border-right: solid 1px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+  padding-right: 10px;
+  margin-right: 5px;
+  color: #000;
+}
+
+.date {
+  border-bottom: solid 2px rgba(0, 0, 0, 0.1);
+  padding-bottom: 10px;
+}
+
+.price {
+  font-weight: bold;
+  font-size: 18px;
+}

@@ -20,14 +20,14 @@ function List() {
             <div className={`list-item col-sm-6 ${styles.item}`}>
               <div className={styles.ads}>
                 <div className={styles.thumb}>
-                  <Link className={styles.thumbMain} to={'/'}>
+                  <Link className={styles.thumbMain} to={'/v/apartment-12312312'}>
                     <img className={styles.image} src="https://dl.dropboxusercontent.com/u/35568161/ret/img/thum1.jpg" alt="" />
                   </Link>
                   <img src={SizeImage} className={styles.size} alt="" />
                 </div>
-                <a href="list-detail.html" className={styles.title}>
+                <Link className={styles.title} to={'/v/apartment-12312312'}>
                   <span>1234 Hoopda St</span> <span>Los Angeles,</span> <span>CA 90032</span>
-                </a>
+                </Link>
                 <div className="desc clearfix">
                   <div className="pull-left">
                     2 bed, 2 bath

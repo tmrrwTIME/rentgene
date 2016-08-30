@@ -22,6 +22,11 @@
   padding-left: 15px;
 }
 
+.borderRight {
+  border-right: solid 2px rgba(0, 0, 0, 0.05);
+  padding-right: 15px;
+}
+
 .content {
   margin-bottom: 10px;
 }
@@ -29,4 +34,45 @@
 .title {
   display: inline-block;
   margin-right: 7px;
+}
+
+.drag {
+  background-color: rgba(0, 0, 0, 0.03);
+  border: dashed 1px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.normalTitle {
+  margin-top: 25px;
+  font-weight: normal;
+  color: #000;
+  font-size: 16px;
+}
+
+.checkbox {
+  margin: 0px;
+  display: inline-block;
+}
+
+.listCheckbox {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.listItem {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  padding-left: 15px;
+  padding-right: 15px;
 }

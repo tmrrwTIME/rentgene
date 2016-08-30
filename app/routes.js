@@ -122,6 +122,46 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/contact',
+      name: 'contact',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/Contact/reducer'),
+          System.import('containers/Contact/sagas'),
+          System.import('containers/Contact'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('contact', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/v/:slug',
+      name: 'detailView',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/DetailView/reducer'),
+          System.import('containers/DetailView/sagas'),
+          System.import('containers/DetailView'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('detailView', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

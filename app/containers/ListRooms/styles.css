@@ -1,0 +1,63 @@
+.listRooms { /* stylelint-disable */
+
+}
+
+.fetText {
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10vh;
+}
+
+.border {
+  border-left: solid 2px rgba(0, 0, 0, 0.05);
+  padding-left: 15px;
+}
+
+.borderRight {
+  border-right: solid 2px rgba(0, 0, 0, 0.05);
+  padding-right: 15px;
+}
+
+.content {
+  margin-bottom: 10px;
+}
+
+.title {
+  display: inline-block;
+  margin-right: 7px;
+}
+
+.checkbox {
+  margin: 0px;
+  display: inline-block;
+}
+
+.listCheckbox {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.drag {
+  background-color: rgba(0, 0, 0, 0.03);
+  border: dashed 1px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.listItem {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  padding-left: 15px;
+  padding-right: 15px;
+}

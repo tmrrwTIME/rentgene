@@ -54,26 +54,6 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/add/:type',
-      name: 'listProperty',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          System.import('containers/ListProperty/reducer'),
-          System.import('containers/ListProperty/sagas'),
-          System.import('containers/ListProperty'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([reducer, sagas, component]) => {
-          injectReducer('listProperty', reducer.default);
-          injectSagas(sagas.default);
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    }, {
       path: '/feedback',
       name: 'feedback',
       getComponent(nextState, cb) {
@@ -155,6 +135,46 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('detailView', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/add/us',
+      name: 'listUs',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/ListUs/reducer'),
+          System.import('containers/ListUs/sagas'),
+          System.import('containers/ListUs'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('listUs', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/add/rooms',
+      name: 'listRooms',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/ListRooms/reducer'),
+          System.import('containers/ListRooms/sagas'),
+          System.import('containers/ListRooms'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('listRooms', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
         });

@@ -18,9 +18,9 @@ function Footer() {
         <li><Link to={'/'}>Submit listing</Link></li>
         <li><Link to={'/'}>Story</Link></li>
         <li><Link to={'/contact'}>Contact</Link></li>
-        <li><a hrep="https://www.facebook.com/rentgene"><i className="fa fa-facebook"></i></a></li>
-        <li><a hrep="https://twitter.com/rentgene"><i className="fa fa-twitter"></i></a></li>
-        <li><a hrep="https://www.instagram.com/rentgene/"><i className="fa fa-instagram"></i></a></li>
+        <li><a href="https://www.facebook.com/rentgene"><i className="fa fa-facebook"></i></a></li>
+        <li><a href="https://twitter.com/rentgene"><i className="fa fa-twitter"></i></a></li>
+        <li><a href="https://www.instagram.com/rentgene/"><i className="fa fa-instagram"></i></a></li>
       </ul>
     </div>
   );

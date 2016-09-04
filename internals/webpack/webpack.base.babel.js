@@ -63,6 +63,7 @@ module.exports = (options) => ({
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        RENTGENE_API_URL: JSON.stringify(process.env.RENTGENE_API_URL),
       },
     }),
   ]),

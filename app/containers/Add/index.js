@@ -36,7 +36,7 @@ export class Add extends React.Component { // eslint-disable-line react/prefer-s
                   breaking lease
                 </p>
                 <div className="text-center">
-                  <Link className={`btn btn-xs ${styles.button}`} to={'/add/apartments'}>Make your listing!</Link>
+                  <Link className={`btn btn-xs ${styles.button}`} to={'/add/apartment'}>Make your listing!</Link>
                 </div>
                 <br />
                 <p>

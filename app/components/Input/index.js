@@ -11,7 +11,7 @@ const Input = (field) => {
   return (
     <div className="input-row">
       <input {...input} {...others} />
-      {meta.touched && meta.error && <span className="error">{meta.error}</span>}
+      {meta.touched && meta.error && <span className="error" style={{ color: 'red' }}>{meta.error}</span>}
     </div>
   );
 };

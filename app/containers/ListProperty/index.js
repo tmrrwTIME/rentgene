@@ -6,403 +6,63 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import selectListProperty from './selectors';
-import CameraImage from 'assets/images/camera.png';
+import { Field, reduxForm, SubmissionError, stopSubmit } from 'redux-form/immutable';
+import Input from 'components/Input';
+import Select from 'components/Select';
+import Dropzone from 'react-dropzone';
+import { uploadFile, removeFile } from './actions';
+import SizeImage from 'assets/images/size.png';
+import validate from './validate';
+import { isEmpty } from 'lodash';
 
+const beds = ['1+', '2+', '3+', '4+', '5+', '6+', '7+'];
+const leaseDuration = ['lease', 'Month to Month', '6 months', '1 year'];
+const months = ['Months', 'Jan', 'Feb', 'Mar', 'Apr', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+const days = ['Day', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31];
 
 import styles from './styles.css';
 
 export class ListProperty extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { params } = this.props;
-    let listingForm = '';
-    if (params.type === 'apartments') {
-      listingForm = (
-        <div>
-          <p className="text-center">Fill out everything for your listing 100% accurate! Everything must be filled out for you to submit your listing</p>
+    const { handleSubmit, formValues, handleFileRemove } = this.props;
+    let imagesBlock = '';
+    if (formValues.images && formValues.images.length) {
+      imagesBlock = (
+        <div className={styles.drag}>
           <div className="row">
-            <div className="col-sm-8">
-              <div className={styles.drag}>
-                <h4>Drag & Drop</h4>
-                <h6>Photos upload</h6>
-              </div>
-              <div className={styles.content}>
-                <h4 className={styles.normalTitle}>Description</h4>
-                <textarea className="form-control" rows="8" cols="40" placeholder="Fill out everything for your listing 100% accurate! Everything must"></textarea>
-              </div>
-              <div className={styles.content}>
-                <h4 className={styles.normalTitle}>Parking</h4>
-                <div className={`radio ${styles.checkbox}`}>
-                  <label>
-                    <input type="radio" name="parking" /> Yes
-                  </label>
-                </div>
-                <div className={`checkbox ${styles.checkbox}`}>
-                  <label>
-                    <input type="radio" name="parking" /> No
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-4">
-              <div className={styles.content}>
-                <div>
-                  <input type="text" className="form-control input-sm" placeholder="Make a nice title" style={{ width: '100%' }} />
-                </div>
-                <div>
-                  <input type="text" className="form-control input-sm" placeholder="Street adress, City zip code" />
-                </div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <input type="text" className="form-control input-sm" placeholder="Price" />
-                  </div>
-                  <div className="col-sm-6">
-                    <div>first/last rent?</div>
-                    <div className={`radio ${styles.checkbox}`}>
-                      <label>
-                        <input type="radio" name="rentType" /> Yes
-                      </label>
+              {formValues.images.map((image, i) => {
+                const key = `images-${i}`;
+                if (image.uploading) {
+                  return (
+                    <div key={key} className="col-sm-3">
+                      <div className={styles.thumb}>
+                        <div
+                          className={`${styles.thumbMain} ${styles.load}`}
+                        >
+                          <i className="fa fa-spinner fa-pulse fa-fw"></i>
+                        </div>
+                        <img src={SizeImage} className={styles.size} alt="" />
+                      </div>
                     </div>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="radio" name="rentType" /> No
-                      </label>
+                  );
+                }
+                return (
+                  <div key={key} className="col-sm-3">
+                    <div className={styles.thumb}>
+                      <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbButton}`} data-idx={i}>
+                        <i className="fa fa-times"></i>
+                      </button>
+                      <div className={styles.thumbMain}>
+                        <img className={styles.image} src={image.preview} alt="" />
+                      </div>
+                      <img src={SizeImage} className={styles.size} alt="" />
                     </div>
                   </div>
-                </div>
-
-                <div>Deposit</div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <input type="text" className="form-control input-sm" placeholder="Amount" />
-                  </div>
-                </div>
-                <select className="form-control input-sm" name="">
-                  <option value="">beds</option>
-                </select>
-                <select className="form-control input-sm" name="">
-                  <option value="">baths</option>
-                </select>
-              </div>
-              <div className={styles.content}>
-                <h4 className={styles.normalTitle}>Contact</h4>
-                <div>
-                  <div className={styles.title}>Name</div>
-                  <input type="text" className="form-control input-sm" />
-                </div>
-                <div>
-                  <div className={styles.title}>Email</div>
-                  <input type="text" className="form-control input-sm" />
-                </div>
-                <div>
-                  <div className={styles.title}>Phone</div>
-                  <input type="text" className="form-control input-sm" />
-                </div>
-              </div>
-              <div className={styles.content}>
-                <h4 className={styles.normalTitle}>When Is it Avalible</h4>
-                <select className="form-control input-sm" name="">
-                  <option value="">Months</option>
-                </select>
-                <select className="form-control input-sm" name="">
-                  <option value="">Day</option>
-                </select>
-              </div>
-              <div className={styles.content}>
-                <h4 className={styles.normalTitle}>Utilities</h4>
-                <div className="radio">
-                  <label>
-                    <input type="radio" name="utilities" /> Split
-                  </label>
-                </div>
-                <div className="radio">
-                  <label>
-                    <input type="radio" name="utilities" /> incl
-                  </label>
-                </div>
-              </div>
-              <div className={styles.content}>
-                <h4 className={styles.normalTitle}>Duration</h4>
-                <div className="radio">
-                  <label>
-                    <input type="radio" name="duration" /> Month to month
-                  </label>
-                </div>
-                <div className="radio">
-                  <label>
-                    <input type="radio" name="duration" /> 6 month
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
-    if (params.type === 'rooms') {
-      listingForm = (
-        <div>
-          <p className="text-center">Fill out everything for your listing 100% accurate! Everything must be filled out for you to submit your listing</p>
-          <div className="row">
-            <div className="col-sm-8">
-              <div className={styles.drag}>
-                <h4>Drag & Drop</h4>
-                <h6>Photos upload</h6>
-              </div>
-              <div className={styles.content}>
-                <h4 className={styles.normalTitle}>Description</h4>
-                <textarea className="form-control" rows="8" cols="40" placeholder="Fill out everything for your listing 100% accurate! Everything must"></textarea>
-              </div>
-              <div className={styles.content}>
-                <h4 className={styles.normalTitle}>Amenities</h4>
-                <div className={styles.listCheckbox}>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Balcony
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Fireplace
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Storage Available
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Furnished
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Sublet
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Washer/dryer in unit
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Guarontors Accepted
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Washer/Dryer in Building
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Loft
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Dishwasher
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Sublet
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Elevator
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Gym
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Pool
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Roof
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Yard
-                      </label>
-                    </div>
-                  </div>
-                  <div className={`col-sm-4 ${styles.listItem}`}>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="checkbox" name="amenities" /> Doorman
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.content}>
-                <h4 className={styles.normalTitle}>Pets</h4>
-                <div className={`radio ${styles.checkbox}`}>
-                  <label>
-                    <input type="radio" name="pets" /> Yes
-                  </label>
-                </div>
-                <div className={`checkbox ${styles.checkbox}`}>
-                  <label>
-                    <input type="radio" name="pets" /> No
-                  </label>
-                </div>
-              </div>
-              <div className={styles.content}>
-                <h4 className={styles.normalTitle}>Parking</h4>
-                <div className={`radio ${styles.checkbox}`}>
-                  <label>
-                    <input type="radio" name="parking" /> Yes
-                  </label>
-                </div>
-                <div className={`checkbox ${styles.checkbox}`}>
-                  <label>
-                    <input type="radio" name="parking" /> No
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-4">
-              <div className={styles.content}>
-                <div>
-                  <input type="text" className="form-control input-sm" placeholder="Make a nice title" style={{ width: '100%' }} />
-                </div>
-                <div>
-                  <input type="text" className="form-control input-sm" placeholder="Street adress, City zip code" />
-                </div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <input type="text" className="form-control input-sm" placeholder="Price" />
-                  </div>
-                  <div className="col-sm-6">
-                    <div>first/last rent?</div>
-                    <div className={`radio ${styles.checkbox}`}>
-                      <label>
-                        <input type="radio" name="rentType" /> Yes
-                      </label>
-                    </div>
-                    <div className={`checkbox ${styles.checkbox}`}>
-                      <label>
-                        <input type="radio" name="rentType" /> No
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <div>Deposit</div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <input type="text" className="form-control input-sm" placeholder="Amount" />
-                  </div>
-                </div>
-                <select className="form-control input-sm" name="">
-                  <option value="">beds</option>
-                </select>
-                <select className="form-control input-sm" name="">
-                  <option value="">baths</option>
-                </select>
-              </div>
-              <div className={styles.content}>
-                <h4 className={styles.normalTitle}>Contact</h4>
-                <div>
-                  <div className={styles.title}>Name</div>
-                  <input type="text" className="form-control input-sm" />
-                </div>
-                <div>
-                  <div className={styles.title}>Email</div>
-                  <input type="text" className="form-control input-sm" />
-                </div>
-                <div>
-                  <div className={styles.title}>Phone</div>
-                  <input type="text" className="form-control input-sm" />
-                </div>
-              </div>
-              <div className={styles.content}>
-                <h4 className={styles.normalTitle}>When Is it Avalible</h4>
-                <select className="form-control input-sm" name="">
-                  <option value="">Months</option>
-                </select>
-                <select className="form-control input-sm" name="">
-                  <option value="">Day</option>
-                </select>
-              </div>
-              <div className={styles.content}>
-                <div className="row">
-                  <div className={`col-sm-6 ${styles.borderRight}`}>
-                    <h4 className={styles.normalTitle}>Utilities <small>incl</small></h4>
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" name="utilities" /> Electric
-                      </label>
-                    </div>
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" name="utilities" /> Water
-                      </label>
-                    </div>
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" name="utilities" /> Gas
-                      </label>
-                    </div>
-                    <div className="checkbox">
-                      <label>
-                        <input type="checkbox" name="utilities" /> Trash
-                      </label>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <h4 className={styles.normalTitle}>Lease Duration</h4>
-                    min. <select className="form-control input-sm" name="">
-                      <option value="">lease</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
+                );
+              })}
           </div>
         </div>
       );
@@ -417,8 +77,354 @@ export class ListProperty extends React.Component { // eslint-disable-line react
         />
         <div className="row">
           <div className="col-md-8 col-md-offset-2">
-            <form>
-              {listingForm}
+            <form onSubmit={handleSubmit}>
+              <div>
+                <p className="text-center">Fill out everything for your listing 100% accurate! Everything must be filled out for you to submit your listing</p>
+                <br />
+                <br />
+                <div className="row">
+                  <div className="col-sm-8">
+                    <p>*Must upload 8 photos minimum, but more is better!</p>
+                    <Dropzone
+                      onDrop={this.props.handleDrop}
+                      accept="image/*"
+                      style={{ width: '100%' }}
+                    >
+                      <div className={styles.drag}>
+                        <div className={styles.dragText}>
+                          <div>
+                            <h4>Drag & Drop</h4>
+                            <h6>Photos upload</h6>
+                          </div>
+                        </div>
+                      </div>
+                    </Dropzone>
+                    {imagesBlock}
+                    <div className={styles.content}>
+                      <h4 className={styles.normalTitle}>Description</h4>
+                      <Field
+                        type="text"
+                        required
+                        name="description"
+                        className="form-control"
+                        component="textarea"
+                        rows="8"
+                        cols="40"
+                        placeholder="Fill out everything for your listing 100% accurate! Everything must"
+                      />
+                    </div>
+                    <div className={styles.content}>
+                      <h4 className={styles.normalTitle}>Amenities</h4>
+                      <div className={styles.listCheckbox}>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="balcony">
+                              <Field name="balcony" component="input" type="checkbox" /> Balcony
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="fireplace">
+                              <Field name="fireplace" component="input" type="checkbox" /> Fireplace
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="storage">
+                              <Field name="storage" component="input" type="checkbox" /> Storage Available
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="furnished">
+                              <Field name="furnished" component="input" type="checkbox" /> Furnished
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="sublet">
+                              <Field name="sublet" component="input" type="checkbox" /> Sublet
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="washerInUnit">
+                              <Field name="washerInUnit" component="input" type="checkbox" /> Washer/dryer in unit
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="guarontorsAccepted">
+                              <Field name="guarontorsAccepted" component="input" type="checkbox" /> Guarontors Accepted
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="washerDryerInBuilding">
+                              <Field name="washerDryerInBuilding" component="input" type="checkbox" /> Washer/Dryer in Building
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="loft">
+                              <Field name="loft" component="input" type="checkbox" /> Loft
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="diswasher">
+                              <Field name="diswasher" component="input" type="checkbox" /> Dishwasher
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="elevator">
+                              <Field name="elevator" component="input" type="checkbox" /> Elevator
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="gym">
+                              <Field name="gym" component="input" type="checkbox" /> Gym
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="pool">
+                              <Field name="pool" component="input" type="checkbox" /> Pool
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="roof">
+                              <Field name="roof" component="input" type="checkbox" /> Roof
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="yard">
+                              <Field name="yard" component="input" type="checkbox" /> Yard
+                            </label>
+                          </div>
+                        </div>
+                        <div className={`col-sm-4 ${styles.listItem}`}>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="doorman">
+                              <Field name="doorman" component="input" type="checkbox" /> Doorman
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={styles.content}>
+                      <h4 className={styles.normalTitle}>Pets</h4>
+                      <div className={`radio ${styles.checkbox}`}>
+                        <label htmlFor="pets" style={{ marginRight: 10 }}>
+                          <Field name="pets" component="input" type="radio" value="yes" /> Yes
+                        </label>
+                      </div>
+                      <div className={`radio ${styles.checkbox}`}>
+                        <label htmlFor="pets" style={{ marginRight: 10 }}>
+                          <Field name="pets" component="input" type="radio" value="no" /> No
+                        </label>
+                      </div>
+                    </div>
+                    <div className={styles.content}>
+                      <h4 className={styles.normalTitle}>Parking</h4>
+                      <div className={`radio ${styles.checkbox}`}>
+                        <label htmlFor="parking" style={{ marginRight: 10 }}>
+                          <Field name="parking" component="input" type="radio" value="yes" /> Yes
+                        </label>
+                      </div>
+                      <div className={`radio ${styles.checkbox}`}>
+                        <label htmlFor="parking" style={{ marginRight: 10 }}>
+                          <Field name="parking" component="input" type="radio" value="no" /> No
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-sm-4">
+                    <div className={styles.content}>
+                      <br />
+                      <Field
+                        type="text"
+                        required
+                        name="address1"
+                        className="form-control input-sm"
+                        placeholder="Street address"
+                        component={Input}
+                        style={{ width: '100%' }}
+                      />
+                      <Field
+                        type="text"
+                        required
+                        name="address2"
+                        className="form-control input-sm"
+                        placeholder="city, state and zip code"
+                        component={Input}
+                      />
+                      <div className="row">
+                        <div className="col-sm-6">
+                          <Field
+                            type="text"
+                            required
+                            name="price"
+                            className="form-control input-sm"
+                            placeholder="Price"
+                            component={Input}
+                          />
+                        </div>
+                        <div className="col-sm-6">
+                          <div>first/last rent?</div>
+                          <div className={`radio ${styles.checkbox}`}>
+                            <label htmlFor="rentType">
+                              <Field name="rentType" component="input" type="radio" value="yes" /> Yes
+                            </label>
+                          </div>
+                          <div className={`checkbox ${styles.checkbox}`}>
+                            <label htmlFor="rentType">
+                              <Field name="rentType" component="input" type="radio" value="no" /> No
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row">
+                        <div className="col-sm-6">
+                          <Field
+                            type="text"
+                            required
+                            name="squareFeet"
+                            className="form-control input-sm"
+                            placeholder="Square feet"
+                            component={Input}
+                          />
+                        </div>
+                      </div>
+
+                      <br />
+
+                      <Link
+                        to={'/add/rooms'}
+                        style={{
+                          textDecoration: 'none',
+                          color: '#000',
+                        }}
+                      >FOR ROOMS JUST CLICK HERE</Link>
+                      <br />
+                    </div>
+                    <div className={styles.content}>
+                      <h4 className={styles.normalTitle}>Contact</h4>
+                      <div>
+                        <div className={styles.title} style={{ float: 'left' }}>Name</div>
+                        <Field
+                          type="text"
+                          required
+                          name="contactName"
+                          className="form-control input-sm"
+                          component={Input}
+                        />
+                      </div>
+                      <div>
+                        <div className={styles.title} style={{ float: 'left' }}>Email</div>
+                        <Field
+                          type="text"
+                          required
+                          name="contactEmail"
+                          className="form-control input-sm"
+                          component={Input}
+                        />
+                      </div>
+                      <div>
+                        <div className={styles.title} style={{ float: 'left' }}>Phone</div>
+                        <Field
+                          type="text"
+                          required
+                          name="phone"
+                          className="form-control input-sm"
+                          component={Input}
+                        />
+                      </div>
+
+                    </div>
+                    <div className={styles.content}>
+                      <h4 className={styles.normalTitle}>When Is it Avalible</h4>
+                      <Field style={{ float: 'left' }} name="months" className={`form-control input-sm ${styles.select}`} component={Select} items={months} />
+                      <Field name="day" className={`form-control input-sm ${styles.select}`} component={Select} items={days} />
+                    </div>
+                    <div>
+                      <div>Deposit</div>
+                      <div className="row">
+                        <div className="col-sm-6">
+                          <Field
+                            type="text"
+                            required
+                            name="amount"
+                            className="form-control input-sm"
+                            placeholder="Amount"
+                            component={Input}
+                          />
+                        </div>
+                      </div>
+                      <span style={{ float: 'left', marginRight: 5 }}>Beds</span>
+                      <Field style={{ float: 'left', marginRight: 5 }} name="beds" className={`form-control input-sm ${styles.select}`} component={Select} items={beds} />
+                      <span style={{ float: 'left', marginRight: 5 }}>Baths</span>
+                      <Field name="baths" className={`form-control input-sm ${styles.select}`} component={Select} items={beds} />
+                    </div>
+                    <div className={styles.content}>
+                      <div className="row">
+                        <div className={`col-sm-6 ${styles.borderRight}`}>
+                          <h4 className={styles.normalTitle}>Utilities <small>incl</small></h4>
+                          <div className="checkbox">
+                            <label htmlFor="electric">
+                              <Field name="electric" component="input" type="checkbox" /> Electric
+                            </label>
+                          </div>
+                          <div className="checkbox">
+                            <label htmlFor="water">
+                              <Field name="water" component="input" type="checkbox" /> Water
+                            </label>
+                          </div>
+                          <div className="checkbox">
+                            <label htmlFor="gas">
+                              <Field name="gas" component="input" type="checkbox" /> Gas
+                            </label>
+                          </div>
+                          <div className="checkbox">
+                            <label htmlFor="trash">
+                              <Field name="trash" component="input" type="checkbox" /> Trash
+                            </label>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <h4 className={styles.normalTitle}>Lease Duration</h4>
+                          <span style={{ float: 'left' }}>min.</span>
+                          <Field style={{ width: 75 }} name="leaseDuration" className={`form-control input-sm ${styles.select}`} component={Select} items={leaseDuration} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <hr />
+              <div className="text-center">
+                <button className="btn">Preview and submit</button>
+              </div>
             </form>
           </div>
         </div>
@@ -428,15 +434,40 @@ export class ListProperty extends React.Component { // eslint-disable-line react
 }
 
 ListProperty.propTypes = {
-  params: React.PropTypes.object.isRequired,
+  handleSubmit: React.PropTypes.func.isRequired,
+  handleDrop: React.PropTypes.func.isRequired,
+  handleFileRemove: React.PropTypes.func,
+  formValues: React.PropTypes.object,
 };
 
 const mapStateToProps = selectListProperty();
 
 function mapDispatchToProps(dispatch) {
   return {
+    onSubmit: (values) => {
+      // console.log(values); // eslint-disable-line
+      // dispatch(submitForm(values.toJS()));
+      const errors = validate(values);
+      console.log(errors)
+      if (!isEmpty(errors)) {
+        dispatch(stopSubmit('ListApartmentForm', errors));
+        throw new SubmissionError(errors);
+      }
+    },
+    handleFileRemove: (e) => {
+      dispatch(removeFile(e.currentTarget.dataset.idx));
+    },
+    handleDrop: (files) => {
+      if (files.length) {
+        dispatch(uploadFile(files));
+      }
+    },
     dispatch,
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListProperty);
+const listApartment = reduxForm({
+  form: 'ListApartmentForm',
+})(ListProperty);
+
+export default connect(mapStateToProps, mapDispatchToProps)(listApartment);

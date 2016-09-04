@@ -9,7 +9,11 @@ import {
   DEFAULT_ACTION,
 } from './constants';
 
-const initialState = fromJS({});
+const initialState = fromJS({
+  initialValues: {
+    images: [],
+  },
+});
 
 function listRoomsReducer(state = initialState, action) {
   switch (action.type) {

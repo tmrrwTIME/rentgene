@@ -182,6 +182,26 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/add/apartment',
+      name: 'listProperty',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/ListProperty/reducer'),
+          System.import('containers/ListProperty/sagas'),
+          System.import('containers/ListProperty'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('listProperty', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

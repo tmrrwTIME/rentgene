@@ -13,8 +13,9 @@ import styles from './styles.css';
 import Input from 'components/Input';
 import Select from 'components/Select';
 import Dropzone from 'react-dropzone';
-import { uploadFile, removeFile } from './actions';
+import { uploadFile, removeFile, submitForm } from './actions';
 import SizeImage from 'assets/images/size.png';
+import ThankView from 'components/ThankView';
 
 const beds = ['1+', '2+', '3+', '4+', '5+', '6+', '7+'];
 const leaseDuration = ['lease', 'Month to Month', '6 months', '1 year'];
@@ -23,7 +24,7 @@ const days = ['Day', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
 
 export class ListRooms extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { handleSubmit, formValues, handleFileRemove } = this.props;
+    const { handleSubmit, formValues, handleFileRemove, loading, submitted } = this.props;
     let imagesBlock = '';
     if (formValues.images && formValues.images.length) {
       imagesBlock = (
@@ -72,190 +73,192 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
           ]}
         />
         <div className="row">
-          <div className="col-md-8 col-md-offset-2">
-            <form onSubmit={handleSubmit}>
-              <div>
-                <p className="text-center">Fill out everything for your listing 100% accurate! Everything must be filled out for you to submit your listing</p>
-                <br />
-                <br />
-                <div className="row">
-                  <div className="col-sm-8">
-                    <p>*Must upload 5 photos minimum, but more is better!</p>
-                    <Dropzone
-                      onDrop={this.props.handleDrop}
-                      accept="image/*"
-                      style={{ width: '100%' }}
-                    >
-                      <div className={styles.drag}>
-                        <div className={styles.dragText}>
-                          <div>
-                            <h4>Drag & Drop</h4>
-                            <h6>Photos upload</h6>
-                          </div>
-                        </div>
-                      </div>
-                    </Dropzone>
-                    {imagesBlock}
-                    <div className={styles.content}>
-                      <h4 className={styles.normalTitle}>Description</h4>
-                      <Field
-                        type="text"
-                        required
-                        name="description"
-                        className="form-control"
-                        component="textarea"
-                        rows="8"
-                        cols="40"
-                        placeholder="Fill out everything for your listing 100% accurate! Everything must"
-                      />
-                    </div>
-                    <div className={styles.content}>
-                      <h4 className={styles.normalTitle}>Parking</h4>
-                      <div className={`radio ${styles.checkbox}`}>
-                        <label htmlFor="parking" style={{ marginRight: 10 }}>
-                          <Field name="parking" component="input" type="radio" value="yes" /> Yes
-                        </label>
-                      </div>
-                      <div className={`radio ${styles.checkbox}`}>
-                        <label htmlFor="parking" style={{ marginRight: 10 }}>
-                          <Field name="parking" component="input" type="radio" value="no" /> No
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-4">
-                    <div className={styles.content}>
-                      <Field
-                        type="text"
-                        required
-                        name="title"
-                        className="form-control input-sm"
-                        placeholder="Make a nice title"
-                        component={Input}
+            {submitted ? <ThankView /> : <div className="col-md-8 col-md-offset-2">
+              <form onSubmit={handleSubmit}>
+                <div>
+                  <p className="text-center">Fill out everything for your listing 100% accurate! Everything must be filled out for you to submit your listing</p>
+                  <br />
+                  <br />
+                  <div className="row">
+                    <div className="col-sm-8">
+                      <p>*Must upload 5 photos minimum, but more is better!</p>
+                      <Dropzone
+                        onDrop={this.props.handleDrop}
+                        accept="image/*"
                         style={{ width: '100%' }}
-                      />
-                      <Field
-                        type="text"
-                        required
-                        name="address"
-                        className="form-control input-sm"
-                        placeholder="Street address, City, zip"
-                        component={Input}
-                      />
-                      <div className="row">
-                        <div className="col-sm-6">
-                          <Field
-                            type="text"
-                            required
-                            name="price"
-                            className="form-control input-sm"
-                            placeholder="Price"
-                            component={Input}
-                          />
+                      >
+                        <div className={styles.drag}>
+                          <div className={styles.dragText}>
+                            <div>
+                              <h4>Drag & Drop</h4>
+                              <h6>Photos upload</h6>
+                            </div>
+                          </div>
                         </div>
-                        <div className="col-sm-6">
-                          <div>first/last rent?</div>
-                          <div className={`radio ${styles.checkbox}`}>
-                            <label htmlFor="rentType">
-                              <Field name="rentType" component="input" type="radio" value="yes" /> Yes
-                            </label>
-                          </div>
-                          <div className={`checkbox ${styles.checkbox}`}>
-                            <label htmlFor="rentType">
-                              <Field name="rentType" component="input" type="radio" value="no" /> No
-                            </label>
-                          </div>
+                      </Dropzone>
+                      {imagesBlock}
+                      <div className={styles.content}>
+                        <h4 className={styles.normalTitle}>Description</h4>
+                        <Field
+                          type="text"
+                          required
+                          name="description"
+                          className="form-control"
+                          component="textarea"
+                          rows="8"
+                          cols="40"
+                          placeholder="Fill out everything for your listing 100% accurate! Everything must"
+                        />
+                      </div>
+                      <div className={styles.content}>
+                        <h4 className={styles.normalTitle}>Parking</h4>
+                        <div className={`radio ${styles.checkbox}`}>
+                          <label htmlFor="parking" style={{ marginRight: 10 }}>
+                            <Field name="parking" component="input" type="radio" value="yes" /> Yes
+                          </label>
+                        </div>
+                        <div className={`radio ${styles.checkbox}`}>
+                          <label htmlFor="parking" style={{ marginRight: 10 }}>
+                            <Field name="parking" component="input" type="radio" value="no" /> No
+                          </label>
                         </div>
                       </div>
+                    </div>
+                    <div className="col-sm-4">
+                      <div className={styles.content}>
+                        <Field
+                          type="text"
+                          required
+                          name="title"
+                          className="form-control input-sm"
+                          placeholder="Make a nice title"
+                          component={Input}
+                          style={{ width: '100%' }}
+                        />
+                        <Field
+                          type="text"
+                          required
+                          name="address"
+                          className="form-control input-sm"
+                          placeholder="Street address, City, zip"
+                          component={Input}
+                        />
+                        <div className="row">
+                          <div className="col-sm-6">
+                            <Field
+                              type="text"
+                              required
+                              name="price"
+                              className="form-control input-sm"
+                              placeholder="Price"
+                              component={Input}
+                            />
+                          </div>
+                          <div className="col-sm-6">
+                            <div>first/last rent?</div>
+                            <div className={`radio ${styles.checkbox}`}>
+                              <label htmlFor="rentType">
+                                <Field name="rentType" component="input" type="radio" value="yes" /> Yes
+                              </label>
+                            </div>
+                            <div className={`checkbox ${styles.checkbox}`}>
+                              <label htmlFor="rentType">
+                                <Field name="rentType" component="input" type="radio" value="no" /> No
+                              </label>
+                            </div>
+                          </div>
+                        </div>
 
-                      <div>Deposit</div>
-                      <div className="row">
-                        <div className="col-sm-6">
+                        <div>Deposit</div>
+                        <div className="row">
+                          <div className="col-sm-6">
+                            <Field
+                              type="text"
+                              required
+                              name="amount"
+                              className="form-control input-sm"
+                              placeholder="Amount"
+                              component={Input}
+                            />
+                          </div>
+                        </div>
+                        <span style={{ float: 'left', marginRight: 5 }}>Beds</span>
+                        <Field style={{ float: 'left', marginRight: 5 }} name="beds" className={`form-control input-sm ${styles.select}`} component={Select} items={beds} />
+                        <span style={{ float: 'left', marginRight: 5 }}>Baths</span>
+                        <Field name="baths" className={`form-control input-sm ${styles.select}`} component={Select} items={beds} />
+                      </div>
+                      <div className={styles.content}>
+                        <h4 className={styles.normalTitle}>Contact</h4>
+                        <div>
+                          <div className={styles.title} style={{ float: 'left' }}>Name</div>
                           <Field
                             type="text"
                             required
-                            name="amount"
+                            name="contactName"
                             className="form-control input-sm"
-                            placeholder="Amount"
+                            component={Input}
+                          />
+                        </div>
+                        <div>
+                          <div className={styles.title} style={{ float: 'left' }}>Email</div>
+                          <Field
+                            type="text"
+                            required
+                            name="contactEmail"
+                            className="form-control input-sm"
+                            component={Input}
+                          />
+                        </div>
+                        <div>
+                          <div className={styles.title} style={{ float: 'left' }}>Phone</div>
+                          <Field
+                            type="text"
+                            required
+                            name="phone"
+                            className="form-control input-sm"
                             component={Input}
                           />
                         </div>
                       </div>
-                      <span style={{ float: 'left', marginRight: 5 }}>Beds</span>
-                      <Field style={{ float: 'left', marginRight: 5 }} name="beds" className={`form-control input-sm ${styles.select}`} component={Select} items={beds} />
-                      <span style={{ float: 'left', marginRight: 5 }}>Baths</span>
-                      <Field name="baths" className={`form-control input-sm ${styles.select}`} component={Select} items={beds} />
-                    </div>
-                    <div className={styles.content}>
-                      <h4 className={styles.normalTitle}>Contact</h4>
-                      <div>
-                        <div className={styles.title} style={{ float: 'left' }}>Name</div>
-                        <Field
-                          type="text"
-                          required
-                          name="contactName"
-                          className="form-control input-sm"
-                          component={Input}
-                        />
+                      <div className={styles.content}>
+                        <h4 className={styles.normalTitle}>When Is it Avalible</h4>
+                        <Field style={{ float: 'left' }} name="months" className={`form-control input-sm ${styles.select}`} component={Select} items={months} />
+                        <Field name="day" className={`form-control input-sm ${styles.select}`} component={Select} items={days} />
                       </div>
-                      <div>
-                        <div className={styles.title} style={{ float: 'left' }}>Email</div>
-                        <Field
-                          type="text"
-                          required
-                          name="contactEmail"
-                          className="form-control input-sm"
-                          component={Input}
-                        />
-                      </div>
-                      <div>
-                        <div className={styles.title} style={{ float: 'left' }}>Phone</div>
-                        <Field
-                          type="text"
-                          required
-                          name="phone"
-                          className="form-control input-sm"
-                          component={Input}
-                        />
-                      </div>
-                    </div>
-                    <div className={styles.content}>
-                      <h4 className={styles.normalTitle}>When Is it Avalible</h4>
-                      <Field style={{ float: 'left' }} name="months" className={`form-control input-sm ${styles.select}`} component={Select} items={months} />
-                      <Field name="day" className={`form-control input-sm ${styles.select}`} component={Select} items={days} />
-                    </div>
-                    <div className={styles.content}>
-                      <div className="row">
-                        <div className={`col-sm-6 ${styles.borderRight}`}>
-                          <h4 className={styles.normalTitle}>Utilities <small>incl</small></h4>
-                          <div className="checkbox">
-                            <label htmlFor="split">
-                              <Field name="split" component="input" type="checkbox" /> Split
-                            </label>
+                      <div className={styles.content}>
+                        <div className="row">
+                          <div className={`col-sm-6 ${styles.borderRight}`}>
+                            <h4 className={styles.normalTitle}>Utilities <small>incl</small></h4>
+                            <div className="checkbox">
+                              <label htmlFor="split">
+                                <Field name="split" component="input" type="checkbox" /> Split
+                              </label>
+                            </div>
+                            <div className="checkbox">
+                              <label htmlFor="incl">
+                                <Field name="incl" component="input" type="checkbox" /> Incl
+                              </label>
+                            </div>
                           </div>
-                          <div className="checkbox">
-                            <label htmlFor="incl">
-                              <Field name="incl" component="input" type="checkbox" /> Incl
-                            </label>
+                          <div className="col-sm-6">
+                            <h4 className={styles.normalTitle}>Lease Duration</h4>
+                            <span style={{ float: 'left' }}>min.</span>
+                            <Field style={{ width: 75 }} name="leaseDuration" className={`form-control input-sm ${styles.select}`} component={Select} items={leaseDuration} />
                           </div>
-                        </div>
-                        <div className="col-sm-6">
-                          <h4 className={styles.normalTitle}>Lease Duration</h4>
-                          <span style={{ float: 'left' }}>min.</span>
-                          <Field style={{ width: 75 }} name="leaseDuration" className={`form-control input-sm ${styles.select}`} component={Select} items={leaseDuration} />
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <hr />
-              <div className="text-center">
-                <button className="btn">Preview and submit</button>
-              </div>
-            </form>
-          </div>
+                <hr />
+                <div className="text-center">
+                  <button className="btn" disabled={loading}>
+                    {loading ? <i className="fa fa-spinner fa-spin"></i> : ''}
+                    Preview and submit
+                  </button>
+                </div>
+              </form></div>}
         </div>
       </div>
     );
@@ -267,6 +270,8 @@ ListRooms.propTypes = {
   handleDrop: React.PropTypes.func.isRequired,
   handleFileRemove: React.PropTypes.func,
   formValues: React.PropTypes.object,
+  loading: React.PropTypes.bool,
+  submitted: React.PropTypes.bool,
 };
 
 const mapStateToProps = selectListRooms();
@@ -274,8 +279,7 @@ const mapStateToProps = selectListRooms();
 function mapDispatchToProps(dispatch) {
   return {
     onSubmit: (values) => {
-      console.log(values); // eslint-disable-line
-      // dispatch(submitForm(values.toJS()));
+      dispatch(submitForm(values.toJS()));
     },
     handleFileRemove: (e) => {
       dispatch(removeFile(e.currentTarget.dataset.idx));

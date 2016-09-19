@@ -47,7 +47,7 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('listings', reducer.default);
-          injectSagas(sagas.default);
+          injectSagas('listings', sagas.default);
           renderRoute(component);
         });
 
@@ -67,7 +67,7 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('feedback', reducer.default);
-          injectSagas(sagas.default);
+          injectSagas('feedback', sagas.default);
           renderRoute(component);
         });
 
@@ -87,7 +87,7 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('blog', reducer.default);
-          injectSagas(sagas.default);
+          injectSagas('blog', sagas.default);
           renderRoute(component);
         });
 
@@ -115,7 +115,7 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('contact', reducer.default);
-          injectSagas(sagas.default);
+          injectSagas('contact', sagas.default);
           renderRoute(component);
         });
 
@@ -135,7 +135,7 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('detailView', reducer.default);
-          injectSagas(sagas.default);
+          injectSagas('detailView', sagas.default);
           renderRoute(component);
         });
 
@@ -155,7 +155,7 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('listUs', reducer.default);
-          injectSagas(sagas.default);
+          injectSagas('listUs', sagas.default);
           renderRoute(component);
         });
 
@@ -175,7 +175,7 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('listRooms', reducer.default);
-          injectSagas(sagas.default);
+          injectSagas('listRooms', sagas.default);
           renderRoute(component);
         });
 
@@ -195,7 +195,7 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('listProperty', reducer.default);
-          injectSagas(sagas.default);
+          injectSagas('listProperty', sagas.default);
           renderRoute(component);
         });
 

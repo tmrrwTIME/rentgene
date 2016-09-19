@@ -6,11 +6,14 @@
 
 import {
   DEFAULT_ACTION,
-  SUBMIT_FORM,
   LOADING,
   STOP_LOADING,
   UPLOAD_FILE,
   REMOVE_FILE,
+  SUBMIT_FORM,
+  SUBMIT_FORM_SUCCESS,
+  SUBMIT_FORM_ERROR,
+  REFRESH,
 } from './constants';
 
 export function defaultAction() {
@@ -31,13 +34,6 @@ export function loading() {
   };
 }
 
-export function submitForm(values) {
-  return {
-    type: SUBMIT_FORM,
-    values,
-  };
-}
-
 export function uploadFile(files) {
   return {
     type: UPLOAD_FILE,
@@ -49,5 +45,32 @@ export function removeFile(idx) {
   return {
     type: REMOVE_FILE,
     idx,
+  };
+}
+
+export function submitForm(values) {
+  return {
+    type: SUBMIT_FORM,
+    values,
+  };
+}
+
+export function submitFormSuccess(errors) {
+  return {
+    type: SUBMIT_FORM_SUCCESS,
+    errors,
+  };
+}
+
+export function submitFormError(errors) {
+  return {
+    type: SUBMIT_FORM_ERROR,
+    errors,
+  };
+}
+
+export function refresh() {
+  return {
+    type: REFRESH,
   };
 }

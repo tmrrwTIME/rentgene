@@ -8,6 +8,8 @@ import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import createReducer from './reducers';
 
+import { defaultSaga as refreshSaga } from 'containers/Add/sagas';
+
 const sagaMiddleware = createSagaMiddleware();
 const devtools = window.devToolsExtension || (() => noop => noop);
 
@@ -30,9 +32,12 @@ export default function configureStore(initialState = {}, history) {
     fromJS(initialState),
     compose(...enhancers)
   );
-
+  sagaMiddleware.run(refreshSaga);
   // Create hook for async sagas
   store.runSaga = sagaMiddleware.run;
+  // Initialize it with no other reducers
+  store.asyncReducers = {};
+  store.asyncSagas = {};
 
   // Make reducers hot reloadable, see http://mxs.is/googmo
   /* istanbul ignore next */
@@ -44,8 +49,5 @@ export default function configureStore(initialState = {}, history) {
       store.replaceReducer(nextReducers);
     });
   }
-
-  // Initialize it with no other reducers
-  store.asyncReducers = {};
   return store;
 }

@@ -13,12 +13,36 @@ import styles from './styles.css';
 import CameraImage from 'assets/images/camera.png';
 import Input from 'components/Input';
 import Select from 'components/Select';
+import { submitForm } from './actions';
 
 const propertyTypes = ['choose', 'Room', 'Apartment', 'House'];
 
 export class ListUs extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, submitted, loading } = this.props;
+    const thankView = (
+      <div className="col-md-4 col-md-offset-4">
+        <br />
+        <br />
+        <div>
+          <p className="text-center" style={{ paddingLeft: 30, paddingRight: 30 }}>
+            Thank you! we will be contacting you soon to confirm!
+          </p>
+          <div className={styles.alert}>
+            <div className="row">
+              <div className="col-xs-6 text-right">
+                Your Time slot is
+              </div>
+              <div className="col-xs-6" style={{ borderLeft: 'solid 1px #000' }}>
+                August 22 at 3:00pm
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <br />
+      </div>
+    );
     return (
       <div className={styles.listUs}>
         <Helmet
@@ -28,7 +52,7 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
           ]}
         />
         <div className="row">
-          <div className="col-md-8 col-md-offset-2">
+          {submitted ? thankView : <div className="col-md-8 col-md-offset-2">
             <form onSubmit={handleSubmit}>
               <div className="row">
                 <div className="col-sm-9">
@@ -150,9 +174,11 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                           </div>
                           <select className={`form-control input-sm ${styles.select}`}>
                             <option>Date</option>
+                            {[...Array(31).keys()].map(i => <option key={`date-${i}`}>{i + 1}</option>)}
                           </select>
                           <select className={`form-control input-sm ${styles.select}`}>
                             <option>Time</option>
+                            {[...Array(24).keys()].map(i => <option key={`time-${i}`}>{i + 1}</option>)}
                           </select>
                         </div>
                       </div>
@@ -163,12 +189,15 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                   </div>
                   <hr />
                   <div className="text-center">
-                    <button className="btn">Preview and submit</button>
+                    <button className="btn" disabled={loading}>
+                      {loading ? <i className="fa fa-spinner fa-spin"></i> : ''}
+                      Preview and submit
+                    </button>
                   </div>
                 </div>
               </div>
             </form>
-          </div>
+          </div>}
         </div>
       </div>
     );
@@ -177,6 +206,8 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
 
 ListUs.propTypes = {
   handleSubmit: React.PropTypes.func.isRequired,
+  loading: React.PropTypes.bool.isRequired,
+  submitted: React.PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = selectListUs();
@@ -184,8 +215,7 @@ const mapStateToProps = selectListUs();
 function mapDispatchToProps(dispatch) {
   return {
     onSubmit: (values) => {
-      console.log(values); // eslint-disable-line
-      // dispatch(submitForm(values.toJS()));
+      dispatch(submitForm(values.toJS()));
     },
     dispatch,
   };

@@ -1,22 +1,25 @@
 import { call, put } from 'redux-saga/effects';
 import { takeEvery } from 'redux-saga';
-import request, { simpleRequest } from 'utils/request';
+import request, { simpleRequest, buildOptions } from 'utils/request';
 import {
   loading,
   stopLoading,
+  submitFormSuccess,
+  submitFormError,
 } from './actions';
 import {
   UPLOAD_FILE,
   REMOVE_FILE,
+  SUBMIT_FORM,
 } from './constants';
 import {
   arrayRemove,
   arrayPush,
   arrayPop,
   stopSubmit,
-  setSubmitFailed,
-  change,
 } from 'redux-form';
+import { isEmpty } from 'lodash';
+
 const API_URL = process.env.RENTGENE_API_URL;
 
 export function* remove(action) {
@@ -55,6 +58,23 @@ export function* uploadFileToS3(action) {
   }
 }
 
+function* submit(action) {
+  yield put(loading());
+  const requestURL = `${API_URL}/createEntry`;
+  const values = Object.assign(action.values, { type: 'apartments' });
+  const response = yield call(request, requestURL, buildOptions({ values }));
+  if (!response.err) {
+    if (isEmpty(response.data.errors)) {
+      yield put(submitFormSuccess());
+    } else {
+      yield put(stopSubmit('ListApartmentForm', response.data.errors));
+      yield put(submitFormError(response.data.errors));
+    }
+  } else {
+    yield put(submitFormError(response.err));
+  }
+}
+
 // Individual exports for testing
 export function* defaultSaga() {
   return;
@@ -64,6 +84,7 @@ export function* watcher() {
   yield [
     takeEvery(UPLOAD_FILE, uploadFileToS3),
     takeEvery(REMOVE_FILE, remove),
+    takeEvery(SUBMIT_FORM, submit),
   ];
 }
 

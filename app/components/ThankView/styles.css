@@ -1,0 +1,33 @@
+.thankView { /* stylelint-disable */
+  padding-left: 50px;
+  padding-right: 50px;
+  position: relative;
+}
+
+.line {
+  position: absolute;
+  left: -20px;
+  bottom: 0px;
+  top: 0px;
+}
+
+.line img {
+  height: 100%;
+  width: 61px;
+}
+
+.lineRight {
+  right: -20px;
+  left: auto;
+}
+
+.head {
+  display: inline-block;
+  border-bottom: solid 2px rgba(0, 0, 0, 0.2);
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 30px;
+  padding-bottom: 10px;
+  margin-bottom: 40px;
+}

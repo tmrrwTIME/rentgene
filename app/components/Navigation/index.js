@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-import Logo from './logo.png';
+import Logo from 'assets/images/logo.png';
 
 import styles from './styles.css';
 

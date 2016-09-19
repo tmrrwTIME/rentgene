@@ -27,3 +27,10 @@
   display: inline-block;
   margin-right: 7px;
 }
+
+.alert {
+  border-top: solid 6px #959D00;
+  border-bottom: solid 6px #959D00;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}

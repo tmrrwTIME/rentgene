@@ -14,6 +14,8 @@ import Search from 'components/Search';
 import Filters from 'components/Filters';
 import List from 'components/List';
 import Loader from 'components/Loader';
+import serialize from 'form-serialize';
+
 
 import { loadEntries } from './actions';
 
@@ -24,14 +26,13 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
 
   componentWillReceiveProps(nextProps) {
     if (this.props.routeParams.type !== nextProps.routeParams.type) {
-      console.log('yeah')
       this.props.loadEntries(nextProps.routeParams.type);
     }
     return true;
   }
 
   render() {
-    const { loading, entries } = this.props;
+    const { loading, entries, handleRefine } = this.props;
     return (
       <div className={styles.listings}>
         <Helmet
@@ -42,10 +43,8 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
         />
         <br />
         <Search />
-        <Filters />
-        <p>
-          150 results
-        </p>
+        <Filters handleRefine={handleRefine} />
+        <p>{entries.length} results</p>
         {loading ? <Loader /> : <List entries={entries} />}
       </div>
     );
@@ -66,6 +65,11 @@ function mapDispatchToProps(dispatch) {
   return {
     loadEntries: (type) => {
       dispatch(loadEntries(type));
+    },
+    handleRefine: (e) => {
+      const form = document.querySelector('form');
+      const data = serialize(form, { hash: true });
+      console.log('DATA', data);
     },
     dispatch,
   };

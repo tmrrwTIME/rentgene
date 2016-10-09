@@ -12,7 +12,23 @@ const API_URL = process.env.RENTGENE_API_URL;
 
 function* loadEntries(action) {
   let requestURL = `${API_URL}/getEntries`;
-  requestURL += `?status=approved&type=${action.listType}&select=title,entryId,images,address`;
+  const selects = [
+    'title',
+    'entryId',
+    'images',
+    'amount',
+    'beds',
+    'baths',
+    'squareFeet',
+    'address',
+    'address1',
+    'address2',
+    'lat',
+    'lng',
+  ];
+  requestURL += `?status=approved&type=${action.listType}`;
+  requestURL += '&index=type-createdAt-index';
+  requestURL += `&select=${selects.join(',')}`;
   yield put(loading());
   const fields = yield call(request, requestURL);
   if (!fields.err) {

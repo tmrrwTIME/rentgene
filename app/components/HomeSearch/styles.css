@@ -14,7 +14,6 @@
 .formControl {
   background-color: rgba(0, 0, 0, 0.1);
   margin: 0px !important;
-  border: solid 1px #000;
   color: #000;
   width: auto;
   display: inline-block;

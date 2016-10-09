@@ -255,7 +255,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                 <div className="text-center">
                   <button className="btn" disabled={loading}>
                     {loading ? <i className="fa fa-spinner fa-spin"></i> : ''}
-                    Preview and submit
+                    Submit
                   </button>
                 </div>
               </form></div>}

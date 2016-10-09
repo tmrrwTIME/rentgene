@@ -9,9 +9,11 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import selectFeedback from './selectors';
 import styles from './styles.css';
+import { submitFeedback as submit } from './actions';
 
 export class Feedback extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
+    const { submitFeedback, submitted } = this.props;
     return (
       <div className={styles.feedback}>
         <Helmet
@@ -24,16 +26,33 @@ export class Feedback extends React.Component { // eslint-disable-line react/pre
           <div className="col-md-4 col-md-offset-4">
             <div className="fet-text">
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius blanditiis quas quidem incidunt magnam, fuga, expedita inventore vel odit, quos aperiam beatae tenetur est culpa? Eius animi nam, amet aperiam?
+                This site is just getting started to giving you
+                the best possible user experience for
+                finding a place to live. So your feedback is
+                greatly appreciated!
               </p>
             </div>
             <br />
             <br />
             <p>
-              Lorem ipsum dolor sit amet, consectetur
+              Anonomyous Feedback! We really need you!
             </p>
-            <textarea name="name" rows="8" cols="40" className={`form-control ${styles.textarea}`}></textarea>
-            <button className={`btn btn-xs ${styles.button}`}>Submit</button>
+            {!submitted ? <form method="POST">
+              <textarea
+                id="feedback"
+                name="feedback"
+                rows="8"
+                cols="40"
+                className={`form-control ${styles.textarea}`}
+                required
+              ></textarea>
+              <button
+                className={`btn btn-xs ${styles.button}`}
+                onClick={submitFeedback}
+              >
+                Submit
+              </button>
+            </form> : <h1>Thanks</h1>}
           </div>
         </div>
       </div>
@@ -41,10 +60,21 @@ export class Feedback extends React.Component { // eslint-disable-line react/pre
   }
 }
 
+Feedback.propTypes = {
+  submitFeedback: React.PropTypes.func.isRequired,
+  submitted: React.PropTypes.bool,
+};
+
 const mapStateToProps = selectFeedback();
 
 function mapDispatchToProps(dispatch) {
   return {
+    submitFeedback: (e) => {
+      e.preventDefault();
+      const el = document.getElementById('feedback');
+      const value = el.value;
+      dispatch(submit(value));
+    },
     dispatch,
   };
 }

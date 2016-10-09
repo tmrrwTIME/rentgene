@@ -19,7 +19,7 @@ function Navigation() {
         </Link>
         <div className="pull-right">
           <ul className={styles.list}>
-            <li><Link to={'/listings/rooms'}>Room</Link></li>
+            <li><Link to={'/listings/rooms'}>Rooms</Link></li>
             <li><Link to={'/listings/apartments'}>Apartments</Link></li>
             <li><Link to={'/listings/houses'}>Houses</Link></li>
           </ul>

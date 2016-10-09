@@ -262,6 +262,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                     <div className="col-sm-4">
                       <div className={styles.content}>
                         <br />
+                        <Field name="type" className={`form-control input-sm ${styles.select}`} component={Select} items={['apartments', 'houses']} />
                         <Field
                           type="text"
                           required
@@ -427,7 +428,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                 <div className="text-center">
                   <button className="btn" disabled={loading}>
                     {loading ? <i className="fa fa-spinner fa-spin"></i> : ''}
-                    Preview and submit
+                    Submit
                   </button>
                 </div>
               </form>

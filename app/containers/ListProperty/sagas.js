@@ -61,7 +61,7 @@ export function* uploadFileToS3(action) {
 function* submit(action) {
   yield put(loading());
   const requestURL = `${API_URL}/createEntry`;
-  const values = Object.assign(action.values, { type: 'apartments' });
+  const values = action.values;
   const response = yield call(request, requestURL, buildOptions({ values }));
   if (!response.err) {
     if (isEmpty(response.data.errors)) {

@@ -1,6 +1,10 @@
 .headText {
   line-height: 50px;
   font-size: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .link {

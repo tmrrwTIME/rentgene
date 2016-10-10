@@ -38,6 +38,8 @@ function* fetchEntry(action) {
     'status',
     'type',
     'deposit',
+    'lat',
+    'lng',
   ];
   let requestURL = `${API_URL}/getEntry`;
   requestURL += `?entryId=${action.entryId}&select=${selects.join(',')}`;

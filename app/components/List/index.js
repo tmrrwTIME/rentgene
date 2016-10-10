@@ -7,28 +7,9 @@
 import React from 'react';
 import { Link } from 'react-router';
 import SizeImage from 'assets/images/size.png';
-import {
-  withGoogleMap,
-  GoogleMap,
-  Marker,
-} from 'react-google-maps';
+import Map from 'components/Map';
 
 import styles from './styles.css';
-
-const GettingStartedGoogleMap = withGoogleMap((props) => (
-  <GoogleMap
-    defaultZoom={10}
-    defaultCenter={{ lat: 34.0105057, lng: -118.3540964 }}
-    onClick={() => {}}
-  >
-    {props.markers.map((marker, index) => (
-      <Marker
-        {...marker}
-        onRightClick={() => {}}
-      />
-    ))}
-  </GoogleMap>
-));
 
 function List(props) {
   const { entries } = props;
@@ -45,7 +26,6 @@ function List(props) {
       });
     }
   });
-  console.log('markers', markers);
   return (
     <div>
       <div className="row">
@@ -91,7 +71,7 @@ function List(props) {
           </div>
         </div>
         <div className="col-sm-6">
-          <GettingStartedGoogleMap
+          <Map
             containerElement={
               <div style={{ height: 400 }} />
             }

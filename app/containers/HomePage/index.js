@@ -24,7 +24,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
     return (
       <div className={styles.homepage}>
         <div className={`text-center ${styles.headText}`}>
-          <div style={{ lineHeight: '20px' }}>Apartment hunting without the</div>
+          <div style={{ lineHeight: '20px', marginRight: -10 }}>Apartment hunting without the</div>
           <div className={styles.link}>
             <img src={CowEmoji} alt="" style={{ height: 50, marginLeft: 10 }} />
             <img src={PowEmoji} alt="" style={{ height: 42, marginTop: 10 }} />

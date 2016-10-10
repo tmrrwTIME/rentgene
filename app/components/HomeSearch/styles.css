@@ -19,6 +19,16 @@
   display: inline-block;
 }
 
+.anyLink {
+  color: black;
+  text-decoration: none;
+}
+
+.anyLink:hover {
+  text-decoration: none;
+  color: black;
+}
+
 .link {
   color: #000;
   position: absolute;

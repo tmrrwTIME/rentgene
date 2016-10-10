@@ -14,6 +14,7 @@ import styles from './styles.css';
 import { goBack } from 'react-router-redux';
 import { loadEntry } from './actions';
 import Gallery from 'components/Gallery';
+import Map from 'components/Map';
 
 export class DetailView extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
@@ -21,6 +22,17 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
   }
   render() {
     const { entry } = this.props;
+    const markers = [];
+    if (entry.lat && entry.lng) {
+      markers.push({
+        position: {
+          lat: entry.lat,
+          lng: entry.lng,
+        },
+        key: entry.entryId,
+        defaultAnimation: 2,
+      });
+    }
     return (
       <div className={styles.detailView}>
         <Helmet
@@ -57,7 +69,15 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
                 <div>{entry.address || `${entry.address1} ${entry.address2}`}</div>
                 <div className={styles.price}>${entry.price}</div>
                 {entry.deposit ? `<div><b>+$${entry.deposit} security deposit</b></div>` : ''}
-                <iframe className={styles.map} src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d423274.8219121267!2d-118.35409507050439!3d34.02245769511813!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c75ddc27da13%3A0xe22fdf6f254608f4!2sLos+Angeles%2C+CA%2C+USA!5e0!3m2!1sen!2sau!4v1471611530989" width="800" height="200" frameBorder="0" style={{ border: 0 }} allowFullScreen=""></iframe>
+                <Map
+                  containerElement={
+                    <div style={{ height: 200 }} />
+                  }
+                  mapElement={
+                    <div style={{ height: 200 }} />
+                  }
+                  markers={markers}
+                />
                 <h4>Contact</h4>
                 <div>
                   {entry.contactName}

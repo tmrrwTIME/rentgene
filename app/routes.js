@@ -202,20 +202,20 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/terms',
-      name: 'termsPage',
+      path: '/terms-and-conditions',
+      name: 'termsAndConditionsPage',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/TermsPage/reducer'),
-          System.import('containers/TermsPage/sagas'),
-          System.import('containers/TermsPage'),
+          System.import('containers/TermsAndConditionsPage/reducer'),
+          System.import('containers/TermsAndConditionsPage/sagas'),
+          System.import('containers/TermsAndConditionsPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
         importModules.then(([reducer, sagas, component]) => {
-          injectReducer('termsPage', reducer.default);
-          injectSagas(sagas.default);
+          injectReducer('termsAndConditionsPage', reducer.default);
+          injectSagas('termsAndConditionsPage', sagas.default);
           renderRoute(component);
         });
 

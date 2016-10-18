@@ -170,16 +170,8 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                         </div>
                         <div className={styles.content}>
                           <div>
-                            pick a time slot for us to come
+                            We'll contact you shortly!
                           </div>
-                          <select className={`form-control input-sm ${styles.select}`}>
-                            <option>Date</option>
-                            {[...Array(31).keys()].map(i => <option key={`date-${i}`}>{i + 1}</option>)}
-                          </select>
-                          <select className={`form-control input-sm ${styles.select}`}>
-                            <option>Time</option>
-                            {[...Array(24).keys()].map(i => <option key={`time-${i}`}>{i + 1}</option>)}
-                          </select>
                         </div>
                       </div>
                       <div className="col-xs-6">

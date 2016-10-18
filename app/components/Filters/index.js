@@ -9,8 +9,10 @@ import React from 'react';
 
 import styles from './styles.css';
 const beds = ['1+', '2+', '3+', '4+', '5+', '6+', '7+'];
+const prices = [400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 6000, 7000];
 
 function Filters(props) {
+  const { handleChange } = props;
   return (
     <form id="filters" method="POST">
       <div className={styles.filters}>
@@ -18,7 +20,7 @@ function Filters(props) {
           <div className={styles.title}>City</div>
           <select className={`form-control input-sm ${styles.select}`} name="">
             <option value="">Any</option>
-            <option value="Los Angelos">Los Angelos</option>
+            <option value="Los Angeles">Los Angeles</option>
           </select>
         </div>
         <div className={styles.content}>
@@ -28,53 +30,72 @@ function Filters(props) {
           </select>
         </div>
         <div className={styles.content}>
-          <div className={styles.title}>Property type</div>
-          <select className={`form-control input-sm ${styles.select}`} name="">
-            <option value="">Any</option>
-            <option value="">Apartments</option>
-            <option value="">Rooms</option>
-            <option value="">Houses</option>
+          <div className={styles.title}>Price</div>
+          <select onChange={handleChange} className={`form-control input-sm ${styles.select}`} name="priceMin">
+            <option value="">min</option>
+            {prices.map((price, i) => {
+              const key = `price-min-${i}`;
+              return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
+            })}
+          </select>
+          <span style={{ marginLeft: 4 }}></span>
+          <select onChange={handleChange} className={`form-control input-sm ${styles.select}`} name="priceMax">
+            <option value="">max</option>
+            {prices.map((price, i) => {
+              const key = `price-max-${i}`;
+              return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
+            })}
           </select>
         </div>
         <div className={styles.content}>
-          <div className={styles.title}>Price</div>
-          <input type="text" style={{ width: '60px' }} placeholder="min" name="priceMin" className={`form-control input-sm ${styles.input}`} />
-          <span style={{ marginLeft: 4 }}></span>
-          <input type="text" style={{ width: '60px' }} placeholder="max" name="priceMax" className={`form-control input-sm ${styles.input}`} />
-        </div>
-        <div className={styles.content}>
           <div className={styles.title}>Beds</div>
-          <select name="beds" className={`form-control input-sm ${styles.select}`}>
+          <select onChange={handleChange} name="beds" className={`form-control input-sm ${styles.select}`}>
             {beds.map((bed, i) => {
-              return <option key={`bed-${i}`} value={bed}>{bed}</option>;
+              const key = `bed-${i}`;
+              return <option key={key} value={i + 1}>{bed}</option>;
             })}
           </select>
         </div>
         <div className={styles.content}>
           <div className={styles.title}>Baths</div>
-          <select name="baths" className={`form-control input-sm ${styles.select}`}>
+          <select onChange={handleChange} name="baths" className={`form-control input-sm ${styles.select}`}>
             {beds.map((bed, i) => {
-              return <option key={`baths-${i}`} value={bed}>{bed}</option>;
+              const key = `baths-${i}`;
+              return <option key={key} value={i + 1}>{bed}</option>;
             })}
           </select>
         </div>
         <div className={styles.content}>
-          <div className={styles.title}>sq.st</div>
-          <input name="squareFeet" type="text" style={{ width: '60px' }} placeholder="min" className={`form-control input-sm ${styles.input}`} />
+          <div className={styles.title}>sq. ft.</div>
+          <select className={`form-control input-sm ${styles.select}`} name="">
+            <option value="">sq. ft.</option>
+            {prices.map((price, i) => {
+              const key = `price-max-${i}`;
+              return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
+            })}
+          </select>
         </div>
         <div className={styles.content}>
           <div className={styles.title}>Pets</div>
-          <select name="pets" className={`form-control input-sm ${styles.select}`}>
-            <option value="">Any</option>
-            <option value="1">Yes</option>
-            <option value="0">No</option>
-          </select>
+          <div className="checkbox">
+            <label>
+              <input onChange={handleChange} type="checkbox" name="pets" value />
+            </label>
+          </div>
+        </div>
+        <div className={styles.content}>
+          <div className={styles.title}>Parking</div>
+          <div className="checkbox">
+            <label>
+              <input onChange={handleChange} type="checkbox" name="parking" value />
+            </label>
+          </div>
         </div>
         <div className={styles.content}>
           <div className={styles.title}>Utilities</div>
           <div className="checkbox">
-            <label>
-              <input type="checkbox" />
+            <label htmlFor="utilities">
+              <input onChange={handleChange} type="checkbox" name="utilities" value />
             </label>
           </div>
         </div>
@@ -82,7 +103,7 @@ function Filters(props) {
           <div className={styles.title}>Furnished</div>
           <div className="checkbox">
             <label>
-              <input type="checkbox" name="furnished" />
+              <input onChange={handleChange} type="checkbox" name="furnished" value />
             </label>
           </div>
         </div>
@@ -90,7 +111,7 @@ function Filters(props) {
           <div className={styles.title}>Laundry</div>
           <div className="checkbox">
             <label>
-              <input type="checkbox" name="laundry" />
+              <input onChange={handleChange} type="checkbox" name="laundry" value />
             </label>
           </div>
         </div>
@@ -98,7 +119,7 @@ function Filters(props) {
           <div className={styles.title}>Kitchen</div>
           <div className="checkbox">
             <label>
-              <input type="checkbox" name="kitchen" />
+              <input onChange={handleChange} type="checkbox" name="kitchen" value />
             </label>
           </div>
         </div>
@@ -109,5 +130,10 @@ function Filters(props) {
     </form>
   );
 }
+
+Filters.propTypes = {
+  handleChange: React.PropTypes.func.isRequired,
+  handleRefine: React.PropTypes.func.isRequired,
+};
 
 export default Filters;

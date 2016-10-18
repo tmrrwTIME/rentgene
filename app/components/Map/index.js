@@ -16,13 +16,17 @@ const Map = withGoogleMap((props) => (
     defaultZoom={10}
     defaultCenter={{ lat: 34.0105057, lng: -118.3540964 }}
     onClick={() => {}}
+    defaultOptions={{
+      scrollwheel: false,
+    }}
   >
-    {props.markers.map((marker, index) => (
+    {props.markers ? props.markers.map((marker, index) => (
       <Marker
+        key={`marker-${index}`}
         {...marker}
         onRightClick={() => {}}
       />
-    ))}
+    )) : ''}
   </GoogleMap>
 ));
 

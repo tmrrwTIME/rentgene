@@ -1,3 +1,73 @@
 .listings { /* stylelint-disable */
 
 }
+
+.list {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.item {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.ads {
+  width: 100%;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.thumb {
+  margin-bottom: 10px;
+  position: relative;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.thumbMain {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+}
+
+.image {
+  width: auto;
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
+  margin: auto;
+  -webkit-transform: translate(0px, -51%);
+  -moz-transform: translate(0px, -51%);
+  -ms-transform: translate(0px, -51%);
+  -o-transform: translate(0px, -51%);
+  transform: translate(0px, -51%);
+  position: relative;
+  top: 50%;
+  vertical-align: top;
+}
+
+.size {
+  width: 100%;
+}
+
+.title {
+  text-align: justify;
+  display: inline-block;
+  width: 100%;
+  color: #000;
+  margin-bottom: 10px;
+}

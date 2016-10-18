@@ -18,10 +18,10 @@ export function defaultAction() {
   };
 }
 
-export function loadEntries(listType) {
+export function loadEntries(data) {
   return {
     type: LOAD_ENTRIES,
-    listType,
+    data,
   };
 }
 

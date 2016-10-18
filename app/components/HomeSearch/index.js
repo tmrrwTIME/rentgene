@@ -49,6 +49,7 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
     const prices = [400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 6000, 7000];
     const roomPrices = [400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2500];
     const beds = ['Studio', '1+', '2+', '3+', '4+', '5+', '6+', '7+'];
+    const bedsHouses = ['1+', '2+', '3+', '4+', '5+', '6+', '7+'];
     return (
       <div className={styles.homeSearch}>
         <div className="row">
@@ -57,12 +58,13 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
               <div className="col-sm-3">
                 <div className={styles.searchContent}>
                   <h4 className={styles.title}>City</h4>
+                  <p>Los Angeles</p>
                   <p className={styles.alert}>*Launching First Los Angeles</p>
                 </div>
               </div>
               <div className="col-sm-3">
                 <div className={styles.searchContent}>
-                  <h4 className={styles.title}>Room</h4>
+                  <h4 className={styles.title}>Rooms</h4>
                   <p>
                     <Link to={'/listings/rooms'} className={styles.anyLink}><b>Any</b></Link>
                   </p>
@@ -126,7 +128,7 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
                   <div className={styles.select}>
                     <select onChange={this.updateButton} name="beds" className={`form-control input-sm ${styles.formControl}`} data-id="housesSelect">
                       <option value="">Beds</option>
-                      {beds.map((bed, i) => {
+                      {bedsHouses.map((bed, i) => {
                         const key = `bed-houses-${i}`;
                         return <option key={key} value={bed}>{bed}</option>;
                       })}

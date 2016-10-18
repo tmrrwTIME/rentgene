@@ -19,7 +19,7 @@ import SizeImage from 'assets/images/size.png';
 import validate from './validate';
 import { isEmpty } from 'lodash';
 
-const beds = ['1+', '2+', '3+', '4+', '5+', '6+', '7+'];
+const beds = ['', 1, 2, 3, 4, 5, 6, 7];
 const leaseDuration = ['lease', 'Month to Month', '6 months', '1 year'];
 const months = ['Months', 'Jan', 'Feb', 'Mar', 'Apr', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 const days = ['Day', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31];
@@ -236,12 +236,12 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         <h4 className={styles.normalTitle}>Pets</h4>
                         <div className={`radio ${styles.checkbox}`}>
                           <label htmlFor="pets" style={{ marginRight: 10 }}>
-                            <Field name="pets" component="input" type="radio" value="yes" /> Yes
+                            <Field name="pets" component="input" type="radio" value="yes" required /> Yes
                           </label>
                         </div>
                         <div className={`radio ${styles.checkbox}`}>
                           <label htmlFor="pets" style={{ marginRight: 10 }}>
-                            <Field name="pets" component="input" type="radio" value="no" /> No
+                            <Field name="pets" component="input" type="radio" value="no" required /> No
                           </label>
                         </div>
                       </div>
@@ -249,12 +249,12 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         <h4 className={styles.normalTitle}>Parking</h4>
                         <div className={`radio ${styles.checkbox}`}>
                           <label htmlFor="parking" style={{ marginRight: 10 }}>
-                            <Field name="parking" component="input" type="radio" value="yes" /> Yes
+                            <Field name="parking" component="input" type="radio" value="yes" required /> Yes
                           </label>
                         </div>
                         <div className={`radio ${styles.checkbox}`}>
                           <label htmlFor="parking" style={{ marginRight: 10 }}>
-                            <Field name="parking" component="input" type="radio" value="no" /> No
+                            <Field name="parking" component="input" type="radio" value="no" required /> No
                           </label>
                         </div>
                       </div>
@@ -262,28 +262,53 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                     <div className="col-sm-4">
                       <div className={styles.content}>
                         <br />
-                        <Field name="type" className={`form-control input-sm ${styles.select}`} component={Select} items={['apartments', 'houses']} />
+                        <Field
+                          name="type"
+                          className="form-control input-sm"
+                          component={Select}
+                          items={['type', 'apartment', 'house']}
+                          firstEmpty
+                          required
+                        />
                         <Field
                           type="text"
                           required
-                          name="address1"
+                          name="address"
                           className="form-control input-sm"
-                          placeholder="Street address"
+                          placeholder="address"
                           component={Input}
                           style={{ width: '100%' }}
                         />
                         <Field
                           type="text"
                           required
-                          name="address2"
+                          name="city"
                           className="form-control input-sm"
-                          placeholder="city, state and zip code"
+                          placeholder="city"
+                          component={Input}
+                          style={{ width: '100%' }}
+                        />
+                        <Field
+                          type="text"
+                          required
+                          name="state"
+                          className="form-control input-sm"
+                          placeholder="state"
+                          component={Input}
+                          style={{ width: '100%' }}
+                        />
+                        <Field
+                          type="number"
+                          required
+                          name="zipcode"
+                          className="form-control input-sm"
+                          placeholder="zipcode"
                           component={Input}
                         />
                         <div className="row">
                           <div className="col-sm-6">
                             <Field
-                              type="text"
+                              type="number"
                               required
                               name="price"
                               className="form-control input-sm"
@@ -295,12 +320,12 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                             <div>first/last rent?</div>
                             <div className={`radio ${styles.checkbox}`}>
                               <label htmlFor="rentType">
-                                <Field name="rentType" component="input" type="radio" value="yes" /> Yes
+                                <Field name="rentType" component="input" type="radio" value="yes" required /> Yes
                               </label>
                             </div>
                             <div className={`checkbox ${styles.checkbox}`}>
                               <label htmlFor="rentType">
-                                <Field name="rentType" component="input" type="radio" value="no" /> No
+                                <Field name="rentType" component="input" type="radio" value="no" required /> No
                               </label>
                             </div>
                           </div>
@@ -309,7 +334,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         <div className="row">
                           <div className="col-sm-6">
                             <Field
-                              type="text"
+                              type="number"
                               required
                               name="squareFeet"
                               className="form-control input-sm"
@@ -366,15 +391,30 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                       </div>
                       <div className={styles.content}>
                         <h4 className={styles.normalTitle}>When Is it Avalible</h4>
-                        <Field style={{ float: 'left' }} name="months" className={`form-control input-sm ${styles.select}`} component={Select} items={months} />
-                        <Field name="day" className={`form-control input-sm ${styles.select}`} component={Select} items={days} />
+                        <Field
+                          style={{ float: 'left' }}
+                          name="months"
+                          className={`form-control input-sm ${styles.select}`}
+                          component={Select}
+                          items={months}
+                          firstEmpty
+                          required
+                        />
+                        <Field
+                          name="day"
+                          className={`form-control input-sm ${styles.select}`}
+                          component={Select}
+                          items={days}
+                          firstEmpty
+                          required
+                        />
                       </div>
                       <div>
                         <div>Deposit</div>
                         <div className="row">
                           <div className="col-sm-6">
                             <Field
-                              type="text"
+                              type="number"
                               required
                               name="amount"
                               className="form-control input-sm"
@@ -384,9 +424,21 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                           </div>
                         </div>
                         <span style={{ float: 'left', marginRight: 5 }}>Beds</span>
-                        <Field style={{ float: 'left', marginRight: 5 }} name="beds" className={`form-control input-sm ${styles.select}`} component={Select} items={beds} />
+                        <Field
+                          style={{ float: 'left', marginRight: 5 }}
+                          name="beds"
+                          className={`form-control input-sm ${styles.select}`}
+                          component={Select} items={beds}
+                          required
+                        />
                         <span style={{ float: 'left', marginRight: 5 }}>Baths</span>
-                        <Field name="baths" className={`form-control input-sm ${styles.select}`} component={Select} items={beds} />
+                        <Field
+                          name="baths"
+                          className={`form-control input-sm ${styles.select}`}
+                          component={Select}
+                          items={beds}
+                          required
+                        />
                       </div>
                       <div className={styles.content}>
                         <div className="row">
@@ -416,7 +468,15 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                           <div className="col-sm-6">
                             <h4 className={styles.normalTitle}>Lease Duration</h4>
                             <span style={{ float: 'left' }}>min.</span>
-                            <Field style={{ width: 75 }} name="leaseDuration" className={`form-control input-sm ${styles.select}`} component={Select} items={leaseDuration} />
+                            <Field
+                              style={{ width: 75 }}
+                              name="leaseDuration"
+                              className={`form-control input-sm ${styles.select}`}
+                              component={Select}
+                              items={leaseDuration}
+                              firstEmpty
+                              required
+                            />
                           </div>
                         </div>
                       </div>
@@ -455,6 +515,9 @@ function mapDispatchToProps(dispatch) {
     onSubmit: (values) => {
       const errors = validate(values);
       if (!isEmpty(errors)) {
+        if (errors.images) {
+          alert(errors.images); // eslint-disable-line
+        }
         dispatch(stopSubmit('ListApartmentForm', errors));
         throw new SubmissionError(errors);
       } else {

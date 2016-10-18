@@ -8,7 +8,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import selectListRooms from './selectors';
-import { Field, reduxForm } from 'redux-form/immutable';
+import { Field, reduxForm, stopSubmit, SubmissionError } from 'redux-form/immutable';
 import styles from './styles.css';
 import Input from 'components/Input';
 import Select from 'components/Select';
@@ -16,8 +16,11 @@ import Dropzone from 'react-dropzone';
 import { uploadFile, removeFile, submitForm } from './actions';
 import SizeImage from 'assets/images/size.png';
 import ThankView from 'components/ThankView';
+import validate from 'containers/ListProperty/validate';
+import { isEmpty } from 'lodash';
 
-const beds = ['1+', '2+', '3+', '4+', '5+', '6+', '7+'];
+
+const beds = ['', 1, 2, 3, 4, 5, 6, 7];
 const leaseDuration = ['lease', 'Month to Month', '6 months', '1 year'];
 const months = ['Months', 'Jan', 'Feb', 'Mar', 'Apr', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 const days = ['Day', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31];
@@ -114,12 +117,12 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                         <h4 className={styles.normalTitle}>Parking</h4>
                         <div className={`radio ${styles.checkbox}`}>
                           <label htmlFor="parking" style={{ marginRight: 10 }}>
-                            <Field name="parking" component="input" type="radio" value="yes" /> Yes
+                            <Field name="parking" component="input" type="radio" value="yes" required /> Yes
                           </label>
                         </div>
                         <div className={`radio ${styles.checkbox}`}>
                           <label htmlFor="parking" style={{ marginRight: 10 }}>
-                            <Field name="parking" component="input" type="radio" value="no" /> No
+                            <Field name="parking" component="input" type="radio" value="no" required /> No
                           </label>
                         </div>
                       </div>
@@ -138,15 +141,33 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                         <Field
                           type="text"
                           required
-                          name="address"
+                          name="city"
                           className="form-control input-sm"
-                          placeholder="Street address, City, zip"
+                          placeholder="city"
+                          component={Input}
+                          style={{ width: '100%' }}
+                        />
+                        <Field
+                          type="text"
+                          required
+                          name="state"
+                          className="form-control input-sm"
+                          placeholder="state"
+                          component={Input}
+                          style={{ width: '100%' }}
+                        />
+                        <Field
+                          type="number"
+                          required
+                          name="zipcode"
+                          className="form-control input-sm"
+                          placeholder="zipcode"
                           component={Input}
                         />
                         <div className="row">
                           <div className="col-sm-6">
                             <Field
-                              type="text"
+                              type="number"
                               required
                               name="price"
                               className="form-control input-sm"
@@ -158,12 +179,12 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                             <div>first/last rent?</div>
                             <div className={`radio ${styles.checkbox}`}>
                               <label htmlFor="rentType">
-                                <Field name="rentType" component="input" type="radio" value="yes" /> Yes
+                                <Field name="rentType" component="input" type="radio" value="yes" required /> Yes
                               </label>
                             </div>
                             <div className={`checkbox ${styles.checkbox}`}>
                               <label htmlFor="rentType">
-                                <Field name="rentType" component="input" type="radio" value="no" /> No
+                                <Field name="rentType" component="input" type="radio" value="no" required /> No
                               </label>
                             </div>
                           </div>
@@ -173,19 +194,16 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                         <div className="row">
                           <div className="col-sm-6">
                             <Field
-                              type="text"
+                              type="number"
                               required
                               name="amount"
                               className="form-control input-sm"
                               placeholder="Amount"
                               component={Input}
+                              required
                             />
                           </div>
                         </div>
-                        <span style={{ float: 'left', marginRight: 5 }}>Beds</span>
-                        <Field style={{ float: 'left', marginRight: 5 }} name="beds" className={`form-control input-sm ${styles.select}`} component={Select} items={beds} />
-                        <span style={{ float: 'left', marginRight: 5 }}>Baths</span>
-                        <Field name="baths" className={`form-control input-sm ${styles.select}`} component={Select} items={beds} />
                       </div>
                       <div className={styles.content}>
                         <h4 className={styles.normalTitle}>Contact</h4>
@@ -222,8 +240,23 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                       </div>
                       <div className={styles.content}>
                         <h4 className={styles.normalTitle}>When Is it Avalible</h4>
-                        <Field style={{ float: 'left' }} name="months" className={`form-control input-sm ${styles.select}`} component={Select} items={months} />
-                        <Field name="day" className={`form-control input-sm ${styles.select}`} component={Select} items={days} />
+                        <Field
+                          style={{ float: 'left' }}
+                          name="months"
+                          className={`form-control input-sm ${styles.select}`}
+                          component={Select}
+                          items={months}
+                          firstEmpty
+                          required
+                        />
+                        <Field
+                          name="day"
+                          className={`form-control input-sm ${styles.select}`}
+                          component={Select}
+                          items={days}
+                          firstEmpty
+                          required
+                        />
                       </div>
                       <div className={styles.content}>
                         <div className="row">
@@ -243,7 +276,15 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           <div className="col-sm-6">
                             <h4 className={styles.normalTitle}>Lease Duration</h4>
                             <span style={{ float: 'left' }}>min.</span>
-                            <Field style={{ width: 75 }} name="leaseDuration" className={`form-control input-sm ${styles.select}`} component={Select} items={leaseDuration} />
+                            <Field
+                              style={{ width: 75 }}
+                              name="leaseDuration"
+                              className={`form-control input-sm ${styles.select}`}
+                              component={Select}
+                              items={leaseDuration}
+                              firstEmpty
+                              required
+                            />
                           </div>
                         </div>
                       </div>
@@ -279,7 +320,16 @@ const mapStateToProps = selectListRooms();
 function mapDispatchToProps(dispatch) {
   return {
     onSubmit: (values) => {
-      dispatch(submitForm(values.toJS()));
+      const errors = validate(values);
+      if (!isEmpty(errors)) {
+        if (errors.images) {
+          alert(errors.images); // eslint-disable-line
+        }
+        dispatch(stopSubmit('ListRoomsForm', errors));
+        throw new SubmissionError(errors);
+      } else {
+        dispatch(submitForm(values.toJS()));
+      }
     },
     handleFileRemove: (e) => {
       dispatch(removeFile(e.currentTarget.dataset.idx));

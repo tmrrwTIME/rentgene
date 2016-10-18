@@ -7,7 +7,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import AddImage from 'assets/images/add.jpg';
+import AddImage from 'assets/images/add2.jpg';
 import { Link } from 'react-router';
 
 
@@ -61,7 +61,6 @@ export class Add extends React.Component { // eslint-disable-line react/prefer-s
                     Have us come!
                   </Link>
                 </div>
-                <br />
                 <img src={AddImage} alt="" className={styles.image} />
               </div>
             </div>

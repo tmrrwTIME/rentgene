@@ -43,7 +43,6 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
         />
         <div className="row">
           <div className="col-sm-8 col-sm-offset-2">
-            <br />
             <button className="btn" onClick={this.props.handleBack}>
               <b>Back</b>
             </button>

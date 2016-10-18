@@ -62,6 +62,7 @@ function* submit(action) {
   yield put(loading());
   const requestURL = `${API_URL}/createEntry`;
   const values = action.values;
+  values.type = `${values.type}s`;
   const response = yield call(request, requestURL, buildOptions({ values }));
   if (!response.err) {
     if (isEmpty(response.data.errors)) {

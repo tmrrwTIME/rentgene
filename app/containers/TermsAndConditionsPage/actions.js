@@ -1,6 +1,6 @@
 /*
  *
- * TermsPage actions
+ * TermsAndConditionsPage actions
  *
  */
 

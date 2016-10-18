@@ -9,7 +9,7 @@ import {
   DEFAULT_ACTION,
   LOADING,
   ENTRIES_LOADED,
-  ENTRIES_LOAD_ERROR,
+  ENTRIES_LOADED_ERROR,
 } from './constants';
 
 const initialState = fromJS({
@@ -28,7 +28,7 @@ function listingsReducer(state = initialState, action) {
       return state
         .set('loading', false)
         .set('entries', fromJS(action.entries));
-    case ENTRIES_LOAD_ERROR:
+    case ENTRIES_LOADED_ERROR:
       return state
         .set('loading', false)
         .set('error', action.error);

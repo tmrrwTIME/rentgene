@@ -5,36 +5,75 @@ import {
   entriesLoaded,
   entriesLoadError,
 } from './actions';
-import request from 'utils/request';
+import request, { buildOptions } from 'utils/request';
 import { LOAD_ENTRIES } from './constants';
-
-const API_URL = process.env.RENTGENE_API_URL;
+import Bodybuilder from 'bodybuilder';
+const BASE_URL = 'https://search-rentgene-yu3r6zygjgykk5mnhc5wffnl2u.us-west-2.es.amazonaws.com/entries/entry';
 
 function* loadEntries(action) {
-  let requestURL = `${API_URL}/getEntries`;
-  const selects = [
-    'title',
-    'entryId',
-    'images',
-    'amount',
-    'beds',
-    'baths',
-    'squareFeet',
-    'address',
-    'address1',
-    'address2',
-    'lat',
-    'lng',
-  ];
-  requestURL += `?status=approved&type=${action.listType}`;
-  requestURL += '&index=type-createdAt-index';
-  requestURL += `&select=${selects.join(',')}`;
+  const data = action.data;
+  const body = new Bodybuilder();
+  body.filter('term', 'type', data.listType);
+
+  if (data.text) {
+    body.query(
+      'multiMatch',
+      ['description', 'title', 'city', 'address'],
+      data.text
+    );
+  }
+
+  if (data.sortBy) {
+    if (data.sortBy === 'priceLowToHigh') {
+      body.sort('price', 'asc');
+    } else if (data.sortBy === 'priceHighToLow') {
+      body.sort('price', 'desc');
+    } else {
+      body.sort('createdAt', 'desc');
+    }
+  }
+
+  if (Object.keys(data.filters)) {
+    Object.keys(data.filters).map((key) => { // eslint-disable-line
+      if (['beds', 'baths'].indexOf(key) !== -1) {
+        body.filter('range', key, { gte: data.filters[key] });
+      }
+    });
+
+    if (data.filters.pets) {
+      body.filter('term', 'pets', data.filters.pets);
+    }
+
+    if (data.filters.parking) {
+      body.filter('term', 'pets', data.filters.parking);
+    }
+
+    if (data.filters.priceMin && data.filters.priceMax) {
+      body.filter(
+        'range',
+        'price',
+        {
+          gte: parseInt(data.filters.priceMin, 10),
+          lte: parseInt(data.filters.priceMax, 10),
+          boost: 2,
+        }
+      );
+    }
+  }
+
+  console.log(JSON.stringify(body.build('v2')));
+
+  const requestURL = `${BASE_URL}/_search`;
   yield put(loading());
-  const fields = yield call(request, requestURL);
-  if (!fields.err) {
-    yield put(entriesLoaded(fields.data));
+  const entries = yield call(request, requestURL, buildOptions(body.build('v2')));
+  if (!entries.err) {
+    let hits = [];
+    if (entries.data.hits.total) {
+      hits = entries.data.hits.hits.map(hit => hit._source); // eslint-disable-line
+    }
+    yield put(entriesLoaded(hits));
   } else {
-    yield put(entriesLoadError(fields.err));
+    yield put(entriesLoadError(entries.err));
   }
 }
 

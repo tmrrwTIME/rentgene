@@ -1,6 +1,6 @@
 /*
  *
- * TermsPage reducer
+ * TermsAndConditionsPage reducer
  *
  */
 
@@ -11,7 +11,7 @@ import {
 
 const initialState = fromJS({});
 
-function termsPageReducer(state = initialState, action) {
+function termsAndConditionsPageReducer(state = initialState, action) {
   switch (action.type) {
     case DEFAULT_ACTION:
       return state;
@@ -20,4 +20,4 @@ function termsPageReducer(state = initialState, action) {
   }
 }
 
-export default termsPageReducer;
+export default termsAndConditionsPageReducer;

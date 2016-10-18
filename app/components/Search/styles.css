@@ -24,13 +24,14 @@
   background-color: #fff;
   font-weight: bold;
   padding-left: 5px;
+  width: 80px !important;
 }
 
 .input {
   font-weight: bold;
   border: solid 2px rgba(0, 0, 0, 0.2);
   background-color: #fff;
-  width: 30em;
+  width: 250px !important;
   border-radius: 0;
   display: inline-block;
   margin-right: 7px;

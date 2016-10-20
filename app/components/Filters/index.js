@@ -67,11 +67,11 @@ function Filters(props) {
         </div>
         <div className={styles.content}>
           <div className={styles.title}>sq. ft.</div>
-          <select className={`form-control input-sm ${styles.select}`} name="">
+          <select className={`form-control input-sm ${styles.select}`} onChange={handleChange} name="squareFeet">
             <option value="">sq. ft.</option>
             {prices.map((price, i) => {
-              const key = `price-max-${i}`;
-              return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
+              const key = `squareFeet-${i}`;
+              return <option key={key} value={price}>{`${price.toLocaleString()}+`}</option>;
             })}
           </select>
         </div>

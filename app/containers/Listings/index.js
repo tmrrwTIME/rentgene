@@ -15,6 +15,8 @@ import Filters from 'components/Filters';
 import List from 'components/List';
 import Loader from 'components/Loader';
 import serialize from 'form-serialize';
+import qs from 'querystring';
+import { isEmpty } from 'lodash';
 
 import { loadEntries } from './actions';
 
@@ -31,6 +33,13 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
       sortBy: 'newest',
       filters: {},
     };
+  }
+
+  componentWillMount() {
+    const filters = qs.parse(document.location.search.replace('?', ''));
+    if (!isEmpty(filters)) {
+      this.setState({ filters });
+    }
   }
 
   componentDidMount() {

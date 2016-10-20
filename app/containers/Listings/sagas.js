@@ -40,12 +40,27 @@ function* loadEntries(action) {
       }
     });
 
+    if (data.filters.furnished) {
+      body.filter('term', 'furnished', data.filters.furnished);
+    }
+
+    if (data.filters.laundry) {
+      body.filter('term', 'washerDryerInBuilding', data.filters.laundry);
+    }
+
     if (data.filters.pets) {
       body.filter('term', 'pets', data.filters.pets);
     }
 
     if (data.filters.parking) {
       body.filter('term', 'pets', data.filters.parking);
+    }
+
+    if (data.filters.utilities) {
+      body.filter('term', 'gas', true);
+      body.filter('term', 'water', true);
+      body.filter('term', 'electric', true);
+      body.filter('term', 'trash', true);
     }
 
     if (data.filters.priceMin && data.filters.priceMax) {
@@ -55,6 +70,28 @@ function* loadEntries(action) {
         {
           gte: parseInt(data.filters.priceMin, 10),
           lte: parseInt(data.filters.priceMax, 10),
+          boost: 2,
+        }
+      );
+    }
+
+    if (data.filters.priceMax) {
+      body.filter(
+        'range',
+        'price',
+        {
+          lte: parseInt(data.filters.priceMax, 10),
+          boost: 2,
+        }
+      );
+    }
+
+    if (data.filters.squareFeet) {
+      body.filter(
+        'range',
+        'squareFeet',
+        {
+          gte: parseInt(data.filters.squareFeet, 10),
           boost: 2,
         }
       );

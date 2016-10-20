@@ -7,7 +7,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 // import Button from 'components/Button';
-
+import serialize from 'form-serialize';
 import styles from './styles.css';
 
 
@@ -15,29 +15,35 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
   constructor(props) {
     super(props);
     this.state = {
-      routeRooms: '/listings/rooms?filter=on',
-      routeApartments: '/listings/apartments?filter=on',
-      routeHouses: '/listings/houses?filter=on',
+      routeRooms: '/listings/rooms',
+      routeApartments: '/listings/apartments',
+      routeHouses: '/listings/houses',
+      anyRooms: false,
+      anyApartments: false,
+      anyHouses: false,
     };
     this.updateButton = this.updateButton.bind(this);
+    this.updateAny = this.updateAny.bind(this);
   }
   updateButton(e) {
     const id = e.currentTarget.dataset.id;
-    const name = e.currentTarget.getAttribute('name');
     switch (id) {
       case 'roomSelect':
         this.setState({
-          routeRooms: `/listings/rooms?${name}=${e.currentTarget.value}`,
+          routeRooms: `/listings/rooms?${serialize(document.getElementById('formRooms'))}`,
+          anyRooms: false,
         });
         break;
       case 'apartmentSelect':
         this.setState({
-          routeApartments: `/listings/apartments?${name}=${e.currentTarget.value}`,
+          routeApartments: `/listings/apartments?${serialize(document.getElementById('formApartments'))}`,
+          anyApartments: false,
         });
         break;
       case 'housesSelect':
         this.setState({
-          routeHouses: `/listings/houses?${name}=${e.currentTarget.value}`,
+          routeHouses: `/listings/houses?${serialize(document.getElementById('formHouses'))}`,
+          anyHouses: false,
         });
         break;
       default:
@@ -45,11 +51,50 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
     }
   }
 
+  updateAny(e) {
+    switch (e.currentTarget.dataset.any) {
+      case 'rooms':
+        this.setState({
+          anyRooms: !this.state.anyRooms,
+        }, () => {
+          this.setState({
+            routeRooms: this.state.anyRooms ? '/listings/rooms' : this.state.routeRooms,
+          });
+          document.getElementById('roomPriceSelect').getElementsByTagName('option')[0].selected = 'selected';
+        });
+        break;
+      case 'apartments':
+        this.setState({
+          anyApartments: !this.state.anyApartments,
+        }, () => {
+          this.setState({
+            routeApartments: this.state.anyApartments ? '/listings/apartments' : this.state.routeApartments,
+          });
+          document.getElementById('apartmentBedsSelect').getElementsByTagName('option')[0].selected = 'selected';
+          document.getElementById('apartmentPriceSelect').getElementsByTagName('option')[0].selected = 'selected';
+        });
+        break;
+      default:
+        this.setState({
+          anyHouses: !this.state.anyHouses,
+        }, () => {
+          this.setState({
+            routeHouses: this.state.anyHouses ? '/listings/houses' : this.state.routeHouses,
+          });
+          document.getElementById('housesBedsSelect').getElementsByTagName('option')[0].selected = 'selected';
+          document.getElementById('housesPriceSelect').getElementsByTagName('option')[0].selected = 'selected';
+        });
+        break;
+    }
+  }
+
   render() {
     const prices = [400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 6000, 7000];
     const roomPrices = [400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2500];
-    const beds = ['Studio', '1+', '2+', '3+', '4+', '5+', '6+', '7+'];
-    const bedsHouses = ['1+', '2+', '3+', '4+', '5+', '6+', '7+'];
+    const beds = [1, 2, 3, 4, 5, 6, 7];
+    const anyClassRooms = this.state.anyRooms ? styles.activeAnyLink : ''
+    const anyClassApartments = this.state.anyApartments ? styles.activeAnyLink : ''
+    const anyClassHouses = this.state.anyHouses ? styles.activeAnyLink : ''
     return (
       <div className={styles.homeSearch}>
         <div className="row">
@@ -66,20 +111,28 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
                 <div className={styles.searchContent}>
                   <h4 className={styles.title}>Rooms</h4>
                   <p>
-                    <Link to={'/listings/rooms'} className={styles.anyLink}><b>Any</b></Link>
+                    <button onClick={this.updateAny} data-any="rooms" className={`${styles.anyLink} ${anyClassRooms}`}><b>Any</b></button>
                   </p>
                   <br />
                   <p>or</p>
-                  <div className={styles.select}>
-                    <h6>Max</h6>
-                    <select data-id="roomSelect" onChange={this.updateButton} name="priceMax" className={`form-control input-sm ${styles.formControl}`}>
-                      <option>Price</option>
-                      {roomPrices.map((price, i) => {
-                        const key = `price-room-${i}`;
-                        return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
-                      })}
-                    </select>
-                  </div>
+                  <form id="formRooms">
+                    <div className={styles.select}>
+                      <h6>Max</h6>
+                      <select
+                        id="roomPriceSelect"
+                        data-id="roomSelect"
+                        onChange={this.updateButton}
+                        name="priceMax"
+                        className={`form-control input-sm ${styles.formControl}`}
+                      >
+                        <option>Price</option>
+                        {roomPrices.map((price, i) => {
+                          const key = `price-room-${i}`;
+                          return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
+                        })}
+                      </select>
+                    </div>
+                  </form>
                   <Link className={`btn btn-block ${styles.link}`} to={this.state.routeRooms}>search</Link>
                 </div>
               </div>
@@ -87,31 +140,40 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
                 <div className={styles.searchContent}>
                   <h4 className={styles.title}>Apartments</h4>
                   <p>
-                    <Link to={'/listings/apartments'} className={styles.anyLink}><b>Any</b></Link>
+                    <button onClick={this.updateAny} data-any="apartments" className={`${styles.anyLink} ${anyClassApartments}`}><b>Any</b></button>
                   </p>
                   <br />
                   <p>or</p>
 
                   <hr />
-                  <div className={styles.select}>
-                    <select onChange={this.updateButton} className={`form-control input-sm ${styles.formControl}`} data-id="apartmentSelect" name="beds">
-                      <option>Beds</option>
-                      {beds.map((bed, i) => {
-                        const key = `bed-apartment-${i}`;
-                        return <option key={key} value={bed}>{bed}</option>;
-                      })}
-                    </select>
-                  </div>
-                  <div className={styles.select}>
-                    <h6>Max</h6>
-                    <select onChange={this.updateButton} name="priceMax" className={`form-control input-sm ${styles.formControl}`} data-id="apartmentSelect">
-                      <option value="">Price</option>
-                      {prices.map((price, i) => {
-                        const key = `price-apartment-${i}`;
-                        return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
-                      })}
-                    </select>
-                  </div>
+                  <form id="formApartments">
+                    <div className={styles.select}>
+                      <select
+                        id="apartmentBedsSelect"
+                        onChange={this.updateButton}
+                        className={`form-control input-sm ${styles.formControl}`}
+                        data-id="apartmentSelect"
+                        name="beds"
+                      >
+                        <option>Beds</option>
+                        <option value="studio">Studio</option>
+                        {beds.map((bed, i) => {
+                          const key = `bed-apartment-${i}`;
+                          return <option key={key} value={bed}>{bed}+</option>;
+                        })}
+                      </select>
+                    </div>
+                    <div className={styles.select}>
+                      <h6>Max</h6>
+                      <select id="apartmentPriceSelect" onChange={this.updateButton} name="priceMax" className={`form-control input-sm ${styles.formControl}`} data-id="apartmentSelect">
+                        <option value="">Price</option>
+                        {prices.map((price, i) => {
+                          const key = `price-apartment-${i}`;
+                          return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
+                        })}
+                      </select>
+                    </div>
+                  </form>
                   <Link className={`btn btn-block ${styles.link}`} to={this.state.routeApartments}>search</Link>
                 </div>
               </div>
@@ -119,31 +181,33 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
                 <div className={styles.searchContent}>
                   <h4 className={styles.title}>Houses</h4>
                   <p>
-                    <Link to={'/listings/houses'} className={styles.anyLink}><b>Any</b></Link>
+                    <button onClick={this.updateAny} data-any="houses" className={`${styles.anyLink} ${anyClassHouses}`}><b>Any</b></button>
                   </p>
                   <br />
                   <p>or</p>
 
                   <hr />
-                  <div className={styles.select}>
-                    <select onChange={this.updateButton} name="beds" className={`form-control input-sm ${styles.formControl}`} data-id="housesSelect">
-                      <option value="">Beds</option>
-                      {bedsHouses.map((bed, i) => {
-                        const key = `bed-houses-${i}`;
-                        return <option key={key} value={bed}>{bed}</option>;
-                      })}
-                    </select>
-                  </div>
-                  <div className={styles.select}>
-                    <h6>Max</h6>
-                    <select onChange={this.updateButton} name="priceMax" className={`form-control input-sm ${styles.formControl}`} data-id="housesSelect">
-                      <option value="">Price</option>
-                      {prices.map((price, i) => {
-                        const key = `price-houses-${i}`;
-                        return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
-                      })}
-                    </select>
-                  </div>
+                  <form id="formHouses">
+                    <div className={styles.select}>
+                      <select id="housesBedsSelect" onChange={this.updateButton} name="beds" className={`form-control input-sm ${styles.formControl}`} data-id="housesSelect">
+                        <option value="">Beds</option>
+                        {beds.map((bed, i) => {
+                          const key = `bed-houses-${i}`;
+                          return <option key={key} value={bed}>{bed}+</option>;
+                        })}
+                      </select>
+                    </div>
+                    <div className={styles.select}>
+                      <h6>Max</h6>
+                      <select id="housesPriceSelect" onChange={this.updateButton} name="priceMax" className={`form-control input-sm ${styles.formControl}`} data-id="housesSelect">
+                        <option value="">Price</option>
+                        {prices.map((price, i) => {
+                          const key = `price-houses-${i}`;
+                          return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
+                        })}
+                      </select>
+                    </div>
+                  </form>
                   <Link className={`btn btn-block ${styles.link}`} to={this.state.routeHouses}>search</Link>
                 </div>
               </div>

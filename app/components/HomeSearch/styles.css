@@ -24,9 +24,8 @@
   text-decoration: none;
 }
 
-.anyLink:hover {
-  text-decoration: none;
-  color: black;
+.activeAnyLink {
+  color: blue;
 }
 
 .link {

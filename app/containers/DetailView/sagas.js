@@ -38,7 +38,6 @@ function* fetchEntry(action) {
     'split',
     'status',
     'type',
-    'deposit',
     'lat',
     'lng',
     'balcony',
@@ -62,6 +61,7 @@ function* fetchEntry(action) {
     'gas',
     'trash',
     'utilitiesIncluded',
+    'squareFeet',
   ];
   let requestURL = `${API_URL}/getEntry`;
   requestURL += `?entryId=${action.entryId}&select=${selects.join(',')}`;

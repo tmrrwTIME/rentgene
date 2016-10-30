@@ -100,9 +100,9 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
 
               <div className="col-sm-5">
                 {entryTitle}
-                <div className={styles.price}>${entry.price.toLocaleString()}</div>
-                {entry.amount ? <div><b>+${entry.amount.toLocaleString()} security deposit</b></div> : ''}
-                {entry.squareFeet ? <div>{entry.squareFeet.toLocaleString()} square feet</div> : ''}
+                <div className={styles.price}>${entry.price}</div>
+                {entry.amount ? <div><b>+${entry.amount} security deposit</b></div> : ''}
+                {entry.squareFeet ? <div>{entry.squareFeet} square feet</div> : ''}
                 <Map
                   containerElement={
                     <div style={{ height: 300 }} />

@@ -9,14 +9,42 @@ import { Link } from 'react-router';
 import SizeImage from 'assets/images/size.png';
 import Map from 'components/Map';
 import Stickyfill from 'stickyfill';
-
+import jump from 'jump.js';
 import styles from './styles.css';
 
 class List extends React.Component { // eslint-disable-line
+  constructor(props) {
+    super(props);
+    this.onMouseOver = this.onMouseOver.bind(this);
+    this.onMouseOut = this.onMouseOut.bind(this);
+    this.state = {
+      hovered: '',
+    };
+  }
+
   componentDidMount() {
     const stickyfill = Stickyfill(); // eslint-disable-line
     stickyfill.add(document.getElementById('stickyContainer'));
     window.stickyfill = stickyfill;
+    this.refs.map.style.height = `1000px`; // eslint-disable-line
+  }
+
+  onMouseOver(e) {
+    this.setState({ hovered: e.currentTarget.dataset.id });
+  }
+
+  onMouseOut() {
+    this.setState({ hovered: '' });
+  }
+
+  handleMarkerClick(marker) {
+    const el = document.getElementById(`entry-${marker.key}`);
+    const elements = document.getElementsByClassName(styles.item);
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].style.backgroundColor = '';
+    }
+    el.style.backgroundColor = 'rgba(3, 169, 244, 0.18)';
+    jump(`#entry-${marker.key}`);
   }
 
   render() {
@@ -38,7 +66,7 @@ class List extends React.Component { // eslint-disable-line
       <div>
         <div className="row">
           <div className="col-sm-6">
-            <div className={styles.list}>
+            <div className={styles.list} ref="list">
               {entries ? entries.map((entry, i) => {
                 const key = `entry-${i}`;
                 let image;
@@ -47,18 +75,33 @@ class List extends React.Component { // eslint-disable-line
                 }
                 const price = parseInt(entry.price, 10).toLocaleString();
                 let address = '';
+                let leftTitle = `${entry.beds} beds, ${entry.baths} baths`;
                 if (entry.address) {
-                  address = entry.address;
-                } else {
-                  address = `${entry.address1} ${entry.address2}`;
+                  address = `${entry.address}, ${entry.city}, ${entry.state} ${entry.zipcode}`;
                 }
 
                 if (entry.type === 'rooms') {
                   address = entry.title;
+                  leftTitle = entry.city;
+                }
+
+                const hoverStyle = {};
+                if (this.state.hovered === entry.entryId) {
+                  hoverStyle.backgroundColor = 'rgba(76, 175, 80, 0.25)';
+                } else {
+                  hoverStyle.backgroundColor = '';
                 }
 
                 return (
-                  <div key={key} className={`list-item col-sm-6 ${styles.item}`}>
+                  <div
+                    id={`entry-${entry.entryId}`}
+                    key={key}
+                    className={`list-item col-sm-6 ${styles.item}`}
+                    onMouseOver={this.onMouseOver}
+                    onMouseOut={this.onMouseOut}
+                    data-id={entry.entryId}
+                    style={hoverStyle}
+                  >
                     <div className={styles.ads}>
                       <div className={styles.thumb}>
                         <Link className={styles.thumbMain} to={`/v/${entry.entryId}`}>
@@ -71,7 +114,7 @@ class List extends React.Component { // eslint-disable-line
                       </Link>
                       <div className="desc clearfix">
                         <div className="pull-left">
-                          {entry.beds} beds, {entry.baths} baths
+                          {leftTitle}
                         </div>
                         <div className="pull-right">
                           {entry.squareFeet ? `${entry.squareFeet} sq ft -` : ''} ${price}
@@ -83,7 +126,7 @@ class List extends React.Component { // eslint-disable-line
               }) : ''}
             </div>
           </div>
-          <div className="col-sm-6">
+          <div className="col-sm-6" ref="map">
             <div id="stickyContainer" className={styles.sticky}>
               <Map
                 containerElement={
@@ -93,6 +136,7 @@ class List extends React.Component { // eslint-disable-line
                   <div style={{ height: 500 }}></div>
                 }
                 markers={markers}
+                handleMarkerClick={this.handleMarkerClick}
               />
             </div>
           </div>

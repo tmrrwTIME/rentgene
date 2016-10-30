@@ -56,6 +56,8 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
       case 'rooms':
         this.setState({
           anyRooms: !this.state.anyRooms,
+          anyApartments: false,
+          anyHouses: false,
         }, () => {
           this.setState({
             routeRooms: this.state.anyRooms ? '/listings/rooms' : this.state.routeRooms,
@@ -66,12 +68,21 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
       case 'apartments':
         this.setState({
           anyApartments: !this.state.anyApartments,
+          anyHouses: false,
+          anyRooms: false,
         }, () => {
           this.setState({
             routeApartments: this.state.anyApartments ? '/listings/apartments' : this.state.routeApartments,
           });
           document.getElementById('apartmentBedsSelect').getElementsByTagName('option')[0].selected = 'selected';
           document.getElementById('apartmentPriceSelect').getElementsByTagName('option')[0].selected = 'selected';
+        });
+        break;
+      case 'city':
+        this.setState({
+          anyCity: !this.state.anyCity,
+          anyApartments: false,
+          anyHouses: false,
         });
         break;
       default:
@@ -92,9 +103,10 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
     const prices = [400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 6000, 7000];
     const roomPrices = [400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2500];
     const beds = [1, 2, 3, 4, 5, 6, 7];
-    const anyClassRooms = this.state.anyRooms ? styles.activeAnyLink : ''
-    const anyClassApartments = this.state.anyApartments ? styles.activeAnyLink : ''
-    const anyClassHouses = this.state.anyHouses ? styles.activeAnyLink : ''
+    const anyClassRooms = this.state.anyRooms ? styles.activeAnyLink : '';
+    const anyClassApartments = this.state.anyApartments ? styles.activeAnyLink : '';
+    const anyClassHouses = this.state.anyHouses ? styles.activeAnyLink : '';
+    const anyClassCity = this.state.anyCity ? styles.activeAnyLink : '';
     return (
       <div className={styles.homeSearch}>
         <div className="row">
@@ -103,8 +115,13 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
               <div className="col-sm-3">
                 <div className={styles.searchContent}>
                   <h4 className={styles.title}>City</h4>
-                  <p>Los Angeles</p>
-                  <p className={styles.alert}>*Launching First Los Angeles</p>
+                  <p>
+                    <button onClick={this.updateAny} data-any="city" className={`${styles.anyLink} ${anyClassCity}`}>
+                      Los Angeles
+                    </button>
+                  </p>
+                  <br />
+                  <p style={{ fontSize: 11 }}>*Launching first in <br /> Los Angeles</p>
                 </div>
               </div>
               <div className="col-sm-3">
@@ -116,8 +133,8 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
                   <br />
                   <p>or</p>
                   <form id="formRooms">
-                    <div className={styles.select}>
-                      <h6>Max</h6>
+                    <div className={styles.select} style={{ marginTop: 40 }}>
+                      {/* <h6 style={{ marginBottom: 0, marginTop: 26 }}>Max</h6> */}
                       <select
                         id="roomPriceSelect"
                         data-id="roomSelect"
@@ -125,7 +142,7 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
                         name="priceMax"
                         className={`form-control input-sm ${styles.formControl}`}
                       >
-                        <option>Price</option>
+                        <option>Max Price</option>
                         {roomPrices.map((price, i) => {
                           const key = `price-room-${i}`;
                           return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
@@ -147,13 +164,14 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
 
                   <hr />
                   <form id="formApartments">
-                    <div className={styles.select}>
+                    <div className={styles.select} style={{ marginBottom: 25 }}>
                       <select
                         id="apartmentBedsSelect"
                         onChange={this.updateButton}
                         className={`form-control input-sm ${styles.formControl}`}
                         data-id="apartmentSelect"
                         name="beds"
+                        style={{ width: 78 }}
                       >
                         <option>Beds</option>
                         <option value="studio">Studio</option>
@@ -164,9 +182,9 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
                       </select>
                     </div>
                     <div className={styles.select}>
-                      <h6>Max</h6>
+                      {/* <h6 style={{ marginBottom: 0, marginTop: 20 }}>Max</h6> */}
                       <select id="apartmentPriceSelect" onChange={this.updateButton} name="priceMax" className={`form-control input-sm ${styles.formControl}`} data-id="apartmentSelect">
-                        <option value="">Price</option>
+                        <option value="">Max Price</option>
                         {prices.map((price, i) => {
                           const key = `price-apartment-${i}`;
                           return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
@@ -188,8 +206,8 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
 
                   <hr />
                   <form id="formHouses">
-                    <div className={styles.select}>
-                      <select id="housesBedsSelect" onChange={this.updateButton} name="beds" className={`form-control input-sm ${styles.formControl}`} data-id="housesSelect">
+                    <div className={styles.select} style={{ marginBottom: 25 }}>
+                      <select style={{ width: 78 }} id="housesBedsSelect" onChange={this.updateButton} name="beds" className={`form-control input-sm ${styles.formControl}`} data-id="housesSelect">
                         <option value="">Beds</option>
                         {beds.map((bed, i) => {
                           const key = `bed-houses-${i}`;
@@ -198,9 +216,9 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
                       </select>
                     </div>
                     <div className={styles.select}>
-                      <h6>Max</h6>
+                      {/* <h6 style={{ marginBottom: 0, marginTop: 20 }}>Max</h6> */}
                       <select id="housesPriceSelect" onChange={this.updateButton} name="priceMax" className={`form-control input-sm ${styles.formControl}`} data-id="housesSelect">
-                        <option value="">Price</option>
+                        <option value="">Max Price</option>
                         {prices.map((price, i) => {
                           const key = `price-houses-${i}`;
                           return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;

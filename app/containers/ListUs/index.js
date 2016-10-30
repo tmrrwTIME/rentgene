@@ -25,18 +25,10 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
         <br />
         <br />
         <div>
-          <p className="text-center" style={{ paddingLeft: 30, paddingRight: 30 }}>
-            Thank you! we will be contacting you soon to confirm!
-          </p>
           <div className={styles.alert}>
-            <div className="row">
-              <div className="col-xs-6 text-right">
-                Your Time slot is
-              </div>
-              <div className="col-xs-6" style={{ borderLeft: 'solid 1px #000' }}>
-                August 22 at 3:00pm
-              </div>
-            </div>
+            <p className="text-center" style={{ paddingLeft: 30, paddingRight: 30 }}>
+              Thank you! we will be contacting you soon to confirm!
+            </p>
           </div>
         </div>
         <br />
@@ -67,7 +59,14 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                       <div className={styles.title} style={{ float: 'left' }}>
                         property type
                       </div>
-                      <Field name="propertyType" className={`form-control input-sm ${styles.select}`} component={Select} items={propertyTypes} />
+                      <Field
+                        name="propertyType"
+                        className={`form-control input-sm ${styles.select}`}
+                        component={Select}
+                        items={propertyTypes}
+                        required
+                        firstEmpty
+                      />
                     </div>
                     <div className={styles.content}>
                       <div>
@@ -85,6 +84,7 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                         <Field
                           type="text"
                           required
+                          disabled
                           name="city"
                           className="form-control input-sm"
                           placeholder="city"
@@ -99,6 +99,7 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                           className="form-control input-sm"
                           placeholder="state"
                           component={Input}
+                          disabled
                           style={{ float: 'left' }}
                         />
                         <Field
@@ -170,7 +171,7 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                         </div>
                         <div className={styles.content}>
                           <div>
-                            We'll contact you shortly!
+                            We will call you to schedule a time!
                           </div>
                         </div>
                       </div>
@@ -215,6 +216,10 @@ function mapDispatchToProps(dispatch) {
 
 const listUs = reduxForm({
   form: 'ListUsForm',
+  initialValues: {
+    city: 'Los Angeles',
+    state: 'CA',
+  },
 })(ListUs);
 
 export default connect(mapStateToProps, mapDispatchToProps)(listUs);

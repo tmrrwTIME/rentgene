@@ -16,8 +16,8 @@ import Dropzone from 'react-dropzone';
 import { uploadFile, removeFile, submitForm } from './actions';
 import SizeImage from 'assets/images/size.png';
 import ThankView from 'components/ThankView';
-import validate from 'containers/ListProperty/validate';
 import { isEmpty } from 'lodash';
+import validate from './validate';
 
 
 const beds = ['', 1, 2, 3, 4, 5, 6, 7];
@@ -113,19 +113,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           placeholder="Fill out everything for your listing 100% accurate! Everything must"
                         />
                       </div>
-                      <div className={styles.content}>
-                        <h4 className={styles.normalTitle}>Parking</h4>
-                        <div className={`radio ${styles.checkbox}`}>
-                          <label htmlFor="parking" style={{ marginRight: 10 }}>
-                            <Field name="parking" component="input" type="radio" value="yes" required /> Yes
-                          </label>
-                        </div>
-                        <div className={`radio ${styles.checkbox}`}>
-                          <label htmlFor="parking" style={{ marginRight: 10 }}>
-                            <Field name="parking" component="input" type="radio" value="no" required /> No
-                          </label>
-                        </div>
-                      </div>
+
                     </div>
                     <div className="col-sm-4">
                       <div className={styles.content}>
@@ -262,14 +250,14 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                         <div className="row">
                           <div className={`col-sm-6 ${styles.borderRight}`}>
                             <h4 className={styles.normalTitle}>Utilities <small>incl</small></h4>
-                            <div className="checkbox">
-                              <label htmlFor="split">
-                                <Field name="split" component="input" type="checkbox" /> Split
+                            <div className={`radio ${styles.checkbox}`}>
+                              <label htmlFor="rentType">
+                                <Field name="utilitiesIncluded" component="input" type="radio" value="yes" required /> Yes
                               </label>
                             </div>
-                            <div className="checkbox">
-                              <label htmlFor="incl">
-                                <Field name="incl" component="input" type="checkbox" /> Incl
+                            <div className={`checkbox ${styles.checkbox}`}>
+                              <label htmlFor="rentType">
+                                <Field name="utilitiesIncluded" component="input" type="radio" value="no" required /> No
                               </label>
                             </div>
                           </div>

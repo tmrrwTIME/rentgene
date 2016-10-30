@@ -27,9 +27,9 @@ export class Add extends React.Component { // eslint-disable-line react/prefer-s
           <div className="col-md-8 col-md-offset-2">
             <div className={styles.add}>
               <div className={`col-sm-6 ${styles.type}`}>
-                <Link className={styles.head} to={'/'}>
+                <div className={styles.head}>
                   Submit a listing yourself
-                </Link>
+                </div>
                 <p>
                   <b>Apartments or Houses</b>
                   <br /> by owner, broker, management or tenant
@@ -48,9 +48,9 @@ export class Add extends React.Component { // eslint-disable-line react/prefer-s
                 </div>
               </div>
               <div className={`col-sm-6 ${styles.type}`}>
-                <Link className={styles.head} to={'/'}>
+                <div className={styles.head}>
                   Have us come out to you
-                </Link>
+                </div>
                 <p>
                   Have us come, take photos,
                   and list your place for you
@@ -66,6 +66,9 @@ export class Add extends React.Component { // eslint-disable-line react/prefer-s
             </div>
           </div>
         </div>
+        <br />
+        <br />
+        <br />
       </div>
     );
   }

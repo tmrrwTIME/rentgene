@@ -117,10 +117,12 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
           handleSort={this.sortBy}
           values={this.state}
         />
+
         <Filters
           handleRefine={this.handleRefine}
           handleChange={this.filter}
           values={this.state.filters}
+          listType={this.props.routeParams.type}
         />
         <button onClick={this.clear}>Clear filters</button>
         <p>{entries.length} results.</p>

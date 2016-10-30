@@ -10,9 +10,36 @@ import Helmet from 'react-helmet';
 import selectBlog from './selectors';
 import styles from './styles.css';
 import Logo from 'assets/images/logo.png';
+import Loader from 'components/Loader';
+import moment from 'moment';
+
+class BlogList extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  render() {
+    const { blogs } = this.props;
+    return (
+      <div>
+        {blogs.map((blog, key) => {
+          return (
+            <div key={`blog-${key}`} className={styles.news}>
+              <h4>{blog.title}</h4>
+              By admin / <span className={styles.date}>{moment(blog.createdAt).format('LL')}</span>
+              <div className={styles.thumb}>
+                <img src={`https://s3-us-west-2.amazonaws.com/rentgene-uploads/image/${blog.image}`} alt="" />
+              </div>
+              <p>
+                {blog.body}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    )
+  }
+}
 
 export class Blog extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
+    const { loading, blogs } = this.props;
     return (
       <div className={styles.blog}>
         <Helmet
@@ -30,30 +57,7 @@ export class Blog extends React.Component { // eslint-disable-line react/prefer-
                 blogga
               </div>
             </div>
-
-            <div className={styles.news}>
-              <h4>Los angles new web site coming soon</h4>
-              By admin / <span className={styles.date}>Augst 28th 2016</span>
-              <div className={styles.thumb}>
-                <img src="https://dl.dropboxusercontent.com/u/35568161/ret/img/thum1.jpg" alt="" />
-              </div>
-            </div>
-
-            <div className={styles.news}>
-              <h4>Los angles new web site coming soon</h4>
-              By admin / <span className={styles.date}>Augst 28th 2016</span>
-              <div className={styles.thumb}>
-                <img src="https://dl.dropboxusercontent.com/u/35568161/ret/img/thum1.jpg" alt="" />
-              </div>
-            </div>
-            
-            <div className={styles.news}>
-              <h4>Los angles new web site coming soon</h4>
-              By admin / <span className={styles.date}>Augst 28th 2016</span>
-              <div className={styles.thumb}>
-                <img src="https://dl.dropboxusercontent.com/u/35568161/ret/img/thum1.jpg" alt="" />
-              </div>
-            </div>
+            {loading ? <Loader /> : <BlogList blogs={blogs} />}
           </div>
         </div>
       </div>

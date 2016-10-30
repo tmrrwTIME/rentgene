@@ -12,7 +12,7 @@ const beds = ['1+', '2+', '3+', '4+', '5+', '6+', '7+'];
 const prices = [400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 6000, 7000];
 
 function Filters(props) {
-  const { handleChange } = props;
+  const { handleChange, listType } = props;
   return (
     <form id="filters" method="POST">
       <div className={styles.filters}>
@@ -47,34 +47,40 @@ function Filters(props) {
             })}
           </select>
         </div>
-        <div className={styles.content}>
-          <div className={styles.title}>Beds</div>
-          <select onChange={handleChange} name="beds" className={`form-control input-sm ${styles.select}`}>
-            {beds.map((bed, i) => {
-              const key = `bed-${i}`;
-              return <option key={key} value={i + 1}>{bed}</option>;
-            })}
-          </select>
-        </div>
-        <div className={styles.content}>
-          <div className={styles.title}>Baths</div>
-          <select onChange={handleChange} name="baths" className={`form-control input-sm ${styles.select}`}>
-            {beds.map((bed, i) => {
-              const key = `baths-${i}`;
-              return <option key={key} value={i + 1}>{bed}</option>;
-            })}
-          </select>
-        </div>
-        <div className={styles.content}>
-          <div className={styles.title}>sq. ft.</div>
-          <select className={`form-control input-sm ${styles.select}`} onChange={handleChange} name="squareFeet">
-            <option value="">sq. ft.</option>
-            {prices.map((price, i) => {
-              const key = `squareFeet-${i}`;
-              return <option key={key} value={price}>{`${price.toLocaleString()}+`}</option>;
-            })}
-          </select>
-        </div>
+        {listType !== 'rooms' ?
+          <div className={styles.content}>
+            <div className={styles.title}>Beds</div>
+            <select onChange={handleChange} name="beds" className={`form-control input-sm ${styles.select}`}>
+              {beds.map((bed, i) => {
+                const key = `bed-${i}`;
+                return <option key={key} value={i + 1}>{bed}</option>;
+              })}
+            </select>
+          </div>
+        : ''}
+        {listType !== 'rooms' ?
+          <div className={styles.content}>
+            <div className={styles.title}>Baths</div>
+            <select onChange={handleChange} name="baths" className={`form-control input-sm ${styles.select}`}>
+              {beds.map((bed, i) => {
+                const key = `baths-${i}`;
+                return <option key={key} value={i + 1}>{bed}</option>;
+              })}
+            </select>
+          </div>
+        : ''}
+        {listType !== 'rooms' ?
+          <div className={styles.content}>
+            <div className={styles.title}>sq. ft.</div>
+            <select className={`form-control input-sm ${styles.select}`} onChange={handleChange} name="squareFeet">
+              <option value="">sq. ft.</option>
+              {prices.map((price, i) => {
+                const key = `squareFeet-${i}`;
+                return <option key={key} value={price}>{`${price.toLocaleString()}+`}</option>;
+              })}
+            </select>
+          </div>
+        : ''}
         <div className={styles.content}>
           <div className={styles.title}>Pets</div>
           <div className="checkbox">

@@ -343,16 +343,6 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                             />
                           </div>
                         </div>
-
-                        <br />
-
-                        <Link
-                          to={'/add/rooms'}
-                          style={{
-                            textDecoration: 'none',
-                            color: '#000',
-                          }}
-                        >FOR ROOMS JUST CLICK HERE</Link>
                         <br />
                       </div>
                       <div className={styles.content}>

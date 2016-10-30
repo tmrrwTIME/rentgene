@@ -25,6 +25,9 @@ function Search(props) {
             onChange={handleSort}
             className={`form-control ${styles.select}`}
             value={values.sortBy}
+            style={{
+              width: 60,
+            }}
           >
             <option value="newest">Newest</option>
             <option value="priceLowToHigh">Price: Low to High</option>

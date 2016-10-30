@@ -24,7 +24,7 @@ const Map = withGoogleMap((props) => (
       <Marker
         key={`marker-${index}`}
         {...marker}
-        onRightClick={() => {}}
+        onClick={() => props.handleMarkerClick(marker)}
       />
     )) : ''}
   </GoogleMap>

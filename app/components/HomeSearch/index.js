@@ -4,14 +4,14 @@
 *
 */
 
-import React from 'react';
+import React, {Component} from 'react';
 import { Link } from 'react-router';
 // import Button from 'components/Button';
 import serialize from 'form-serialize';
 import styles from './styles.css';
 
 
-export class HomeSearch extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export class HomeSearch extends Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.state = {
@@ -112,7 +112,7 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
         <div className="row">
           <div className="col-md-10 col-md-offset-1">
             <div className={`row ${styles.main}`}>
-              <div className="col-sm-3">
+              <div className="col-xs-12 col-sm-3 col-md-3">
                 <div className={styles.searchContent}>
                   <h4 className={styles.title}>City</h4>
                   <p>
@@ -124,7 +124,7 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
                   <p style={{ fontSize: 11 }}>*Launching first in <br /> Los Angeles</p>
                 </div>
               </div>
-              <div className="col-sm-3">
+              <div className="col-xs-12 col-sm-3 col-md-3">
                 <div className={styles.searchContent}>
                   <h4 className={styles.title}>Rooms</h4>
                   <p>
@@ -145,7 +145,7 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
                         <option>Max Price</option>
                         {roomPrices.map((price, i) => {
                           const key = `price-room-${i}`;
-                          return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
+                            return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
                         })}
                       </select>
                     </div>
@@ -153,7 +153,7 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
                   <Link className={`btn btn-block ${styles.link}`} to={this.state.routeRooms}>search</Link>
                 </div>
               </div>
-              <div className="col-sm-3">
+              <div className="col-xs-12 col-sm-3 col-md-3">
                 <div className={styles.searchContent}>
                   <h4 className={styles.title}>Apartments</h4>
                   <p>
@@ -177,7 +177,7 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
                         <option value="studio">Studio</option>
                         {beds.map((bed, i) => {
                           const key = `bed-apartment-${i}`;
-                          return <option key={key} value={bed}>{bed}+</option>;
+                            return <option key={key} value={bed}>{bed}+</option>;
                         })}
                       </select>
                     </div>
@@ -187,7 +187,7 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
                         <option value="">Max Price</option>
                         {prices.map((price, i) => {
                           const key = `price-apartment-${i}`;
-                          return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
+                            return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
                         })}
                       </select>
                     </div>
@@ -195,7 +195,7 @@ export class HomeSearch extends React.Component { // eslint-disable-line react/p
                   <Link className={`btn btn-block ${styles.link}`} to={this.state.routeApartments}>search</Link>
                 </div>
               </div>
-              <div className="col-sm-3">
+              <div className="col-xs-12 col-sm-3 col-md-3">
                 <div className={styles.searchContent}>
                   <h4 className={styles.title}>Houses</h4>
                   <p>

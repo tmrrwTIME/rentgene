@@ -34,3 +34,9 @@
   padding-right: 15px;
   margin-top: 20px;
 }
+
+@media screen and (max-width:500px) {
+  .type{
+    border: none;
+  }
+}

@@ -27,6 +27,12 @@ function Filters(props) {
           <div className={styles.title}>Area</div>
           <select className={`form-control input-sm ${styles.select}`} name="">
             <option value="">Any</option>
+            <option value="Westside">Westside</option>
+            <option value="East LA">East LA</option>
+            <option value="South LA">South LA</option>
+            <option value="The Valley">The Valley</option>
+            <option value="Central LA">Central LA</option>
+            <option value="Beach Cities">Beach Cities</option>
           </select>
         </div>
         <div className={styles.content}>
@@ -35,7 +41,7 @@ function Filters(props) {
             <option value="">min</option>
             {prices.map((price, i) => {
               const key = `price-min-${i}`;
-              return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
+                return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
             })}
           </select>
           <span style={{ marginLeft: 4 }}></span>
@@ -43,7 +49,7 @@ function Filters(props) {
             <option value="">max</option>
             {prices.map((price, i) => {
               const key = `price-max-${i}`;
-              return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
+                return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
             })}
           </select>
         </div>
@@ -53,7 +59,7 @@ function Filters(props) {
             <select onChange={handleChange} name="beds" className={`form-control input-sm ${styles.select}`}>
               {beds.map((bed, i) => {
                 const key = `bed-${i}`;
-                return <option key={key} value={i + 1}>{bed}</option>;
+                  return <option key={key} value={i + 1}>{bed}</option>;
               })}
             </select>
           </div>

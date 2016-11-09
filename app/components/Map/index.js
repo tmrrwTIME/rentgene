@@ -11,6 +11,10 @@ import {
   Marker,
 } from 'react-google-maps';
 
+var style = {
+  fontSize:10
+}
+
 const Map = withGoogleMap((props) => (
   <GoogleMap
     defaultZoom={10}

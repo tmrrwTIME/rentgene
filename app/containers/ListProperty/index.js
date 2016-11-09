@@ -18,6 +18,7 @@ import { uploadFile, removeFile, submitForm } from './actions';
 import SizeImage from 'assets/images/size.png';
 import validate from './validate';
 import { isEmpty } from 'lodash';
+import { SearchBox } from "react-google-maps";
 
 const beds = ['', 1, 2, 3, 4, 5, 6, 7];
 const leaseDuration = ['lease', 'Month to Month', '6 months', '1 year'];
@@ -27,6 +28,32 @@ const days = ['Day', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
 import styles from './styles.css';
 
 export class ListProperty extends React.Component { // eslint-disable-line react/prefer-stateless-function
+
+  componentDidMount(){
+    function load(url) {
+      return new Promise(function(resolve, reject) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        script.src = url;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      })
+    }
+
+    load('https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyA1vQdzV7nTSFUe2klAEgwpokdsA9aDpzU')
+      .then(function() {
+        console.log('Loaded!');
+        var input = document.getElementById('search')
+        console.log(input);
+        console.log(google.maps);
+        var searchBox = new google.maps.places.SearchBox(input)
+      })
+      .catch(function(err) {
+        console.error('Something went wrong!', err);
+    })
+  }
   render() {
     const { handleSubmit, formValues, handleFileRemove, submitted, loading } = this.props;
     let imagesBlock = '';
@@ -270,40 +297,11 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         firstEmpty
                         required
                       />
-                      <Field
-                        type="text"
-                        required
-                        name="address"
-                        className="form-control input-sm"
-                        placeholder="address"
-                        component={Input}
-                        style={{ width: '100%' }}
-                      />
-                      <Field
-                        type="text"
-                        required
-                        name="city"
-                        className="form-control input-sm"
-                        placeholder="city"
-                        component={Input}
-                        style={{ width: '100%' }}
-                      />
-                      <Field
-                        type="text"
-                        required
-                        name="state"
-                        className="form-control input-sm"
-                        placeholder="state"
-                        component={Input}
-                        style={{ width: '100%' }}
-                      />
-                      <Field
-                        type="number"
-                        required
-                        name="zipcode"
-                        className="form-control input-sm"
-                        placeholder="zipcode"
-                        component={Input}
+                      <input
+                        type='text'
+                        id='search'
+                        placeholder='address'
+                        className={`${styles.searchBox} form-control input-sm`}
                       />
                       <div className="row">
                         <div className="col-sm-6">

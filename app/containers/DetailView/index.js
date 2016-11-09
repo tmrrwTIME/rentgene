@@ -9,13 +9,17 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import selectDetailView from './selectors';
 import styles from './styles.css';
+import "../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
+
 import './social.css';
 // import { Link } from 'react-router';
+import ImageGallery from 'react-image-gallery'
 
 import { goBack } from 'react-router-redux';
 import { loadEntry } from './actions';
 import Gallery from 'components/Gallery';
 import Map from 'components/Map';
+
 
 export class DetailView extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
@@ -41,6 +45,21 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
     } else {
       entryTitle = entry.title;
     }
+    var images = [
+      {
+       original: 'http://lorempixel.com/1000/600/nature/1/',
+       thumbnail: 'http://lorempixel.com/400/300/nature/1/',
+     },
+     {
+       original: 'http://lorempixel.com/1000/600/nature/2/',
+       thumbnail: 'http://lorempixel.com/90/65/nature/2/'
+     },
+     {
+       original: 'http://lorempixel.com/1000/600/nature/3/',
+       thumbnail: 'http://lorempixel.com/90/65/nature/3/'
+     }
+
+    ]
 
     return (
       <div className={styles.detailView}>
@@ -59,7 +78,8 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
             <br />
             <div className={`row ${styles.detail}`}>
               <div className="col-sm-7">
-                <Gallery images={entry.images} />
+                {/* <Gallery images={entry.images} /> */}
+                <ImageGallery items={images} autoPlay={true} />
                 <h3>Description</h3>
                 <p>
                   {entry.description}

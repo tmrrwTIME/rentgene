@@ -9,7 +9,9 @@
   padding-right: 15px;
   margin-top: 20px;
 }
-
+.searchBox{
+  width: 100% !important;
+}
 .fetText {
   max-width: 400px;
   margin-left: auto;

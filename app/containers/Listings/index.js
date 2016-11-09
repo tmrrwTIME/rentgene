@@ -28,10 +28,12 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
     this.filter = this.filter.bind(this);
     this.handleRefine = this.handleRefine.bind(this);
     this.clear = this.clear.bind(this);
+    this.toggleFilters = this.toggleFilters.bind(this);
     this.state = {
       listType: this.props.routeParams.type,
       sortBy: 'newest',
       filters: {},
+      animation:'fadeOut'
     };
   }
 
@@ -44,6 +46,7 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
 
   componentDidMount() {
     this.props.loadEntries(this.state);
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -100,7 +103,13 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
       this.props.loadEntries(this.state);
     });
   }
-
+  toggleFilters(animate){
+    if (animate === 'fadeOut') {
+      this.setState({animation:'fadeIn'})
+    }else{
+      this.setState({animation:'fadeOut'})
+    }
+  }
   render() {
     const { loading, entries } = this.props;
     return (
@@ -123,6 +132,8 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
           handleChange={this.filter}
           values={this.state.filters}
           listType={this.props.routeParams.type}
+          animations={this.state.animation}
+          toggleFilters={this.toggleFilters}
         />
         <button onClick={this.clear}>Clear filters</button>
         <p>{entries.length} results.</p>

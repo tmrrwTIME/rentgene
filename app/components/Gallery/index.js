@@ -12,9 +12,9 @@ import styles from './styles.css';
 function changeMainImage(image) {
   document.getElementById('mainImage').src = image;
 }
-
+//
 function Gallery(props) {
-  const images = props.images || [];
+  const images =  [{name:'DSC_0096.JPG'},{name:'DSC_0096.JPG'}];
   let firstImage;
   if (images && images.length) {
     firstImage = images[0].name;

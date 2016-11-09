@@ -8,11 +8,18 @@ import React from 'react';
 
 
 import styles from './styles.css';
+import animate from '../../assets/css/animate.css'
 const beds = ['1+', '2+', '3+', '4+', '5+', '6+', '7+'];
 const prices = [400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 6000, 7000];
 
 function Filters(props) {
-  const { handleChange, listType } = props;
+  const { handleChange, listType, toggleFilters, animations } = props;
+  var animation
+  if (animations === 'fadeOut') {
+    animation = animate.fadeOut
+  }else {
+    animation = animate.fadeIn
+  }
   return (
     <form id="filters" method="POST">
       <div className={styles.filters}>
@@ -70,7 +77,7 @@ function Filters(props) {
             <select onChange={handleChange} name="baths" className={`form-control input-sm ${styles.select}`}>
               {beds.map((bed, i) => {
                 const key = `baths-${i}`;
-                return <option key={key} value={i + 1}>{bed}</option>;
+                  return <option key={key} value={i + 1}>{bed}</option>;
               })}
             </select>
           </div>
@@ -82,61 +89,66 @@ function Filters(props) {
               <option value="">sq. ft.</option>
               {prices.map((price, i) => {
                 const key = `squareFeet-${i}`;
-                return <option key={key} value={price}>{`${price.toLocaleString()}+`}</option>;
+                  return <option key={key} value={price}>{`${price.toLocaleString()}+`}</option>;
               })}
             </select>
           </div>
         : ''}
-        <div className={styles.content}>
-          <div className={styles.title}>Pets</div>
-          <div className="checkbox">
-            <label>
-              <input onChange={handleChange} type="checkbox" name="pets" value />
-            </label>
+        <div className={`${animate.animated} ${animation} ${styles.filters}`}>
+          <div className={styles.content}>
+            <div className={styles.title}>Pets</div>
+            <div className="checkbox">
+              <label>
+                <input onChange={handleChange} type="checkbox" name="pets" value />
+              </label>
+            </div>
+          </div>
+          <div className={styles.content}>
+            <div className={styles.title}>Parking</div>
+            <div className="checkbox">
+              <label>
+                <input onChange={handleChange} type="checkbox" name="parking" value />
+              </label>
+            </div>
+          </div>
+          <div className={styles.content}>
+            <div className={styles.title}>Utilities</div>
+            <div className="checkbox">
+              <label htmlFor="utilities">
+                <input onChange={handleChange} type="checkbox" name="utilities" value />
+              </label>
+            </div>
+          </div>
+          <div className={styles.content}>
+            <div className={styles.title}>Furnished</div>
+            <div className="checkbox">
+              <label>
+                <input onChange={handleChange} type="checkbox" name="furnished" value />
+              </label>
+            </div>
+          </div>
+          <div className={styles.content}>
+            <div className={styles.title}>Laundry</div>
+            <div className="checkbox">
+              <label>
+                <input onChange={handleChange} type="checkbox" name="laundry" value />
+              </label>
+            </div>
+          </div>
+          <div className={styles.content}>
+            <div className={styles.title}>Kitchen</div>
+            <div className="checkbox">
+              <label>
+                <input onChange={handleChange} type="checkbox" name="kitchen" value />
+              </label>
+            </div>
+          </div>
+          <div className={styles.content}>
+            <button type="button" onClick={props.handleRefine} className={`btn ${styles.button}`}>Refine</button>
           </div>
         </div>
         <div className={styles.content}>
-          <div className={styles.title}>Parking</div>
-          <div className="checkbox">
-            <label>
-              <input onChange={handleChange} type="checkbox" name="parking" value />
-            </label>
-          </div>
-        </div>
-        <div className={styles.content}>
-          <div className={styles.title}>Utilities</div>
-          <div className="checkbox">
-            <label htmlFor="utilities">
-              <input onChange={handleChange} type="checkbox" name="utilities" value />
-            </label>
-          </div>
-        </div>
-        <div className={styles.content}>
-          <div className={styles.title}>Furnished</div>
-          <div className="checkbox">
-            <label>
-              <input onChange={handleChange} type="checkbox" name="furnished" value />
-            </label>
-          </div>
-        </div>
-        <div className={styles.content}>
-          <div className={styles.title}>Laundry</div>
-          <div className="checkbox">
-            <label>
-              <input onChange={handleChange} type="checkbox" name="laundry" value />
-            </label>
-          </div>
-        </div>
-        <div className={styles.content}>
-          <div className={styles.title}>Kitchen</div>
-          <div className="checkbox">
-            <label>
-              <input onChange={handleChange} type="checkbox" name="kitchen" value />
-            </label>
-          </div>
-        </div>
-        <div className={styles.content}>
-          <button type="button" onClick={props.handleRefine} className={`btn ${styles.button}`}>Refine</button>
+          <button type="button" onClick={()=>toggleFilters(animations)} className={`btn ${styles.button}`}>Filters</button>
         </div>
       </div>
     </form>

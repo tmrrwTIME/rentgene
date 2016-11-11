@@ -2,7 +2,7 @@ import { call, put } from 'redux-saga/effects';
 import request from 'utils/request';
 import { fetchBlogsSuccess, fetchBlogsFailure } from './actions';
 
-const API_URL = process.env.RENTGENE_API_URL;
+const API_URL = 'https://1ylns3kelg.execute-api.us-west-2.amazonaws.com/dev';
 
 // Individual exports for testing
 export function* defaultSaga() {

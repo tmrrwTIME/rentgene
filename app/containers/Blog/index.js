@@ -22,7 +22,9 @@ class BlogList extends React.Component { // eslint-disable-line react/prefer-sta
           return (
             <div key={`blog-${key}`} className={styles.news}>
               <h4>{blog.title}</h4>
-              By admin / <span className={styles.date}>{moment(blog.createdAt).format('LL')}</span>
+              <p className={styles.author}>
+                By admin / <span className={styles.date}>{moment(blog.createdAt).format('LL')}</span>
+              </p>
               <div className={styles.thumb}>
                 <img src={`https://s3-us-west-2.amazonaws.com/rentgene-uploads/image/${blog.image}`} alt="" />
               </div>

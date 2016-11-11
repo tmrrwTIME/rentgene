@@ -8,8 +8,11 @@ import {
   loadEntryError,
 } from './actions';
 
-const API_URL = process.env.RENTGENE_API_URL;
+// const API_URL = process.env.RENTGENE_API_URL;
+const API_URL = 'https://1ylns3kelg.execute-api.us-west-2.amazonaws.com/dev';
+console.log(API_URL);
 
+// https://1ylns3kelg.execute-api.us-west-2.amazonaws.com/
 function* fetchEntry(action) {
   yield put(loading());
   const selects = [

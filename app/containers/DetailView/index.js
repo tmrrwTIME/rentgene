@@ -13,20 +13,83 @@ import "../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
 
 import './social.css';
 // import { Link } from 'react-router';
+
+//import Image Gallery
 import ImageGallery from 'react-image-gallery'
+
+//Import modal Component
+import Modal from 'react-modal'
 
 import { goBack } from 'react-router-redux';
 import { loadEntry } from './actions';
-import Gallery from 'components/Gallery';
 import Map from 'components/Map';
+
+//CustomStyles for modal
+const customStyles = {
+
+  overlay : {
+    position          : 'fixed',
+    top               : 0,
+    left              : 0,
+    right             : 0,
+    bottom            : 0,
+    backgroundColor   : 'rgba(255, 255, 255, 0.75)',
+    zIndex            : 100
+  },
+  content : {
+    position                   : 'absolute',
+    top                        : '40px',
+    left                       : '40px',
+    right                      : '40px',
+    bottom                     : '40px',
+    border                     : '1px solid #ccc',
+    background                 : '#fff',
+    overflow                   : 'auto',
+    WebkitOverflowScrolling    : 'touch',
+    borderRadius               : '4px',
+    outline                    : 'none',
+    padding                    : '20px',
+    height                     : 'auto'
+  }
+}
+
+
 
 
 export class DetailView extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor(props){
+    super(props)
+    this.state = {
+      modalIsOpen: false,
+      currentImage: "",
+      images: []
+    }
+    this.expandImage = this.expandImage.bind(this)
+    this.closeModal = this.closeModal.bind(this)
+  }
   componentDidMount() {
     this.props.fetchEntry(this.props.routeParams.slug);
   }
+  expandImage(e){
+    this.setState({currentImage: e.target.src})
+    this.setState({modalIsOpen: true})
+  }
+  closeModal(){
+    this.setState({modalIsOpen:false})
+  }
+  componentWillReceiveProps(nextProps){
+    var images = new Array()
+    for (var i = 0; i < nextProps.entry.images.length; i++) {
+      var url_images = `https://s3-us-west-2.amazonaws.com/rentgene-uploads/images/${nextProps.entry.images[i].name}`
+      var src = {original: url_images,thumbnail: url_images}
+      images.push(src)
+    }
+    if (images.length != undefined) {
+      this.setState({images:images})
+    }
+  }
   render() {
-    console.log(this.props)
+    // console.log(this.props)
     const { entry } = this.props;
     const markers = [];
     if (entry.lat && entry.lng) {
@@ -45,22 +108,6 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
     } else {
       entryTitle = entry.title;
     }
-    var images = [
-      {
-       original: 'http://lorempixel.com/1000/600/nature/1/',
-       thumbnail: 'http://lorempixel.com/400/300/nature/1/',
-     },
-     {
-       original: 'http://lorempixel.com/1000/600/nature/2/',
-       thumbnail: 'http://lorempixel.com/90/65/nature/2/'
-     },
-     {
-       original: 'http://lorempixel.com/1000/600/nature/3/',
-       thumbnail: 'http://lorempixel.com/90/65/nature/3/'
-     }
-
-    ]
-
     return (
       <div className={styles.detailView}>
         <Helmet
@@ -78,8 +125,12 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
             <br />
             <div className={`row ${styles.detail}`}>
               <div className="col-sm-7">
-                {/* <Gallery images={entry.images} /> */}
-                <ImageGallery items={images} autoPlay={true} />
+                <ImageGallery
+                  items={this.state.images}
+                  showPlayButton={false}
+                  showFullscreenButton={false}
+                  onClick={this.expandImage}
+                />
                 <h3>Description</h3>
                 <p>
                   {entry.description}
@@ -136,22 +187,18 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
                 <div>
                   {entry.contactName}
                 </div>
-                <div>
-                  email: {entry.contactEmail}
-                </div>
-                <div>
-                  Phone: {entry.phone}
-                </div>
+                <a href={`mailto:${entry.contactEmail}`}>email: {entry.contactEmail}</a> <br/>
+                <a href={`tel:${entry.phone}`}>Phone: {entry.phone}</a>
                 <div className={styles.option}>
                   <a href="#print" onClick={() => window.print()}>Print</a>
                   <a className="resp-sharing-button__link" href={`https://facebook.com/sharer/sharer.php?u=https://www.rentgene.com${this.props.location.pathname}`} target="_blank" aria-label="">
                     <div className="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small"><div aria-hidden="true" className="resp-sharing-button__icon resp-sharing-button__icon--solid">
                       <svg version="1.1" x="0px" y="0px" width="12px" height="20px" viewBox="0 0 20 20" enableBackground="new 0 0 20 20">
-                          <g>
-                              <path d="M18.768,7.465H14.5V5.56c0-0.896,0.594-1.105,1.012-1.105s2.988,0,2.988,0V0.513L14.171,0.5C10.244,0.5,9.5,3.438,9.5,5.32 v2.145h-3v4h3c0,5.212,0,12,0,12h5c0,0,0-6.85,0-12h3.851L18.768,7.465z"/>
-                          </g>
+                        <g>
+                          <path d="M18.768,7.465H14.5V5.56c0-0.896,0.594-1.105,1.012-1.105s2.988,0,2.988,0V0.513L14.171,0.5C10.244,0.5,9.5,3.438,9.5,5.32 v2.145h-3v4h3c0,5.212,0,12,0,12h5c0,0,0-6.85,0-12h3.851L18.768,7.465z"/>
+                        </g>
                       </svg>
-                      </div>
+                    </div>
                     </div>
                   </a>
 
@@ -169,9 +216,9 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
                   <a className="resp-sharing-button__link" href={`mailto:?subject=${entryTitle}&body=http://www.rentgene.com${this.props.location.pathname}`} target="_self" aria-label="">
                     <div className="resp-sharing-button resp-sharing-button--email resp-sharing-button--small"><div aria-hidden="true" className="resp-sharing-button__icon resp-sharing-button__icon--solid">
                       <svg version="1.1" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 24 20" enableBackground="new 0 0 24 20">
-                          <path d="M22,4H2C0.897,4,0,4.897,0,6v12c0,1.103,0.897,2,2,2h20c1.103,0,2-0.897,2-2V6C24,4.897,23.103,4,22,4z M7.248,14.434 l-3.5,2C3.67,16.479,3.584,16.5,3.5,16.5c-0.174,0-0.342-0.09-0.435-0.252c-0.137-0.239-0.054-0.545,0.186-0.682l3.5-2 c0.24-0.137,0.545-0.054,0.682,0.186C7.571,13.992,7.488,14.297,7.248,14.434z M12,14.5c-0.094,0-0.189-0.026-0.271-0.08l-8.5-5.5 C2.997,8.77,2.93,8.46,3.081,8.229c0.15-0.23,0.459-0.298,0.691-0.147L12,13.405l8.229-5.324c0.232-0.15,0.542-0.084,0.691,0.147 c0.15,0.232,0.083,0.542-0.148,0.691l-8.5,5.5C12.189,14.474,12.095,14.5,12,14.5z M20.934,16.248 C20.842,16.41,20.673,16.5,20.5,16.5c-0.084,0-0.169-0.021-0.248-0.065l-3.5-2c-0.24-0.137-0.323-0.442-0.186-0.682 s0.443-0.322,0.682-0.186l3.5,2C20.988,15.703,21.071,16.009,20.934,16.248z"/>
+                        <path d="M22,4H2C0.897,4,0,4.897,0,6v12c0,1.103,0.897,2,2,2h20c1.103,0,2-0.897,2-2V6C24,4.897,23.103,4,22,4z M7.248,14.434 l-3.5,2C3.67,16.479,3.584,16.5,3.5,16.5c-0.174,0-0.342-0.09-0.435-0.252c-0.137-0.239-0.054-0.545,0.186-0.682l3.5-2 c0.24-0.137,0.545-0.054,0.682,0.186C7.571,13.992,7.488,14.297,7.248,14.434z M12,14.5c-0.094,0-0.189-0.026-0.271-0.08l-8.5-5.5 C2.997,8.77,2.93,8.46,3.081,8.229c0.15-0.23,0.459-0.298,0.691-0.147L12,13.405l8.229-5.324c0.232-0.15,0.542-0.084,0.691,0.147 c0.15,0.232,0.083,0.542-0.148,0.691l-8.5,5.5C12.189,14.474,12.095,14.5,12,14.5z M20.934,16.248 C20.842,16.41,20.673,16.5,20.5,16.5c-0.084,0-0.169-0.021-0.248-0.065l-3.5-2c-0.24-0.137-0.323-0.442-0.186-0.682 s0.443-0.322,0.682-0.186l3.5,2C20.988,15.703,21.071,16.009,20.934,16.248z"/>
                       </svg>
-                      </div>
+                    </div>
                     </div>
                   </a>
 
@@ -201,6 +248,10 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
             </div>
           </div>
         </div>
+        <Modal isOpen={this.state.modalIsOpen} style={customStyles}>
+          <button onClick={this.closeModal}>close</button><br/>
+          <img className={styles.modalImg} src={this.state.currentImage} alt="" />
+        </Modal>
       </div>
     );
   }
@@ -209,6 +260,7 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
 DetailView.propTypes = {
   handleBack: React.PropTypes.func,
 };
+
 
 const mapStateToProps = selectDetailView();
 

@@ -18,6 +18,31 @@ import { submitForm } from './actions';
 const propertyTypes = ['choose', 'Room', 'Apartment', 'House'];
 
 export class ListUs extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  componentDidMount(){
+    function load(url) {
+      return new Promise(function(resolve, reject) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        script.src = url;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      })
+    }
+
+    load('https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyA1vQdzV7nTSFUe2klAEgwpokdsA9aDpzU')
+      .then(function() {
+        console.log('Loaded!');
+        var input = document.getElementById('search')
+        console.log(input);
+        console.log(google.maps);
+        var searchBox = new google.maps.places.SearchBox(input)
+      })
+      .catch(function(err) {
+        console.error('Something went wrong!', err);
+    })
+  }
   render() {
     const { handleSubmit, submitted, loading } = this.props;
     const thankView = (
@@ -73,42 +98,11 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                         Address
                       </div>
                       <div>
-                        <Field
-                          type="text"
-                          required
-                          name="street"
-                          className="form-control input-sm"
-                          placeholder="street"
-                          component={Input}
-                        />
-                        <Field
-                          type="text"
-                          required
-                          disabled
-                          name="city"
-                          className="form-control input-sm"
-                          placeholder="city"
-                          component={Input}
-                        />
-                      </div>
-                      <div>
-                        <Field
-                          type="text"
-                          required
-                          name="state"
-                          className="form-control input-sm"
-                          placeholder="state"
-                          component={Input}
-                          disabled
-                          style={{ float: 'left' }}
-                        />
-                        <Field
-                          type="text"
-                          required
-                          name="zipcode"
-                          className="form-control input-sm"
-                          placeholder="zipcode"
-                          component={Input}
+                        <input
+                          type='text'
+                          id='search'
+                          placeholder='address'
+                          className={`${styles.searchBox} form-control input-sm`}
                         />
                       </div>
                     </div>

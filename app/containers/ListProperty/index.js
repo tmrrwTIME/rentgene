@@ -18,7 +18,6 @@ import { uploadFile, removeFile, submitForm } from './actions';
 import SizeImage from 'assets/images/size.png';
 import validate from './validate';
 import { isEmpty } from 'lodash';
-import { SearchBox } from "react-google-maps";
 
 const beds = ['', 1, 2, 3, 4, 5, 6, 7];
 const leaseDuration = ['lease', 'Month to Month', '6 months', '1 year'];
@@ -29,6 +28,11 @@ import styles from './styles.css';
 
 export class ListProperty extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
+  constructor(props){
+    super(props)
+    this.state = {files:[]}
+    this.drop = this.drop.bind(this)
+  }
   componentDidMount(){
     function load(url) {
       return new Promise(function(resolve, reject) {
@@ -54,6 +58,12 @@ export class ListProperty extends React.Component { // eslint-disable-line react
         console.error('Something went wrong!', err);
     })
   }
+  drop(files){
+    console.log(files);
+    this.setState({
+      files: files
+    })
+  }
   render() {
     const { handleSubmit, formValues, handleFileRemove, submitted, loading } = this.props;
     let imagesBlock = '';
@@ -61,36 +71,36 @@ export class ListProperty extends React.Component { // eslint-disable-line react
       imagesBlock = (
         <div className={styles.drag}>
           <div className="row">
-              {formValues.images.map((image, i) => {
-                const key = `images-${i}`;
-                if (image.uploading) {
-                  return (
-                    <div key={key} className="col-sm-3">
-                      <div className={styles.thumb}>
-                        <div
-                          className={`${styles.thumbMain} ${styles.load}`}
-                        >
-                          <i className="fa fa-spinner fa-pulse fa-fw"></i>
-                        </div>
-                        <img src={SizeImage} className={styles.size} alt="" />
-                      </div>
-                    </div>
-                  );
-                }
+            {formValues.images.map((image, i) => {
+              const key = `images-${i}`;
+              if (image.uploading) {
                 return (
                   <div key={key} className="col-sm-3">
                     <div className={styles.thumb}>
-                      <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbButton}`} data-idx={i}>
-                        <i className="fa fa-times"></i>
-                      </button>
-                      <div className={styles.thumbMain}>
-                        <img className={styles.image} src={image.preview} alt="" />
+                      <div
+                        className={`${styles.thumbMain} ${styles.load}`}
+                      >
+                        <i className="fa fa-spinner fa-pulse fa-fw"></i>
                       </div>
                       <img src={SizeImage} className={styles.size} alt="" />
                     </div>
                   </div>
                 );
-              })}
+              }
+              return (
+                <div key={key} className="col-sm-3">
+                  <div className={styles.thumb}>
+                    <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbButton}`} data-idx={i}>
+                      <i className="fa fa-times"></i>
+                    </button>
+                    <div className={styles.thumbMain}>
+                      <img className={styles.image} src={image.preview} alt="" />
+                    </div>
+                    <img src={SizeImage} className={styles.size} alt="" />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       );
@@ -114,20 +124,29 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                 <div className="row">
                   <div className="col-sm-8">
                     <p>*Must upload 8 photos minimum, but more is better!</p>
-                    <Dropzone
-                      onDrop={this.props.handleDrop}
+                    {/* <Dropzone
+                      onDrop={this.drop}
                       accept="image/*"
                       style={{ width: '100%' }}
-                    >
+                      >
                       <div className={styles.drag}>
-                        <div className={styles.dragText}>
-                          <div>
-                            <h4>Drag & Drop</h4>
-                            <h6>Photos upload</h6>
-                          </div>
-                        </div>
+                      <div className={styles.dragText}>
+                      <div>
+                      <h4>Drag & Drop</h4>
+                      <h6>Photos upload</h6>
                       </div>
+                      </div>
+                      </div>
+                    </Dropzone> */}
+                    <Dropzone onDrop={this.props.handleDrop}>
+                      <div>Drag & Drop</div>
+                      {this.state.files.length > 0 ? <div>
+                        <h2>Uploading {this.state.files.length} files...</h2>
+                        <div>{this.state.files.map((file) => <img src={file.preview} className={styles.imgPreview} /> )}</div>
+                      </div> : null}
+
                     </Dropzone>
+
                     {imagesBlock}
                     <div className={styles.content}>
                       <h4 className={styles.normalTitle}>Description</h4>
@@ -297,11 +316,12 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         firstEmpty
                         required
                       />
-                      <input
-                        type='text'
-                        id='search'
-                        placeholder='address'
+                      <Field
+                        component='input'
+                        type="text" id='search'
+                        placeholder='Address'
                         className={`${styles.searchBox} form-control input-sm`}
+                        name="address"
                       />
                       <div className="row">
                         <div className="col-sm-6">
@@ -424,62 +444,62 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         className={`form-control input-sm ${styles.select}`}
                         component={Select}
                         items={beds}
-                          required
-                        />
-                      </div>
-                      <div className={styles.content}>
-                        <div className="row">
-                          <div className={`col-sm-6 ${styles.borderRight}`}>
-                            <h4 className={styles.normalTitle}>Utilities <small>incl</small></h4>
-                            <div className="checkbox">
-                              <label htmlFor="electric">
-                                <Field name="electric" component="input" type="checkbox" /> Electric
-                              </label>
-                            </div>
-                            <div className="checkbox">
-                              <label htmlFor="water">
-                                <Field name="water" component="input" type="checkbox" /> Water
-                              </label>
-                            </div>
-                            <div className="checkbox">
-                              <label htmlFor="gas">
-                                <Field name="gas" component="input" type="checkbox" /> Gas
-                              </label>
-                            </div>
-                            <div className="checkbox">
-                              <label htmlFor="trash">
-                                <Field name="trash" component="input" type="checkbox" /> Trash
-                              </label>
-                            </div>
+                        required
+                      />
+                    </div>
+                    <div className={styles.content}>
+                      <div className="row">
+                        <div className={`col-sm-6 ${styles.borderRight}`}>
+                          <h4 className={styles.normalTitle}>Utilities <small>incl</small></h4>
+                          <div className="checkbox">
+                            <label htmlFor="electric">
+                              <Field name="electric" component="input" type="checkbox" /> Electric
+                            </label>
                           </div>
-                          <div className="col-sm-6">
-                            <h4 className={styles.normalTitle}>Lease Duration</h4>
-                            <span style={{ float: 'left' }}>min.</span>
-                            <Field
-                              style={{ width: 75 }}
-                              name="leaseDuration"
-                              className={`form-control input-sm ${styles.select}`}
-                              component={Select}
-                              items={leaseDuration}
-                              firstEmpty
-                              required
-                            />
+                          <div className="checkbox">
+                            <label htmlFor="water">
+                              <Field name="water" component="input" type="checkbox" /> Water
+                            </label>
                           </div>
+                          <div className="checkbox">
+                            <label htmlFor="gas">
+                              <Field name="gas" component="input" type="checkbox" /> Gas
+                            </label>
+                          </div>
+                          <div className="checkbox">
+                            <label htmlFor="trash">
+                              <Field name="trash" component="input" type="checkbox" /> Trash
+                            </label>
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <h4 className={styles.normalTitle}>Lease Duration</h4>
+                          <span style={{ float: 'left' }}>min.</span>
+                          <Field
+                            style={{ width: 75 }}
+                            name="leaseDuration"
+                            className={`form-control input-sm ${styles.select}`}
+                            component={Select}
+                            items={leaseDuration}
+                            firstEmpty
+                            required
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <hr />
-                <div className="text-center">
-                  <button className="btn" disabled={loading}>
-                    {loading ? <i className="fa fa-spinner fa-spin"></i> : ''}
-                    Submit
-                  </button>
-                </div>
-              </form>
-            </div>}
+              <hr />
+              <div className="text-center">
+                <button className="btn" disabled={loading}>
+                  {loading ? <i className="fa fa-spinner fa-spin"></i> : ''}
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>}
         </div>
       </div>
     );
@@ -515,6 +535,11 @@ function mapDispatchToProps(dispatch) {
       dispatch(removeFile(e.currentTarget.dataset.idx));
     },
     handleDrop: (files) => {
+
+      this.setState({
+        files: files
+      })
+      console.log(files);
       if (files.length) {
         dispatch(uploadFile(files));
       }

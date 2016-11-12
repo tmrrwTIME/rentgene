@@ -34,3 +34,7 @@
   padding-top: 40px;
   padding-bottom: 40px;
 }
+
+.searchBox{
+  width: 50% !important;
+}

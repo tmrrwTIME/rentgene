@@ -1,8 +1,8 @@
 /*
- *
- * ListRooms
- *
- */
+*
+* ListRooms
+*
+*/
 
 import React from 'react';
 import { connect } from 'react-redux';
@@ -26,6 +26,31 @@ const months = ['Months', 'Jan', 'Feb', 'Mar', 'Apr', 'Aug', 'Sept', 'Oct', 'Nov
 const days = ['Day', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31];
 
 export class ListRooms extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  componentDidMount(){
+    function load(url) {
+      return new Promise(function(resolve, reject) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        script.src = url;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      })
+    }
+
+    load('https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyA1vQdzV7nTSFUe2klAEgwpokdsA9aDpzU')
+    .then(function() {
+      console.log('Loaded!');
+      var input = document.getElementById('search')
+      console.log(input);
+      console.log(google.maps);
+      var searchBox = new google.maps.places.SearchBox(input)
+    })
+    .catch(function(err) {
+      console.error('Something went wrong!', err);
+    })
+  }
   render() {
     const { handleSubmit, formValues, handleFileRemove, loading, submitted } = this.props;
     let imagesBlock = '';
@@ -33,49 +58,49 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
       imagesBlock = (
         <div className={styles.drag}>
           <div className="row">
-              {formValues.images.map((image, i) => {
-                const key = `images-${i}`;
-                if (image.uploading) {
-                  return (
-                    <div key={key} className="col-sm-3">
-                      <div className={styles.thumb}>
-                        <div
-                          className={`${styles.thumbMain} ${styles.load}`}
-                        >
-                          <i className="fa fa-spinner fa-pulse fa-fw"></i>
-                        </div>
-                        <img src={SizeImage} className={styles.size} alt="" />
-                      </div>
-                    </div>
-                  );
-                }
+            {formValues.images.map((image, i) => {
+              const key = `images-${i}`;
+              if (image.uploading) {
                 return (
                   <div key={key} className="col-sm-3">
                     <div className={styles.thumb}>
-                      <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbButton}`} data-idx={i}>
-                        <i className="fa fa-times"></i>
-                      </button>
-                      <div className={styles.thumbMain}>
-                        <img className={styles.image} src={image.preview} alt="" />
+                      <div
+                        className={`${styles.thumbMain} ${styles.load}`}
+                      >
+                        <i className="fa fa-spinner fa-pulse fa-fw"></i>
                       </div>
                       <img src={SizeImage} className={styles.size} alt="" />
                     </div>
                   </div>
                 );
-              })}
+              }
+              return (
+                <div key={key} className="col-sm-3">
+                  <div className={styles.thumb}>
+                    <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbButton}`} data-idx={i}>
+                      <i className="fa fa-times"></i>
+                    </button>
+                    <div className={styles.thumbMain}>
+                      <img className={styles.image} src={image.preview} alt="" />
+                    </div>
+                    <img src={SizeImage} className={styles.size} alt="" />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
-      );
-    }
-    return (
-      <div className={styles.listRooms}>
-        <Helmet
-          title="ListRooms"
-          meta={[
-            { name: 'description', content: 'Description of ListRooms' },
-          ]}
-        />
-        <div className="row">
+        );
+      }
+      return (
+        <div className={styles.listRooms}>
+          <Helmet
+            title="ListRooms"
+            meta={[
+              { name: 'description', content: 'Description of ListRooms' },
+            ]}
+          />
+          <div className="row">
             {submitted ? <ThankView /> : <div className="col-md-8 col-md-offset-2">
               <form onSubmit={handleSubmit}>
                 <div>
@@ -126,31 +151,11 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           component={Input}
                           style={{ width: '100%' }}
                         />
-                        <Field
-                          type="text"
-                          required
-                          name="city"
-                          className="form-control input-sm"
-                          placeholder="city"
-                          component={Input}
-                          style={{ width: '100%' }}
-                        />
-                        <Field
-                          type="text"
-                          required
-                          name="state"
-                          className="form-control input-sm"
-                          placeholder="state"
-                          component={Input}
-                          style={{ width: '100%' }}
-                        />
-                        <Field
-                          type="number"
-                          required
-                          name="zipcode"
-                          className="form-control input-sm"
-                          placeholder="zipcode"
-                          component={Input}
+                        <input
+                          type='text'
+                          id='search'
+                          placeholder='address'
+                          className={`${styles.searchBox} form-control input-sm`}
                         />
                         <div className="row">
                           <div className="col-sm-6">
@@ -288,50 +293,50 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                   </button>
                 </div>
               </form></div>}
+          </div>
         </div>
-      </div>
-    );
-  }
-}
-
-ListRooms.propTypes = {
-  handleSubmit: React.PropTypes.func.isRequired,
-  handleDrop: React.PropTypes.func.isRequired,
-  handleFileRemove: React.PropTypes.func,
-  formValues: React.PropTypes.object,
-  loading: React.PropTypes.bool,
-  submitted: React.PropTypes.bool,
-};
-
-const mapStateToProps = selectListRooms();
-
-function mapDispatchToProps(dispatch) {
-  return {
-    onSubmit: (values) => {
-      const errors = validate(values);
-      if (!isEmpty(errors)) {
-        if (errors.images) {
-          alert(errors.images); // eslint-disable-line
+          );
         }
-        dispatch(stopSubmit('ListRoomsForm', errors));
-        throw new SubmissionError(errors);
-      } else {
-        dispatch(submitForm(values.toJS()));
       }
-    },
-    handleFileRemove: (e) => {
-      dispatch(removeFile(e.currentTarget.dataset.idx));
-    },
-    handleDrop: (files) => {
-      if (files.length) {
-        dispatch(uploadFile(files));
-      }
-    },
-    dispatch,
-  };
-}
-const listRooms = reduxForm({
-  form: 'ListRoomsForm',
-})(ListRooms);
 
-export default connect(mapStateToProps, mapDispatchToProps)(listRooms);
+      ListRooms.propTypes = {
+        handleSubmit: React.PropTypes.func.isRequired,
+        handleDrop: React.PropTypes.func.isRequired,
+        handleFileRemove: React.PropTypes.func,
+        formValues: React.PropTypes.object,
+        loading: React.PropTypes.bool,
+        submitted: React.PropTypes.bool,
+      };
+
+      const mapStateToProps = selectListRooms();
+
+      function mapDispatchToProps(dispatch) {
+        return {
+          onSubmit: (values) => {
+            const errors = validate(values);
+            if (!isEmpty(errors)) {
+              if (errors.images) {
+                alert(errors.images); // eslint-disable-line
+              }
+              dispatch(stopSubmit('ListRoomsForm', errors));
+              throw new SubmissionError(errors);
+            } else {
+              dispatch(submitForm(values.toJS()));
+            }
+          },
+          handleFileRemove: (e) => {
+            dispatch(removeFile(e.currentTarget.dataset.idx));
+          },
+          handleDrop: (files) => {
+            if (files.length) {
+              dispatch(uploadFile(files));
+            }
+          },
+          dispatch,
+        };
+      }
+      const listRooms = reduxForm({
+        form: 'ListRoomsForm',
+      })(ListRooms);
+
+      export default connect(mapStateToProps, mapDispatchToProps)(listRooms);

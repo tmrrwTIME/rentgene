@@ -172,3 +172,7 @@
 .size {
   width: 100%;
 }
+
+.searchBox{
+  width: 100% !important;
+}

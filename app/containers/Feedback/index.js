@@ -10,8 +10,37 @@ import Helmet from 'react-helmet';
 import selectFeedback from './selectors';
 import styles from './styles.css';
 import { submitFeedback as submit } from './actions';
+import request from 'superagent'
+
 
 export class Feedback extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor(props){
+    super(props)
+    this.state = {
+      isOk: false,
+    }
+
+    this.submit = this.submit.bind(this)
+  }
+  submit(e){
+    e.preventDefault()
+    request.post(e.target.action)
+    .send({
+      "subject": null,
+      "mail": null,
+      "message": this.refs.message.value
+    })
+    .withCredentials()
+    .accept('application/json')
+    .end((err, res)=>{
+      if(err) throw err
+      console.log(JSON.parse(res.text).code);
+      if (JSON.parse(res.text).code === 'ok') {
+        this.refs.message.value = ''
+        this.setState({isOk: true})
+      }
+    })
+  }
   render() {
     const { submitFeedback, submitted } = this.props;
     return (
@@ -37,19 +66,17 @@ export class Feedback extends React.Component { // eslint-disable-line react/pre
             <p>
               Anonomyous Feedback! We really need you!
             </p>
-            {!submitted ? <form method="POST">
+            {!this.state.isOk ? <form onSubmit={this.submit} action="http://sendMail-dev.us-west-2.elasticbeanstalk.com/sendMail" method="POST">
               <textarea
                 id="feedback"
                 name="feedback"
                 rows="8"
                 cols="40"
                 className={`form-control ${styles.textarea}`}
+                ref='message'
                 required
               ></textarea>
-              <button
-                className={`btn btn-xs ${styles.button}`}
-                onClick={submitFeedback}
-              >
+              <button className={`btn btn-xs ${styles.button}`}>
                 Submit
               </button>
             </form> : <h1>Thanks</h1>}

@@ -23,38 +23,7 @@ import Modal from 'react-modal'
 import { goBack } from 'react-router-redux';
 import { loadEntry } from './actions';
 import Map from 'components/Map';
-
-//CustomStyles for modal
-const customStyles = {
-
-  overlay : {
-    position          : 'fixed',
-    top               : 0,
-    left              : 0,
-    right             : 0,
-    bottom            : 0,
-    backgroundColor   : 'rgba(255, 255, 255, 0.75)',
-    zIndex            : 100
-  },
-  content : {
-    position                   : 'absolute',
-    top                        : '40px',
-    left                       : '40px',
-    right                      : '40px',
-    bottom                     : '40px',
-    border                     : '1px solid #ccc',
-    background                 : '#fff',
-    overflow                   : 'auto',
-    WebkitOverflowScrolling    : 'touch',
-    borderRadius               : '4px',
-    outline                    : 'none',
-    padding                    : '20px',
-    height                     : 'auto'
-  }
-}
-
-
-
+import { Link } from 'react-router';
 
 export class DetailView extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props){
@@ -62,7 +31,8 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
     this.state = {
       modalIsOpen: false,
       currentImage: "",
-      images: []
+      images: [],
+      height: '',
     }
     this.expandImage = this.expandImage.bind(this)
     this.closeModal = this.closeModal.bind(this)
@@ -71,8 +41,10 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
     this.props.fetchEntry(this.props.routeParams.slug);
   }
   expandImage(e){
+    console.log(e.target.width);
     this.setState({currentImage: e.target.src})
     this.setState({modalIsOpen: true})
+    this.setState({height: e.target.height})
   }
   closeModal(){
     this.setState({modalIsOpen:false})
@@ -89,6 +61,34 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
     }
   }
   render() {
+    //CustomStyles for modal
+    const customStyles = {
+      overlay : {
+        position          : 'fixed',
+        top               : 0,
+        left              : 0,
+        right             : 0,
+        bottom            : 0,
+        backgroundColor   : 'rgba(255, 255, 255, 0.75)',
+        zIndex            : 100
+      },
+      content : {
+        position                   : 'absolute',
+        top                        : '40px',
+        left                       : window.innerWidth/2 - 400,
+        right                      : '40px',
+        bottom                     : '40px',
+        border                     : '1px solid #ccc',
+        background                 : '#fff',
+        overflow                   : 'auto',
+        WebkitOverflowScrolling    : 'touch',
+        borderRadius               : '4px',
+        outline                    : 'none',
+        padding                    : '20px',
+        width                      : '800px',
+        height                     : this.state.height*2
+      }
+    }
     // console.log(this.props)
     const { entry } = this.props;
     const markers = [];
@@ -187,8 +187,8 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
                 <div>
                   {entry.contactName}
                 </div>
-                <a href={`mailto:${entry.contactEmail}`}>email: {entry.contactEmail}</a> <br/>
-                <a href={`tel:${entry.phone}`}>Phone: {entry.phone}</a>
+                <span>email: {entry.contactEmail}</span> <br/>
+                <span>Phone: {entry.phone}</span>
                 <div className={styles.option}>
                   <a href="#print" onClick={() => window.print()}>Print</a>
                   <a className="resp-sharing-button__link" href={`https://facebook.com/sharer/sharer.php?u=https://www.rentgene.com${this.props.location.pathname}`} target="_blank" aria-label="">
@@ -221,7 +221,7 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
                     </div>
                     </div>
                   </a>
-
+                  <Link style={{color: 'red', fontWeight:'bold'}} to={'/feedback'}>Problem?</Link>
                 </div>
                 <div className={styles.date}>
                   Available - {entry.months} {entry.day}

@@ -18,7 +18,6 @@ function Footer() {
         <li><Link to={'/add'}>Submit listing</Link></li>
         <li><Link to={'/terms-and-conditions'}>Terms</Link></li>
         <li><Link to={'/contact'}>Contact</Link></li>
-        <li><Link to={'/feedback'}>Problem?</Link></li>
         <li><a target="_blank" href="https://www.facebook.com/rentgene"><i className="fa fa-facebook"></i></a></li>
         <li><a target="_blank" href="https://twitter.com/rentgene"><i className="fa fa-twitter"></i></a></li>
         <li><a target="_blank" href="https://www.instagram.com/rentgene/"><i className="fa fa-instagram"></i></a></li>

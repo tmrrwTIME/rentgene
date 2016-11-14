@@ -176,3 +176,9 @@
 .searchBox{
   width: 100% !important;
 }
+
+.imgPreview{
+  width: 70px;
+  height: 70px;
+  margin: 5px;
+}

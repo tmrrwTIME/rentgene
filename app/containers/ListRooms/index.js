@@ -26,6 +26,11 @@ const months = ['Months', 'Jan', 'Feb', 'Mar', 'Apr', 'Aug', 'Sept', 'Oct', 'Nov
 const days = ['Day', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31];
 
 export class ListRooms extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor(props){
+    super(props)
+    this.state = {files:[]}
+    this.drop = this.drop.bind(this)
+  }
   componentDidMount(){
     function load(url) {
       return new Promise(function(resolve, reject) {
@@ -41,57 +46,28 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
 
     load('https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyA1vQdzV7nTSFUe2klAEgwpokdsA9aDpzU')
     .then(function() {
-      console.log('Loaded!');
       var input = document.getElementById('search')
-      console.log(input);
-      console.log(google.maps);
       var searchBox = new google.maps.places.SearchBox(input)
     })
     .catch(function(err) {
       console.error('Something went wrong!', err);
     })
   }
+  drop(files){
+    var img = this.state.files
+    for (var i = 0; i < files.length; i++) {
+      img.push(files[i])
+    }
+    this.setState({
+      files: img
+    })
+    this.props.formValues.images = img
+  }
   render() {
     const { handleSubmit, formValues, handleFileRemove, loading, submitted } = this.props;
-    let imagesBlock = '';
-    if (formValues.images && formValues.images.length) {
-      imagesBlock = (
-        <div className={styles.drag}>
-          <div className="row">
-            {formValues.images.map((image, i) => {
-              const key = `images-${i}`;
-              if (image.uploading) {
-                return (
-                  <div key={key} className="col-sm-3">
-                    <div className={styles.thumb}>
-                      <div
-                        className={`${styles.thumbMain} ${styles.load}`}
-                      >
-                        <i className="fa fa-spinner fa-pulse fa-fw"></i>
-                      </div>
-                      <img src={SizeImage} className={styles.size} alt="" />
-                    </div>
-                  </div>
-                );
-              }
-              return (
-                <div key={key} className="col-sm-3">
-                  <div className={styles.thumb}>
-                    <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbButton}`} data-idx={i}>
-                      <i className="fa fa-times"></i>
-                    </button>
-                    <div className={styles.thumbMain}>
-                      <img className={styles.image} src={image.preview} alt="" />
-                    </div>
-                    <img src={SizeImage} className={styles.size} alt="" />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        );
-      }
+    var count = 8 - this.state.files.length;
+    count = (count < 0)? 0 : count;
+    console.log(count);
       return (
         <div className={styles.listRooms}>
           <Helmet
@@ -111,7 +87,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                     <div className="col-sm-8">
                       <p>*Must upload 5 photos minimum, but more is better!</p>
                       <Dropzone
-                        onDrop={this.props.handleDrop}
+                        onDrop={this.drop}
                         accept="image/*"
                         style={{ width: '100%' }}
                       >
@@ -124,7 +100,11 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           </div>
                         </div>
                       </Dropzone>
-                      {imagesBlock}
+                      {this.state.files.length > 0 ? <div style={{border: '1px solid black', marginTop:'5px', padding: 5, borderRadius: 5}}>
+                        <h2>You are missing {count} photos</h2>
+                        <div>{this.state.files.map((file) => <img src={file.preview} className={styles.imgPreview} /> )}</div>
+                      </div> : null}
+
                       <div className={styles.content}>
                         <h4 className={styles.normalTitle}>Description</h4>
                         <Field
@@ -151,11 +131,12 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           component={Input}
                           style={{ width: '100%' }}
                         />
-                        <input
-                          type='text'
-                          id='search'
-                          placeholder='address'
+                        <Field
+                          component='input'
+                          type="text" id='search'
+                          placeholder='Address'
                           className={`${styles.searchBox} form-control input-sm`}
+                          name="address"
                         />
                         <div className="row">
                           <div className="col-sm-6">
@@ -313,6 +294,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
       function mapDispatchToProps(dispatch) {
         return {
           onSubmit: (values) => {
+            console.log('hola');
             const errors = validate(values);
             if (!isEmpty(errors)) {
               if (errors.images) {

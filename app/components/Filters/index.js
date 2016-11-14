@@ -15,7 +15,7 @@ const prices = [400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2500
 function Filters(props) {
   const { handleChange, listType, toggleFilters, animations } = props;
   var animation
-  if (animations === 'fadeOut') {
+  if (animations === 'fadeOut' && screen.width <= 414) {
     animation = animate.fadeOut
   }else {
     animation = animate.fadeIn
@@ -147,7 +147,8 @@ function Filters(props) {
             <button type="button" onClick={props.handleRefine} className={`btn ${styles.button}`}>Refine</button>
           </div>
         </div>
-        <div className={styles.content}>
+        {/* Show Only mobile */}
+        <div className={styles.content, styles.showOnlyMobile}>
           <button type="button" onClick={()=>toggleFilters(animations)} className={`btn ${styles.button}`}>Filters</button>
         </div>
       </div>

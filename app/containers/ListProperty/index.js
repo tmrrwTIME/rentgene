@@ -48,10 +48,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
 
     load('https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyA1vQdzV7nTSFUe2klAEgwpokdsA9aDpzU')
       .then(function() {
-        console.log('Loaded!');
         var input = document.getElementById('search')
-        console.log(input);
-        console.log(google.maps);
         var searchBox = new google.maps.places.SearchBox(input)
       })
       .catch(function(err) {
@@ -59,53 +56,19 @@ export class ListProperty extends React.Component { // eslint-disable-line react
     })
   }
   drop(files){
-    console.log(files);
+    var img = this.state.files
+    for (var i = 0; i < files.length; i++) {
+      img.push(files[i])
+    }
     this.setState({
-      files: files
+      files: img
     })
   }
   render() {
     const { handleSubmit, formValues, handleFileRemove, submitted, loading } = this.props;
-    let imagesBlock = '';
-    if (formValues.images && formValues.images.length) {
-      imagesBlock = (
-        <div className={styles.drag}>
-          <div className="row">
-            {formValues.images.map((image, i) => {
-              const key = `images-${i}`;
-              if (image.uploading) {
-                return (
-                  <div key={key} className="col-sm-3">
-                    <div className={styles.thumb}>
-                      <div
-                        className={`${styles.thumbMain} ${styles.load}`}
-                      >
-                        <i className="fa fa-spinner fa-pulse fa-fw"></i>
-                      </div>
-                      <img src={SizeImage} className={styles.size} alt="" />
-                    </div>
-                  </div>
-                );
-              }
-              return (
-                <div key={key} className="col-sm-3">
-                  <div className={styles.thumb}>
-                    <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbButton}`} data-idx={i}>
-                      <i className="fa fa-times"></i>
-                    </button>
-                    <div className={styles.thumbMain}>
-                      <img className={styles.image} src={image.preview} alt="" />
-                    </div>
-                    <img src={SizeImage} className={styles.size} alt="" />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      );
-    }
-
+    var count = 8 - this.state.files.length;
+    count = (count < 0)? 0 : count;
+    console.log(count);
     return (
       <div>
         <Helmet
@@ -124,30 +87,25 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                 <div className="row">
                   <div className="col-sm-8">
                     <p>*Must upload 8 photos minimum, but more is better!</p>
-                    {/* <Dropzone
+                    <Dropzone
                       onDrop={this.drop}
                       accept="image/*"
                       style={{ width: '100%' }}
-                      >
+                    >
                       <div className={styles.drag}>
-                      <div className={styles.dragText}>
-                      <div>
-                      <h4>Drag & Drop</h4>
-                      <h6>Photos upload</h6>
+                        <div className={styles.dragText}>
+                          <div>
+                            <h4>Drag & Drop</h4>
+                            <h6>Photos upload</h6>
+                          </div>
+                        </div>
                       </div>
-                      </div>
-                      </div>
-                    </Dropzone> */}
-                    <Dropzone onDrop={this.props.handleDrop}>
-                      <div>Drag & Drop</div>
-                      {this.state.files.length > 0 ? <div>
-                        <h2>Uploading {this.state.files.length} files...</h2>
-                        <div>{this.state.files.map((file) => <img src={file.preview} className={styles.imgPreview} /> )}</div>
-                      </div> : null}
-
                     </Dropzone>
+                    {this.state.files.length > 0 ? <div style={{border: '1px solid black', marginTop:'5px', padding: 5, borderRadius: 5}}>
+                      <h2>You are missing {count} photos</h2>
+                      <div>{this.state.files.map((file) => <img src={file.preview} className={styles.imgPreview} /> )}</div>
+                    </div> : null}
 
-                    {imagesBlock}
                     <div className={styles.content}>
                       <h4 className={styles.normalTitle}>Description</h4>
                       <Field

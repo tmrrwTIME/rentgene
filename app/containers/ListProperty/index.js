@@ -27,12 +27,6 @@ const days = ['Day', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
 import styles from './styles.css';
 
 export class ListProperty extends React.Component { // eslint-disable-line react/prefer-stateless-function
-
-  constructor(props){
-    super(props)
-    this.state = {files:[]}
-    this.drop = this.drop.bind(this)
-  }
   componentDidMount(){
     function load(url) {
       return new Promise(function(resolve, reject) {
@@ -55,20 +49,47 @@ export class ListProperty extends React.Component { // eslint-disable-line react
         console.error('Something went wrong!', err);
     })
   }
-  drop(files){
-    var img = this.state.files
-    for (var i = 0; i < files.length; i++) {
-      img.push(files[i])
-    }
-    this.setState({
-      files: img
-    })
-  }
   render() {
     const { handleSubmit, formValues, handleFileRemove, submitted, loading } = this.props;
-    var count = 8 - this.state.files.length;
-    count = (count < 0)? 0 : count;
-    console.log(count);
+    let imagesBlock = '';
+    if (formValues.images && formValues.images.length) {
+      imagesBlock = (
+        <div className={styles.drag}>
+          <div className="row">
+              {formValues.images.map((image, i) => {
+                const key = `images-${i}`;
+                if (image.uploading) {
+                  return (
+                    <div key={key} className="col-sm-3">
+                      <div className={styles.thumb}>
+                        <div
+                          className={`${styles.thumbMain} ${styles.load}`}
+                        >
+                          <i className="fa fa-spinner fa-pulse fa-fw"></i>
+                        </div>
+                        <img src={SizeImage} className={styles.size} alt="" />
+                      </div>
+                    </div>
+                  );
+                }
+                return (
+                  <div key={key} className="col-sm-3">
+                    <div className={styles.thumb}>
+                      <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbButton}`} data-idx={i}>
+                        <i className="fa fa-times"></i>
+                      </button>
+                      <div className={styles.thumbMain}>
+                        <img className={styles.image} src={image.preview} alt="" />
+                      </div>
+                      <img src={SizeImage} className={styles.size} alt="" />
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      );
+    }
     return (
       <div>
         <Helmet
@@ -88,7 +109,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                   <div className="col-sm-8">
                     <p>*Must upload 8 photos minimum, but more is better!</p>
                     <Dropzone
-                      onDrop={this.drop}
+                      onDrop={this.props.handleDrop}
                       accept="image/*"
                       style={{ width: '100%' }}
                     >
@@ -101,10 +122,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         </div>
                       </div>
                     </Dropzone>
-                    {this.state.files.length > 0 ? <div style={{border: '1px solid black', marginTop:'5px', padding: 5, borderRadius: 5}}>
-                      <h2>You are missing {count} photos</h2>
-                      <div>{this.state.files.map((file) => <img src={file.preview} className={styles.imgPreview} /> )}</div>
-                    </div> : null}
+                    {imagesBlock}
 
                     <div className={styles.content}>
                       <h4 className={styles.normalTitle}>Description</h4>
@@ -493,11 +511,6 @@ function mapDispatchToProps(dispatch) {
       dispatch(removeFile(e.currentTarget.dataset.idx));
     },
     handleDrop: (files) => {
-
-      this.setState({
-        files: files
-      })
-      console.log(files);
       if (files.length) {
         dispatch(uploadFile(files));
       }

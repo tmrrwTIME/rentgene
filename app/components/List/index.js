@@ -19,6 +19,7 @@ class List extends React.Component { // eslint-disable-line
     this.onMouseOut = this.onMouseOut.bind(this);
     this.state = {
       hovered: '',
+      animation: 0
     };
   }
 
@@ -31,10 +32,12 @@ class List extends React.Component { // eslint-disable-line
 
   onMouseOver(e) {
     this.setState({ hovered: e.currentTarget.dataset.id });
+    this.setState({animation: 1})
   }
 
   onMouseOut() {
     this.setState({ hovered: '' });
+    this.setState({animation: 0})
   }
 
   handleMarkerClick(marker) {
@@ -136,6 +139,7 @@ class List extends React.Component { // eslint-disable-line
                   <div style={{ height: 500 }}></div>
                 }
                 markers={markers}
+                animation={this.state.animation}
                 handleMarkerClick={this.handleMarkerClick}
               />
             </div>

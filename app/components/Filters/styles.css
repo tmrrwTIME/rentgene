@@ -4,14 +4,13 @@
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
   text-align: center;
 }
 
 .content {
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 0px 8px;
 }
 
 .title {
@@ -49,5 +48,10 @@
 @media screen and (min-width:500px) {
   .showOnlyMobile{
     display: none;
+  }
+}
+@media screen and (max-width:500px) {
+  .filters{
+    flex-wrap: wrap;
   }
 }

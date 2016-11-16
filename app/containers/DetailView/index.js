@@ -60,6 +60,21 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
       this.setState({images:images})
     }
   }
+  onImageLoad(e){
+    var width = e.target.width;
+    var height = e.target.height;
+    if (height < width) {
+      let w = (400/height) * width
+      e.target.width = w
+      e.target.height = 400
+    }
+    if (height > width) {
+      let h = (400/width) * height
+      e.target.height = h
+      e.target.width = 440
+    }
+    console.log('width: ' + e.target.width, 'height: ' + e.target.height);
+  }
   render() {
     //CustomStyles for modal
     const customStyles = {
@@ -130,6 +145,7 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
                   showPlayButton={false}
                   showFullscreenButton={false}
                   onClick={this.expandImage}
+                  onImageLoad={this.onImageLoad}
                 />
                 <h3>Description</h3>
                 <p>

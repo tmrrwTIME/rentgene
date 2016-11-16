@@ -18,6 +18,7 @@ import { uploadFile, removeFile, submitForm } from './actions';
 import SizeImage from 'assets/images/size.png';
 import validate from './validate';
 import { isEmpty } from 'lodash';
+import {actionCreators} from 'redux-form';
 
 const beds = ['', 1, 2, 3, 4, 5, 6, 7];
 const leaseDuration = ['lease', 'Month to Month', '6 months', '1 year'];
@@ -25,9 +26,60 @@ const months = ['Months', 'Jan', 'Feb', 'Mar', 'Apr', 'Aug', 'Sept', 'Oct', 'Nov
 const days = ['Day', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31];
 
 import styles from './styles.css';
+var searchBox // make it global so It can be accessed anywhere...
 
 export class ListProperty extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  componentDidMount(){
+  constructor(props){
+    super(props);
+    this.componentDidMount = this.componentDidMount.bind(this)
+    this.handleFormChange = this.handleFormChange.bind(this)
+  }
+  getAddress (){
+    var data = searchBox.getPlace()
+    console.log(data.adr_address);
+    var adr_address = data.adr_address.split('</span>')
+
+    var objectData = {
+      'postal-code': '',
+      'street-address': '',
+      'country-name' : '',
+      'locality': '',
+      'region': ''
+    }
+
+    var objectAry = Object.keys(objectData)
+
+    for (var i = 0; i != adr_address.length; i++){
+
+      for (var a = 0; a!= objectAry.length; a ++){
+        if (adr_address[i].match(objectAry[a])){
+          objectData[objectAry[a]] = adr_address[i].split('>').pop()
+        }
+      }
+    }
+    console.log(objectData);
+
+    var address = document.getElementById('address')
+    document.getElementById('zipcode').value = objectData['postal-code']
+    var city = document.getElementById('city')
+    var state = document.getElementById('state')
+
+    address.value = objectData['street-address']
+    // zipcode.value = objectData['postal-code']
+    city.value = objectData['locality']
+    state.value = objectData['region']
+
+
+
+
+    console.log(zipcode);
+  }
+  handleFormChange(e){
+    console.log(this.props.values);
+  }
+  componentWillMount(){
+    var this2 = this
+    console.log(this2.props);
     function load(url) {
       return new Promise(function(resolve, reject) {
         var script = document.createElement('script');
@@ -43,7 +95,55 @@ export class ListProperty extends React.Component { // eslint-disable-line react
     load('https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyA1vQdzV7nTSFUe2klAEgwpokdsA9aDpzU')
       .then(function() {
         var input = document.getElementById('search')
-        var searchBox = new google.maps.places.SearchBox(input)
+        searchBox = new google.maps.places.Autocomplete(input)
+        searchBox.addListener('place_changed', ()=>{
+
+
+            var data = searchBox.getPlace()
+            console.log(data.adr_address);
+            var adr_address = data.adr_address.split('</span>')
+
+            var objectData = {
+              'postal-code': '',
+              'street-address': '',
+              'country-name' : '',
+              'locality': '',
+              'region': ''
+            }
+
+            var objectAry = Object.keys(objectData)
+
+            for (var i = 0; i != adr_address.length; i++){
+
+              for (var a = 0; a!= objectAry.length; a ++){
+                if (adr_address[i].match(objectAry[a])){
+                  objectData[objectAry[a]] = adr_address[i].split('>').pop()
+                }
+              }
+            }
+
+
+            var address = document.getElementById('address')
+            var zipcode = document.getElementById('zipcode')
+            var city = document.getElementById('city')
+            var state = document.getElementById('state')
+
+
+            document.getElementById('zipcode').value ='243534534534'
+            console.log(this.fields.zipcode)
+            address.value = objectData['street-address']
+            // zipcode.value = objectData['postal-code']
+            city.value = objectData['locality']
+            state.value = objectData['region']
+
+
+
+
+
+
+
+        })
+
       })
       .catch(function(err) {
         console.error('Something went wrong!', err);
@@ -52,40 +152,41 @@ export class ListProperty extends React.Component { // eslint-disable-line react
   render() {
     const { handleSubmit, formValues, handleFileRemove, submitted, loading } = this.props;
     let imagesBlock = '';
+
     if (formValues.images && formValues.images.length) {
       imagesBlock = (
         <div className={styles.drag}>
           <div className="row">
-              {formValues.images.map((image, i) => {
+            {formValues.images.map((image, i) => {
                 const key = `images-${i}`;
-                if (image.uploading) {
-                  return (
-                    <div key={key} className="col-sm-3">
-                      <div className={styles.thumb}>
-                        <div
-                          className={`${styles.thumbMain} ${styles.load}`}
-                        >
-                          <i className="fa fa-spinner fa-pulse fa-fw"></i>
-                        </div>
-                        <img src={SizeImage} className={styles.size} alt="" />
-                      </div>
-                    </div>
-                  );
-                }
+              if (image.uploading) {
                 return (
                   <div key={key} className="col-sm-3">
                     <div className={styles.thumb}>
-                      <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbButton}`} data-idx={i}>
-                        <i className="fa fa-times"></i>
-                      </button>
-                      <div className={styles.thumbMain}>
-                        <img className={styles.image} src={image.preview} alt="" />
+                      <div
+                        className={`${styles.thumbMain} ${styles.load}`}
+                      >
+                        <i className="fa fa-spinner fa-pulse fa-fw"></i>
                       </div>
                       <img src={SizeImage} className={styles.size} alt="" />
                     </div>
                   </div>
                 );
-              })}
+              }
+              return (
+                <div key={key} className="col-sm-3">
+                  <div className={styles.thumb}>
+                    <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbButton}`} data-idx={i}>
+                      <i className="fa fa-times"></i>
+                    </button>
+                    <div className={styles.thumbMain}>
+                      <img className={styles.image} src={image.preview} alt="" />
+                    </div>
+                    <img src={SizeImage} className={styles.size} alt="" />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       );
@@ -100,7 +201,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
         />
         <div className="row">
           {submitted ? <ThankView /> : <div className="col-md-8 col-md-offset-2">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} onChange={this.handleFormChange}>
               <div>
                 <p className="text-center">Fill out everything for your listing 100% accurate! Everything must be filled out for you to submit your listing</p>
                 <br />
@@ -294,11 +395,42 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                       />
                       <Field
                         component='input'
-                        type="text" id='search'
+                        type="text"
+                        id='search'
                         placeholder='Address'
                         className={`${styles.searchBox} form-control input-sm`}
-                        name="address"
                       />
+                      <Field
+                        component={Input}
+                        type="text"
+                        className="form-control input-sm"
+                        name='address'
+                        id='address'
+                      />
+                      <Field
+                        component={Input}
+                        type="text"
+                        className="form-control input-sm"
+                        name='city'
+                        id='city'
+                      />
+                      <Field
+                        component={Input}
+                        type="text"
+                        className="form-control input-sm"
+                        name='state'
+                        id='state'
+                      />
+                      <Field
+                        component={Input}
+                        type="number"
+                        className="form-control input-sm"
+                        id='zipcode'
+                        name='zipcode'
+
+                      />
+
+
                       <div className="row">
                         <div className="col-sm-6">
                           <Field
@@ -496,16 +628,15 @@ const mapStateToProps = selectListProperty();
 function mapDispatchToProps(dispatch) {
   return {
     onSubmit: (values) => {
-      const errors = validate(values);
-      if (!isEmpty(errors)) {
-        if (errors.images) {
-          alert(errors.images); // eslint-disable-line
-        }
+      // if (!isEmpty(errors)) {
+      //   if (errors.images) {
+      //     alert(errors.images); // eslint-disable-line
+      //   }
         dispatch(stopSubmit('ListApartmentForm', errors));
         throw new SubmissionError(errors);
-      } else {
+      // } else {
         dispatch(submitForm(values.toJS()));
-      }
+      // }
     },
     handleFileRemove: (e) => {
       dispatch(removeFile(e.currentTarget.dataset.idx));

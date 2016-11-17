@@ -11,6 +11,9 @@ import Map from 'components/Map';
 import Stickyfill from 'stickyfill';
 import jump from 'jump.js';
 import styles from './styles.css';
+import Gallery from 'components/Gallery'
+
+
 
 class List extends React.Component { // eslint-disable-line
   constructor(props) {
@@ -19,25 +22,30 @@ class List extends React.Component { // eslint-disable-line
     this.onMouseOut = this.onMouseOut.bind(this);
     this.state = {
       hovered: '',
-      animation: 0
+      animation: 0,
+      images: []
     };
   }
-
   componentDidMount() {
     const stickyfill = Stickyfill(); // eslint-disable-line
     stickyfill.add(document.getElementById('stickyContainer'));
     window.stickyfill = stickyfill;
     this.refs.map.style.height = `1000px`; // eslint-disable-line
+    var images = new Array()
+    this.props.entries.map((item)=>{
+      images.push(item.images)
+    })
+    this.setState({images: images})
   }
 
   onMouseOver(e) {
     this.setState({ hovered: e.currentTarget.dataset.id });
-    this.setState({animation: 1})
+    this.setState({animation: e.currentTarget.dataset.id})
   }
 
   onMouseOut() {
     this.setState({ hovered: '' });
-    this.setState({animation: 0})
+    this.setState({animation:''})
   }
 
   handleMarkerClick(marker) {
@@ -49,8 +57,8 @@ class List extends React.Component { // eslint-disable-line
     el.style.backgroundColor = 'rgba(3, 169, 244, 0.18)';
     jump(`#entry-${marker.key}`);
   }
-
   render() {
+    var animation
     const { entries } = this.props;
     const markers = [];
     entries.forEach(entry => {
@@ -95,6 +103,11 @@ class List extends React.Component { // eslint-disable-line
                   hoverStyle.backgroundColor = '';
                 }
 
+                if (this.state.animation === entry.entryId) {
+                  animation = 1
+                }else {
+                  animation = 0
+                }
                 return (
                   <div
                     id={`entry-${entry.entryId}`}
@@ -107,10 +120,14 @@ class List extends React.Component { // eslint-disable-line
                   >
                     <div className={styles.ads}>
                       <div className={styles.thumb}>
-                        <Link className={styles.thumbMain} to={`/v/${entry.entryId}`}>
+                        {/* <Link className={styles.thumbMain} to={`/v/${entry.entryId}`}>
                           <img className={styles.image} src={`https://s3-us-west-2.amazonaws.com/rentgene-uploads/images/${image}`} alt="" />
-                        </Link>
-                        <img src={SizeImage} className={styles.size} alt="" />
+                          </Link>
+                        <img src={SizeImage} className={styles.size} alt="" /> */}
+                        <Gallery
+                          key={i}
+                          images={this.state.images[i]}
+                        />
                       </div>
                       <Link className={styles.title} to={`/v/${entry.entryId}`}>
                         <span>{address}</span>
@@ -139,8 +156,11 @@ class List extends React.Component { // eslint-disable-line
                   <div style={{ height: 500 }}></div>
                 }
                 markers={markers}
-                animation={this.state.animation}
+                animation={animation}
                 handleMarkerClick={this.handleMarkerClick}
+              />
+              <Gallery
+                images={this.state.images[0]}
               />
             </div>
           </div>

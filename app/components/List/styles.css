@@ -79,3 +79,15 @@
     content: '';
     display: table;
 }
+
+@media screen and (max-width: 414px) {
+  .sticky{
+    display: none;
+  }
+  .item{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+}

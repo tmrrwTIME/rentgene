@@ -54,4 +54,27 @@
   .filters{
     flex-wrap: wrap;
   }
+  .contract{
+    animation-name: contract;
+    animation-duration: 0.8s;
+    height: 0px;
+    overflow: hidden;
+  }
+
+  .expand{
+    animation-name: expand;
+    animation-duration: 0.8s;
+    height: 320px;
+    overflow: hidden;
+  }
+}
+
+@keyframes expand {
+  from{height: 0px}
+  to{height: 320px;}
+}
+
+@keyframes contract {
+  from{height: 320px;}
+  to{height: 0px;}
 }

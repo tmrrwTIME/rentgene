@@ -219,7 +219,6 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           <div className={styles.title} style={{ float: 'left' }}>Email</div>
                           <Field
                             type="text"
-                            required
                             name="contactEmail"
                             className="form-control input-sm"
                             component={Input}

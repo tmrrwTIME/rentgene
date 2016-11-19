@@ -13,8 +13,9 @@ class Gallery extends Component{
     super(props)
     this.state = {
       images:[],
-      index: 1,
-      display:'none'
+      slideIndex: 1,
+      display:'none',
+      slides:''
     }
     this.onMouseOver = this.onMouseOver.bind(this)
     this.onMouseOut = this.onMouseOut.bind(this)
@@ -22,41 +23,58 @@ class Gallery extends Component{
     this.plusDivs = this.plusDivs.bind(this)
   }
   renderItems(){
+    var id = this.props.id
     var images = this.state.images
     return(
       images.map((item, i)=>{
         return(
-          <img key={i} className="slides" src={`https://s3-us-west-2.amazonaws.com/rentgene-uploads/images/${item.name}`} alt="" />
+          <img key={i} style={{width:"100%", height:'100%'}} className={`${id}-slides`} src={`https://s3-us-west-2.amazonaws.com/rentgene-uploads/images/${item.name}`} alt="" />
         )
       })
     )
   }
   componentWillReceiveProps(nextProps){
     this.setState({images: nextProps.images})
-    this.showDivs(this.state.index)
+    let slides = document.getElementsByClassName(`${this.props.id}-slides`)
+    this.setState({slides: slides})
+    this.showDivs(this.state.slideIndex)
   }
   showDivs(index){
-    var index = this.state.index
-    var slides = document.getElementsByClassName('slides')
-    if (index > slides.length) {
-      this.setState({index: 1})
+    var width, height;
+    var slideIndex = this.state.slideIndex
+    var slides = this.state.slides
+    if (this.state.slides) {
+      if (index > slides.length-1) {
+        console.log('se cumple');
+        this.setState({slideIndex: 0})
+      }
+      if (index < 1) {
+        slideIndex = slides.length
+      }
+      for (var i = 0; i < slides.length; i++) {
+        slides[i].style.display = 'none'
+      }
+      slides[slideIndex-1].style.display = 'block'
     }
-    if (index < 1) {
-      this.setState({index:slides.length})
-    }
-    for (var i = 0; i < slides.length; i++) {
-      slides[i].style.display = 'none'
-    }
-    slides[(index - 1)].style.display = 'block'
   }
   plusDivs(index){
-    this.showDivs(this.state.index += index)
+    var i = (index === -1)? 1:index
+    this.showDivs(this.state.slideIndex += i)
   }
   onMouseOver(){
-    this.setState({display:'inline'})
+    if (screen.width > 414) {
+      this.setState({display:'inline'})
+    }
   }
   onMouseOut(){
-    this.setState({display: 'none'})
+    if (screen.width > 414) {
+      this.setState({display: 'none'})
+    }
+  }
+  componentDidMount(){
+    if (screen.width < 414) {
+      this.setState({display:'inline'})
+    }
   }
   render(){
     return(
@@ -64,8 +82,8 @@ class Gallery extends Component{
         <div className={styles.slider}>
           {this.renderItems()}
         </div>
-        <a onClick={()=>this.plusDivs(-1)} style={{display:this.state.display}} className={styles.left} id='left'>&#10094;</a>
-        <a onClick={()=>this.plusDivs(1)} style={{display:this.state.display}} className={styles.right} id='right'>&#10095;</a>
+        <span onClick={()=>this.plusDivs(-1)} style={{display:this.state.display}} className={styles.left} id='left'>&#10094;</span>
+        <span onClick={()=>this.plusDivs(1)} style={{display:this.state.display}} className={styles.right} id='right'>&#10095;</span>
       </div>
     )
   }

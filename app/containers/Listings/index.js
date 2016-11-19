@@ -33,7 +33,7 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
       listType: this.props.routeParams.type,
       sortBy: 'newest',
       filters: {},
-      animation:'fadeOut'
+      animation:'contract'
     };
   }
 
@@ -104,11 +104,13 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
     });
   }
   toggleFilters(animate){
-    if (animate === 'fadeOut') {
-      this.setState({animation:'fadeIn'})
+    if (animate === 'contract') {
+      console.log('se cumple');
+      this.setState({animation:'expand'})
     }else{
-      this.setState({animation:'fadeOut'})
+      this.setState({animation:'contract'})
     }
+    console.log(animate);
   }
   render() {
     const { loading, entries } = this.props;

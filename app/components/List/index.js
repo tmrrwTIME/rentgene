@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-import SizeImage from 'assets/images/size.png';
+// import SizeImage from 'assets/images/size.png';
 import Map from 'components/Map';
 import Stickyfill from 'stickyfill';
 import jump from 'jump.js';
@@ -39,13 +39,17 @@ class List extends React.Component { // eslint-disable-line
   }
 
   onMouseOver(e) {
-    this.setState({ hovered: e.currentTarget.dataset.id });
-    this.setState({animation: e.currentTarget.dataset.id})
+    if (screen.width > 414) {
+      this.setState({ hovered: e.currentTarget.dataset.id });
+      this.setState({animation: e.currentTarget.dataset.id})
+    }
   }
 
   onMouseOut() {
-    this.setState({ hovered: '' });
-    this.setState({animation:''})
+    if (screen.width > 414) {
+      this.setState({ hovered: '' });
+      this.setState({animation:''})
+    }
   }
 
   handleMarkerClick(marker) {
@@ -80,10 +84,10 @@ class List extends React.Component { // eslint-disable-line
             <div className={styles.list} ref="list">
               {entries ? entries.map((entry, i) => {
                 const key = `entry-${i}`;
-                let image;
-                if (entry.images && entry.images.length) {
-                  image = entry.images[0].name;
-                }
+                // let image;
+                // if (entry.images && entry.images.length) {
+                //   image = entry.images[0].name;
+                // }
                 const price = parseInt(entry.price, 10).toLocaleString();
                 let address = '';
                 let leftTitle = `${entry.beds} beds, ${entry.baths} baths`;
@@ -112,7 +116,7 @@ class List extends React.Component { // eslint-disable-line
                   <div
                     id={`entry-${entry.entryId}`}
                     key={key}
-                    className={`list-item col-sm-6 ${styles.item}`}
+                    className={`list-item col-xs-12 col-sm-6 ${styles.item}`}
                     onMouseOver={this.onMouseOver}
                     onMouseOut={this.onMouseOut}
                     data-id={entry.entryId}
@@ -125,7 +129,7 @@ class List extends React.Component { // eslint-disable-line
                           </Link>
                         <img src={SizeImage} className={styles.size} alt="" /> */}
                         <Gallery
-                          key={i}
+                          id={`gallery${i}`}
                           images={this.state.images[i]}
                         />
                       </div>
@@ -158,9 +162,6 @@ class List extends React.Component { // eslint-disable-line
                 markers={markers}
                 animation={animation}
                 handleMarkerClick={this.handleMarkerClick}
-              />
-              <Gallery
-                images={this.state.images[0]}
               />
             </div>
           </div>

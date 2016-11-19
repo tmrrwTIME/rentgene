@@ -103,14 +103,12 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
       this.props.loadEntries(this.state);
     });
   }
-  toggleFilters(animate){
+  toggleFilters(animate, rotate){
     if (animate === 'contract') {
-      console.log('se cumple');
       this.setState({animation:'expand'})
     }else{
       this.setState({animation:'contract'})
     }
-    console.log(animate);
   }
   render() {
     const { loading, entries } = this.props;

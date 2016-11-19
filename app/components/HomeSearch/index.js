@@ -110,7 +110,7 @@ export class HomeSearch extends Component { // eslint-disable-line react/prefer-
     const anyClassCity = this.state.anyCity ? styles.activeAnyLink : '';
     return (
       <div className={styles.homeSearch}>
-        <div className="row" className={styles.showOnlyDesktop}>
+        <div className="row">
           <div className="col-md-10 col-md-offset-1">
             <div className={`row ${styles.main}`}>
               <div className="col-xs-12 col-sm-3 col-md-3">
@@ -232,128 +232,6 @@ export class HomeSearch extends Component { // eslint-disable-line react/prefer-
               </div>
             </div>
           </div>
-        </div>
-        <div className={styles.showOnlyMobile}>
-          <div className="col-xs-12 col-sm-3 col-md-3">
-            <div className={styles.searchContent} style={{borderBottom: 'solid 2px rgba(0, 0, 0, 0.2)'}}>
-              <h4 className={styles.title}>City</h4>
-              <p>
-                <button onClick={this.updateAny} data-any="city" className={`${styles.anyLink} ${anyClassCity}`}>
-                  Los Angeles
-                </button>
-              </p>
-              <br />
-              <p style={{ fontSize: 11 }}>*Launching first in <br /> Los Angeles</p>
-            </div>
-          </div>
-          <Accordion title='Rooms'>
-            <div className="col-xs-12 col-sm-3 col-md-3">
-              <div className={styles.searchContent}>
-                <p>
-                  <button onClick={this.updateAny} data-any="rooms" className={`${styles.anyLink} ${anyClassRooms}`}><b>Any</b></button>
-                </p>
-                <br />
-                <p>or</p>
-                <form id="formRooms">
-                  <div className={styles.select} style={{ marginTop: 40 }}>
-                    {/* <h6 style={{ marginBottom: 0, marginTop: 26 }}>Max</h6> */}
-                    <select
-                      id="roomPriceSelect"
-                      data-id="roomSelect"
-                      onChange={this.updateButton}
-                      name="priceMax"
-                      className={`form-control input-sm ${styles.formControl}`}
-                    >
-                      <option>Max Price</option>
-                      {roomPrices.map((price, i) => {
-                        const key = `price-room-${i}`;
-                          return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
-                      })}
-                    </select>
-                  </div>
-                </form>
-                <Link className={`btn btn-block ${styles.link}`} to={this.state.routeRooms}>search</Link>
-              </div>
-            </div>
-          </Accordion>
-          <Accordion title='Apartments'>
-            <div className="col-xs-12 col-sm-3 col-md-3">
-              <div className={styles.searchContent}>
-                <p>
-                  <button onClick={this.updateAny} data-any="apartments" className={`${styles.anyLink} ${anyClassApartments}`}><b>Any</b></button>
-                </p>
-                <br />
-                <p>or</p>
-
-                <hr />
-                <form id="formApartments">
-                  <div className={styles.select} style={{ marginBottom: 25 }}>
-                    <select
-                      id="apartmentBedsSelect"
-                      onChange={this.updateButton}
-                      className={`form-control input-sm ${styles.formControl}`}
-                      data-id="apartmentSelect"
-                      name="beds"
-                      style={{ width: 78 }}
-                    >
-                      <option>Beds</option>
-                      <option value="studio">Studio</option>
-                      {beds.map((bed, i) => {
-                        const key = `bed-apartment-${i}`;
-                          return <option key={key} value={bed}>{bed}+</option>;
-                      })}
-                    </select>
-                  </div>
-                  <div className={styles.select}>
-                    {/* <h6 style={{ marginBottom: 0, marginTop: 20 }}>Max</h6> */}
-                    <select id="apartmentPriceSelect" onChange={this.updateButton} name="priceMax" className={`form-control input-sm ${styles.formControl}`} data-id="apartmentSelect">
-                      <option value="">Max Price</option>
-                      {prices.map((price, i) => {
-                        const key = `price-apartment-${i}`;
-                          return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
-                      })}
-                    </select>
-                  </div>
-                </form>
-                <Link className={`btn btn-block ${styles.link}`} to={this.state.routeApartments}>search</Link>
-              </div>
-            </div>
-          </Accordion>
-          <Accordion title='Houses'>
-            <div className="col-xs-12 col-sm-3 col-md-3">
-              <div className={styles.searchContent}>
-                <p>
-                  <button onClick={this.updateAny} data-any="houses" className={`${styles.anyLink} ${anyClassHouses}`}><b>Any</b></button>
-                </p>
-                <br />
-                <p>or</p>
-
-                <hr />
-                <form id="formHouses">
-                  <div className={styles.select} style={{ marginBottom: 25 }}>
-                    <select style={{ width: 78 }} id="housesBedsSelect" onChange={this.updateButton} name="beds" className={`form-control input-sm ${styles.formControl}`} data-id="housesSelect">
-                      <option value="">Beds</option>
-                      {beds.map((bed, i) => {
-                        const key = `bed-houses-${i}`;
-                          return <option key={key} value={bed}>{bed}+</option>;
-                      })}
-                    </select>
-                  </div>
-                  <div className={styles.select}>
-                    {/* <h6 style={{ marginBottom: 0, marginTop: 20 }}>Max</h6> */}
-                    <select id="housesPriceSelect" onChange={this.updateButton} name="priceMax" className={`form-control input-sm ${styles.formControl}`} data-id="housesSelect">
-                      <option value="">Max Price</option>
-                      {prices.map((price, i) => {
-                        const key = `price-houses-${i}`;
-                          return <option key={key} value={price}>{`$${price.toLocaleString()}`}</option>;
-                      })}
-                    </select>
-                  </div>
-                </form>
-                <Link className={`btn btn-block ${styles.link}`} to={this.state.routeHouses}>search</Link>
-              </div>
-            </div>
-          </Accordion>
         </div>
       </div>
     );

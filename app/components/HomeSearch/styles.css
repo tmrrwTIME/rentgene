@@ -94,24 +94,6 @@
     border-left: none;
     border-right: none;
     margin: 30px;
-  }
-  .showOnlyMobile{
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    align-items: center;
-    margin: 50px 0px;
-  }
-  .showOnlyDesktop{
-    display: none;
-  }
-}
-
-@media screen and (min-width:768px) {
-  .showOnlyDesktop{
-    display: flex;
-  }
-  .showOnlyMobile{
-    display: none;
+    border-top:solid 2px rgba(0, 0, 0, 0.2); 
   }
 }

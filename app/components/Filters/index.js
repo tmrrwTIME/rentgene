@@ -16,16 +16,21 @@ function Filters(props) {
   const { handleChange, listType, toggleFilters, animations } = props;
   var animation
   var animate
+  var rotate
   if (animations === 'contract' && screen.width <= 414) {
     animation = styles.contract
     animate = 'contract'
+    rotate = styles.rotateDown
   }else {
     animation = styles.expand
     animate = 'expand'
+    rotate = styles.rotateUp
   }
   return (
     <div>
-      <h2 className={styles.showOnlyMobile} onClick={()=>toggleFilters(animate)}>Filters</h2>
+      <div className={`${styles.showOnlyMobile} ${styles.dropdown}`} onClick={()=>toggleFilters(animate)}>
+        <h2>Filters <i style={{fontSize:24}} className={`fa fa-arrow-down ${rotate}`} aria-hidden="true"></i></h2>
+      </div>
       <form className={animation} id="filters" method="POST">
         <div className={styles.filters}>
           <div className={styles.content}>

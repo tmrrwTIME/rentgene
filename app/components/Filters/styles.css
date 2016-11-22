@@ -64,7 +64,7 @@
   .expand{
     animation-name: expand;
     animation-duration: 0.8s;
-    height: 450px;
+    height: 300px;
     overflow: hidden;
   }
 }
@@ -90,11 +90,11 @@
 
 @keyframes expand {
   from{height: 0px}
-  to{height: 450px;}
+  to{height: 300px;}
 }
 
 @keyframes contract {
-  from{height: 450px;}
+  from{height: 300px;}
   to{height: 0px;}
 }
 

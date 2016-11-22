@@ -8,7 +8,6 @@ import React from 'react';
 
 
 import styles from './styles.css';
-import animate from '../../assets/css/animate.css'
 const beds = ['1+', '2+', '3+', '4+', '5+', '6+', '7+'];
 const prices = [400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 6000, 7000];
 
@@ -104,7 +103,7 @@ function Filters(props) {
               </select>
             </div>
           : ''}
-          <div className={`${animate.animated} ${animation} ${styles.filters}`}>
+          <div className={`${styles.filters}`}>
             <div className={styles.content}>
               <div className={styles.title}>Pets</div>
               <div className="checkbox">

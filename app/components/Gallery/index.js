@@ -5,6 +5,7 @@
 */
 
 import React,{Component} from 'react';
+import { Link } from 'react-router';
 
 import styles from './styles.css';
 
@@ -28,7 +29,9 @@ class Gallery extends Component{
     return(
       images.map((item, i)=>{
         return(
-          <img key={i} style={{width:"100%", height:'100%'}} className={`${id}-slides`} src={`https://s3-us-west-2.amazonaws.com/rentgene-uploads/images/${item.name}`} alt="" />
+          <Link to={this.props.to}>
+            <img key={i} style={{width:"100%", height:'100%'}} className={`${id}-slides`} src={`https://s3-us-west-2.amazonaws.com/rentgene-uploads/images/${item.name}`} alt="" />
+          </Link>
         )
       })
     )

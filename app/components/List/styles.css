@@ -84,6 +84,9 @@
   .sticky{
     display: none;
   }
+  .mapContainer{
+    display: none;
+  }
   .item{
     flex-direction: column;
     justify-content: center;

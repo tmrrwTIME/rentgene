@@ -141,6 +141,7 @@ class List extends React.Component { // eslint-disable-line
                         <Gallery
                           id={`gallery${i}`}
                           images={this.state.images[i]}
+                          to={`/v/${entry.entryId}`}
                         />
                       </div>
                       <Link className={styles.title} to={`/v/${entry.entryId}`}>
@@ -160,7 +161,7 @@ class List extends React.Component { // eslint-disable-line
               }) : ''}
             </div>
           </div>
-          <div className="col-sm-6" ref="map">
+          <div className={`col-sm-6 ${styles.mapContainer}`} ref="map">
             <div id="stickyContainer" className={styles.sticky}>
               <Map
                 containerElement={

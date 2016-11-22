@@ -66,7 +66,8 @@ export class Feedback extends React.Component { // eslint-disable-line react/pre
             <p>
               Anonomyous Feedback! We really need you!
             </p>
-            {!this.state.isOk ? <form onSubmit={this.submit} action="http://sendMail-dev.us-west-2.elasticbeanstalk.com/sendMail" method="POST">
+            {/* {!this.state.isOk ? <form onSubmit={this.submit} action="http://sendMail-dev.us-west-2.elasticbeanstalk.com/sendMail" method="POST"> */}
+            {!submitted ? <form method='POST'>
               <textarea
                 id="feedback"
                 name="feedback"
@@ -76,7 +77,9 @@ export class Feedback extends React.Component { // eslint-disable-line react/pre
                 ref='message'
                 required
               ></textarea>
-              <button className={`btn btn-xs ${styles.button}`}>
+              <button className={`btn btn-xs ${styles.button}`}
+                onClick={submitFeedback}
+              >
                 Submit
               </button>
             </form> : <h1>Thanks</h1>}

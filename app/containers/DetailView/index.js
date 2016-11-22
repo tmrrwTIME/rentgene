@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import selectDetailView from './selectors';
@@ -25,7 +25,7 @@ import { loadEntry } from './actions';
 import Map from 'components/Map';
 import { Link } from 'react-router';
 
-export class DetailView extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export class DetailView extends Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props){
     super(props)
     this.state = {
@@ -237,7 +237,7 @@ export class DetailView extends React.Component { // eslint-disable-line react/p
                     </div>
                     </div>
                   </a>
-                  <Link style={{color: 'red', fontWeight:'bold'}} to={'/feedback'}>Problem?</Link>
+                  {/* <Link style={{color: 'red', fontWeight:'bold'}} to={'/feedback'}>Problem?</Link> */}
                 </div>
                 <div className={styles.date}>
                   Available - {entry.months} {entry.day}

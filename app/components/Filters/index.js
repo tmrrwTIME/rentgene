@@ -157,8 +157,6 @@ function Filters(props) {
               <button type="button" onClick={props.handleRefine} className={`btn ${styles.button}`}>Refine</button>
             </div>
           </div>
-          {/* Show Only mobile */}
-
         </div>
       </form>
     </div>

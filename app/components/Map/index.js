@@ -29,7 +29,7 @@ const Map = withGoogleMap((props) => (
         key={`marker-${index}`}
         {...marker}
         onClick={() => props.handleMarkerClick(marker)}
-        animation={props.animation}
+        // animation={props.animation}
       />
     )) : ''}
   </GoogleMap>

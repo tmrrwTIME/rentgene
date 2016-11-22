@@ -22,8 +22,8 @@ class List extends React.Component { // eslint-disable-line
     this.onMouseOut = this.onMouseOut.bind(this);
     this.state = {
       hovered: '',
-      animation: 0,
-      images: []
+      images: [],
+      markers: []
     };
   }
   componentDidMount() {
@@ -36,19 +36,46 @@ class List extends React.Component { // eslint-disable-line
       images.push(item.images)
     })
     this.setState({images: images})
+    const markers = [];
+    this.props.entries.forEach(entry => {
+      if (entry.lat && entry.lng) {
+        markers.push({
+          position: {
+            lat: entry.lat,
+            lng: entry.lng,
+          },
+          key: entry.entryId,
+          defaultAnimation: 2,
+        });
+      }
+    });
+    this.setState({markers: markers})
   }
 
-  onMouseOver(e) {
+  onMouseOver(e, markers) {
+    console.log(markers);
+    for (var i = 0; i < markers.length; i++) {
+      if (markers[i].key === e.currentTarget.dataset.id) {
+        console.log("marka: " + markers[i].defaultAnimation);
+        markers[i].animation = google.maps.Animation.BOUNCE
+        this.setState({markers: markers})
+      }
+    }
     if (screen.width > 414) {
       this.setState({ hovered: e.currentTarget.dataset.id });
-      this.setState({animation: e.currentTarget.dataset.id})
     }
   }
 
-  onMouseOut() {
+  onMouseOut(e, markers) {
+    for (var i = 0; i < markers.length; i++) {
+      if (markers[i].key === e.currentTarget.dataset.id) {
+        console.log("marka: " + markers[i].defaultAnimation);
+        markers[i].animation = null
+        this.setState({markers: markers})
+      }
+    }
     if (screen.width > 414) {
       this.setState({ hovered: '' });
-      this.setState({animation:''})
     }
   }
 
@@ -62,21 +89,10 @@ class List extends React.Component { // eslint-disable-line
     jump(`#entry-${marker.key}`);
   }
   render() {
+    console.log('render');
     var animation
     const { entries } = this.props;
-    const markers = [];
-    entries.forEach(entry => {
-      if (entry.lat && entry.lng) {
-        markers.push({
-          position: {
-            lat: entry.lat,
-            lng: entry.lng,
-          },
-          key: entry.entryId,
-          defaultAnimation: 2,
-        });
-      }
-    });
+    var marks = this.state.markers
     return (
       <div>
         <div className="row">
@@ -106,19 +122,13 @@ class List extends React.Component { // eslint-disable-line
                 } else {
                   hoverStyle.backgroundColor = '';
                 }
-
-                if (this.state.animation === entry.entryId) {
-                  animation = 1
-                }else {
-                  animation = 0
-                }
                 return (
                   <div
                     id={`entry-${entry.entryId}`}
                     key={key}
                     className={`list-item col-xs-12 col-sm-6 ${styles.item}`}
-                    onMouseOver={this.onMouseOver}
-                    onMouseOut={this.onMouseOut}
+                    onMouseOver={(e)=>this.onMouseOver(e, marks)}
+                    onMouseOut={(e)=>this.onMouseOut(e, marks)}
                     data-id={entry.entryId}
                     style={hoverStyle}
                   >
@@ -159,8 +169,7 @@ class List extends React.Component { // eslint-disable-line
                 mapElement={
                   <div style={{ height: 500 }}></div>
                 }
-                markers={markers}
-                animation={animation}
+                markers={marks}
                 handleMarkerClick={this.handleMarkerClick}
               />
             </div>

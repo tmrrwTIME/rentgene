@@ -53,10 +53,8 @@ class List extends React.Component { // eslint-disable-line
   }
 
   onMouseOver(e, markers) {
-    console.log(markers);
     for (var i = 0; i < markers.length; i++) {
       if (markers[i].key === e.currentTarget.dataset.id) {
-        console.log("marka: " + markers[i].defaultAnimation);
         markers[i].animation = google.maps.Animation.BOUNCE
         this.setState({markers: markers})
       }
@@ -69,7 +67,6 @@ class List extends React.Component { // eslint-disable-line
   onMouseOut(e, markers) {
     for (var i = 0; i < markers.length; i++) {
       if (markers[i].key === e.currentTarget.dataset.id) {
-        console.log("marka: " + markers[i].defaultAnimation);
         markers[i].animation = null
         this.setState({markers: markers})
       }
@@ -89,7 +86,6 @@ class List extends React.Component { // eslint-disable-line
     jump(`#entry-${marker.key}`);
   }
   render() {
-    console.log('render');
     var animation
     const { entries } = this.props;
     var marks = this.state.markers

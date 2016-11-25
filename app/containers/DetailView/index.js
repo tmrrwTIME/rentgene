@@ -24,27 +24,31 @@ import { goBack } from 'react-router-redux';
 import { loadEntry } from './actions';
 import Map from 'components/Map';
 import { Link } from 'react-router';
+import GalleryModal from 'components/GalleryModal'
 
 export class DetailView extends Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props){
     super(props)
     this.state = {
       modalIsOpen: false,
-      currentImage: "",
+      currentIndex: "",
       images: [],
-      height: '',
+      imagesModal: [],
+      height: ''
     }
     this.expandImage = this.expandImage.bind(this)
     this.closeModal = this.closeModal.bind(this)
+    this.onSlide = this.onSlide.bind(this)
+    this.onImageLoad = this.onImageLoad.bind(this)
   }
   componentDidMount() {
     this.props.fetchEntry(this.props.routeParams.slug);
   }
   expandImage(e){
-    console.log(e.target.width);
-    this.setState({currentImage: e.target.src})
     this.setState({modalIsOpen: true})
-    this.setState({height: e.target.height})
+    if (screen.width > 768) {
+      this.setState({height: e.target.height*2})
+    }
   }
   closeModal(){
     this.setState({modalIsOpen:false})
@@ -58,25 +62,34 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
     }
     if (images.length != undefined) {
       this.setState({images:images})
+      this.setState({imagesModal: images})
     }
+  }
+  onSlide(index){
+    this.setState({currentIndex: index})
   }
   onImageLoad(e){
     var width = e.target.width;
     var height = e.target.height;
-    if (height < width) {
-      let w = (400/height) * width
-      e.target.width = w
-      e.target.height = 400
+    this.setState({imgWidth:width, imgHeight:height})
+    if (screen.width > 768) {
+      if (height < width) {
+        let w = (400/height) * width
+        e.target.width = w
+        e.target.height = 400
+      }
+      if (height > width) {
+        let h = (400/width) * height
+        e.target.height = h
+        e.target.width = 440
+      }
     }
-    if (height > width) {
-      let h = (400/width) * height
-      e.target.height = h
-      e.target.width = 440
-    }
-    console.log('width: ' + e.target.width, 'height: ' + e.target.height);
+    // console.log('width: ' + e.target.width, 'height: ' + e.target.height);
   }
   render() {
     //CustomStyles for modal
+    var height = (screen.width > 768)? this.state.height: '';
+    var width = (screen.width > 768)? '800px': '';
     const customStyles = {
       overlay : {
         position          : 'fixed',
@@ -100,8 +113,8 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
         borderRadius               : '4px',
         outline                    : 'none',
         padding                    : '20px',
-        width                      : '800px',
-        height                     : this.state.height*2
+        width                      :  width,
+        height                     :  height
       }
     }
     // console.log(this.props)
@@ -146,6 +159,7 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
                   showFullscreenButton={false}
                   onClick={this.expandImage}
                   onImageLoad={this.onImageLoad}
+                  onSlide={this.onSlide}
                 />
                 <h3>Description</h3>
                 <p>
@@ -266,7 +280,11 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
         </div>
         <Modal isOpen={this.state.modalIsOpen} style={customStyles}>
           <button onClick={this.closeModal}>close</button><br/>
-          <img className={styles.modalImg} src={this.state.currentImage} alt="" />
+          <GalleryModal
+            images={this.state.imagesModal}
+            startIndex={this.state.currentIndex == "" ? 0:this.state.currentIndex}
+          />
+          {/* <img className={styles.modalImg} src={this.state.currentImage} alt="" /> */}
         </Modal>
       </div>
     );

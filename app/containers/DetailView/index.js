@@ -69,19 +69,36 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
     this.setState({currentIndex: index})
   }
   onImageLoad(e){
+
     var width = e.target.width;
     var height = e.target.height;
-    this.setState({imgWidth:width, imgHeight:height})
+
+    // let containerW = e.currentTarget.width
+    // let containerH = e.currentTarget.height
+    //
+    // console.log(document.getElementsByClassName('image-gallery-slides')[0]);
+    //
+    // let proporcion = (height > width) ? true : false //vertical \ horizontal
+    //
+    // if (proporcion){
+    //   console.log('vertical ', e.target.height)
+    //   console.log('container', containerH)
+    //
+    //   var factor = containerH/e.target.height
+    //   e.target.height = containerH
+    //   e.target.width *= factor
+    //
+    // }else{
+    //   e.target.width = containerW/e.target.width
+    //
+    // }
     if (screen.width > 768) {
-      if (height < width) {
-        let w = (400/height) * width
-        e.target.width = w
-        e.target.height = 400
-      }
       if (height > width) {
-        let h = (400/width) * height
-        e.target.height = h
+        console.log('vertical');
+        e.target.height = 400
+      }else {
         e.target.width = 440
+        console.log('horizontal');
       }
     }
     // console.log('width: ' + e.target.width, 'height: ' + e.target.height);

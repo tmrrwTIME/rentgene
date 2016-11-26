@@ -89,6 +89,8 @@ export class HomeSearch extends Component { // eslint-disable-line react/prefer-
       default:
         this.setState({
           anyHouses: !this.state.anyHouses,
+          anyApartments:false,
+          anyRooms:false,
         }, () => {
           this.setState({
             routeHouses: this.state.anyHouses ? '/listings/houses' : this.state.routeHouses,

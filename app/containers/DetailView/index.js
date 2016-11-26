@@ -45,9 +45,11 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
     this.props.fetchEntry(this.props.routeParams.slug);
   }
   expandImage(e){
-    this.setState({modalIsOpen: true})
-    if (screen.width > 768) {
-      this.setState({height: e.target.height*2})
+    if (screen.width > 1024) {
+      this.setState({modalIsOpen: true})
+      if (screen.width > 768) {
+        this.setState({height: e.target.height*2})
+      }
     }
   }
   closeModal(){
@@ -72,7 +74,7 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
 
     var width = e.target.width;
     var height = e.target.height;
-
+    console.log(e.target);
     // let containerW = e.currentTarget.width
     // let containerH = e.currentTarget.height
     //
@@ -92,12 +94,17 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
     //   e.target.width = containerW/e.target.width
     //
     // }
+    let factor
     if (screen.width > 768) {
       if (height > width) {
-        console.log('vertical');
-        e.target.height = 400
+        factor = height/400
+        console.log('vertical', 'Ancho: '+width, 'alto: '+height);
+        e.target.height = height/factor
+        e.target.width = width/factor
       }else {
-        e.target.width = 440
+        factor = width/440
+        e.target.height = height/factor
+        e.target.width = width/factor
         console.log('horizontal');
       }
     }

@@ -89,10 +89,16 @@ class List extends React.Component { // eslint-disable-line
     var animation
     const { entries } = this.props;
     var marks = this.state.markers
+    var column
+    if (screen.width >= 480 && screen.width <= 640) {
+      column = 'col-xs-offset-1 col-xs-10'
+    }else {
+      column = 'col-xs-12'
+    }
     return (
       <div>
         <div className="row">
-          <div className="col-sm-6">
+          <div className={`col-xs-12 col-sm-12 col-md-6 ${styles.item}`}>
             <div className={styles.list} ref="list">
               {entries ? entries.map((entry, i) => {
                 const key = `entry-${i}`;
@@ -122,7 +128,7 @@ class List extends React.Component { // eslint-disable-line
                   <div
                     id={`entry-${entry.entryId}`}
                     key={key}
-                    className={`list-item col-xs-12 col-sm-6 ${styles.item}`}
+                    className={`list-item col-sm-6 ${column}`}
                     onMouseOver={(e)=>this.onMouseOver(e, marks)}
                     onMouseOut={(e)=>this.onMouseOut(e, marks)}
                     data-id={entry.entryId}
@@ -157,7 +163,7 @@ class List extends React.Component { // eslint-disable-line
               }) : ''}
             </div>
           </div>
-          <div className={`col-sm-6 ${styles.mapContainer}`} ref="map">
+          <div className={`col-xs-12 col-sm-12 col-md-6 ${styles.mapContainer}`} ref="map">
             <div id="stickyContainer" className={styles.sticky}>
               <Map
                 containerElement={

@@ -24,7 +24,7 @@ class GalleryModal extends Component{
 
   render(){
     return(
-      <Carousel defaultActiveIndex={this.props.startIndex} indicators={false}>
+      <Carousel interval={0} defaultActiveIndex={this.props.startIndex} indicators={false}>
         {this.renderItems()}
       </Carousel>
     )

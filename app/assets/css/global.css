@@ -69,7 +69,7 @@
   margin-top: 20px;
 }
 
-@media screen and (min-width:768px) {
+@media screen and (min-width:1024px) {
   :global(.carousel-control){
     transition: 0.3s !important;
     opacity: 0 !important;

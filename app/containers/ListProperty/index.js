@@ -77,7 +77,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
   handleFormChange(e){
     console.log(this.props.values);
   }
-  componentWillMount(){
+  componentDidMount(){
     var this2 = this
     console.log(this2.props);
     function load(url) {

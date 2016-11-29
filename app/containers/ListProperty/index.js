@@ -27,25 +27,27 @@ const days = ['Day', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
 
 import styles from './styles.css';
 var searchBox // make it global so It can be accessed anywhere...
+var objectData = {
+  'postal-code': '',
+  'street-address': '',
+  'country-name' : '',
+  'locality': '',
+  'region': ''
+}
 
 export class ListProperty extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props){
     super(props);
-    this.componentDidMount = this.componentDidMount.bind(this)
-    this.handleFormChange = this.handleFormChange.bind(this)
+    this.state = {
+      address: {}
+    }
   }
   getAddress (){
     var data = searchBox.getPlace()
     console.log(data.adr_address);
     var adr_address = data.adr_address.split('</span>')
 
-    var objectData = {
-      'postal-code': '',
-      'street-address': '',
-      'country-name' : '',
-      'locality': '',
-      'region': ''
-    }
+
 
     var objectAry = Object.keys(objectData)
 
@@ -69,16 +71,19 @@ export class ListProperty extends React.Component { // eslint-disable-line react
     city.value = objectData['locality']
     state.value = objectData['region']
 
-
-
-
-    console.log(zipcode);
   }
   handleFormChange(e){
-    console.log(this.props.values);
+
   }
-  componentWillMount(){
+  componentDidMount(){
+
+    console.log(this.state);
     var this2 = this
+    function changeState(object, this2){
+      console.log('change state');
+      this2.setState(object)
+
+    }
     console.log(this2.props);
     function load(url) {
       return new Promise(function(resolve, reject) {
@@ -100,16 +105,8 @@ export class ListProperty extends React.Component { // eslint-disable-line react
 
 
             var data = searchBox.getPlace()
-            console.log(data.adr_address);
+            console.log(data);
             var adr_address = data.adr_address.split('</span>')
-
-            var objectData = {
-              'postal-code': '',
-              'street-address': '',
-              'country-name' : '',
-              'locality': '',
-              'region': ''
-            }
 
             var objectAry = Object.keys(objectData)
 
@@ -122,25 +119,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
               }
             }
 
-
-            var address = document.getElementById('address')
-            var zipcode = document.getElementById('zipcode')
-            var city = document.getElementById('city')
-            var state = document.getElementById('state')
-
-
-            document.getElementById('zipcode').value ='243534534534'
-            console.log(this.fields.zipcode)
-            address.value = objectData['street-address']
-            // zipcode.value = objectData['postal-code']
-            city.value = objectData['locality']
-            state.value = objectData['region']
-
-
-
-
-
-
+            console.log(objectData)
 
         })
 
@@ -400,37 +379,6 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         placeholder='Address'
                         className={`${styles.searchBox} form-control input-sm`}
                       />
-                      <Field
-                        component={Input}
-                        type="text"
-                        className="form-control input-sm"
-                        name='address'
-                        id='address'
-                      />
-                      <Field
-                        component={Input}
-                        type="text"
-                        className="form-control input-sm"
-                        name='city'
-                        id='city'
-                      />
-                      <Field
-                        component={Input}
-                        type="text"
-                        className="form-control input-sm"
-                        name='state'
-                        id='state'
-                      />
-                      <Field
-                        component={Input}
-                        type="number"
-                        className="form-control input-sm"
-                        id='zipcode'
-                        name='zipcode'
-
-                      />
-
-
                       <div className="row">
                         <div className="col-sm-6">
                           <Field
@@ -628,15 +576,24 @@ const mapStateToProps = selectListProperty();
 function mapDispatchToProps(dispatch) {
   return {
     onSubmit: (values) => {
-      // if (!isEmpty(errors)) {
-      //   if (errors.images) {
-      //     alert(errors.images); // eslint-disable-line
-      //   }
+      const errors = validate(values);
+      if (!isEmpty(errors)) {
+        if (errors.images) {
+          alert(errors.images); // eslint-disable-line
+        }
         dispatch(stopSubmit('ListApartmentForm', errors));
         throw new SubmissionError(errors);
-      // } else {
-        dispatch(submitForm(values.toJS()));
-      // }
+      } else {
+      var send = values.toJS()
+
+        send['address'] = objectData['postal-code']
+        send['city'] = objectData['locality']
+        send['street'] = objectData['street-address']
+        send['state'] = objectData['region']
+
+        console.log(send);
+        dispatch(submitForm(send));
+      }
     },
     handleFileRemove: (e) => {
       dispatch(removeFile(e.currentTarget.dataset.idx));

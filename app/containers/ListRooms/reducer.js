@@ -12,6 +12,7 @@ import {
   SUBMIT_FORM_SUCCESS,
   SUBMIT_FORM_ERROR,
   REFRESH,
+  CHANGE_IMAGE
 } from './constants';
 
 const initialState = fromJS({

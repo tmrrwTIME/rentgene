@@ -13,7 +13,7 @@ import styles from './styles.css';
 import Input from 'components/Input';
 import Select from 'components/Select';
 import Dropzone from 'react-dropzone';
-import { uploadFile, removeFile, submitForm } from './actions';
+import { uploadFile, removeFile, submitForm, changeImage } from './actions';
 import SizeImage from 'assets/images/size.png';
 import ThankView from 'components/ThankView';
 import { isEmpty } from 'lodash';
@@ -49,7 +49,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
     })
   }
   render() {
-    const { handleSubmit, formValues, handleFileRemove, loading, submitted } = this.props;
+    const { handleSubmit, formValues, handleFileRemove, loading, submitted, changeImage} = this.props;
     let imagesBlock = '';
     if (formValues.images && formValues.images.length) {
       imagesBlock = (
@@ -77,10 +77,10 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                     <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbButton}`} data-idx={i}>
                       <i className="fa fa-times"></i>
                     </button>
-                    <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbLeft}`} data-idx={i}>
+                    <button type="button" onClick={()=>{changeImage(formValues.images, i, 'left')}} className={`btn ${styles.thumbLeft}`} data-idx={i}>
                       <i className="fa fa-arrow-circle-o-left"></i>
                     </button>
-                    <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbRight}`} data-idx={i}>
+                    <button type="button" onClick={()=>{changeImage(formValues.images, i, 'right')}} className={`btn ${styles.thumbRight}`} data-idx={i}>
                       <i className="fa fa-arrow-circle-o-right"></i>
                     </button>
                     <div className={styles.thumbMain}>
@@ -312,6 +312,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
       ListRooms.propTypes = {
         handleSubmit: React.PropTypes.func.isRequired,
         handleDrop: React.PropTypes.func.isRequired,
+        changeImage: React.PropTypes.func,
         handleFileRemove: React.PropTypes.func,
         formValues: React.PropTypes.object,
         loading: React.PropTypes.bool,
@@ -334,6 +335,9 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
             } else {
               dispatch(submitForm(values.toJS()));
             }
+          },
+          changeImage:(files, idx, direction) => {
+            dispatch(changeImage(files, idx, direction));
           },
           handleFileRemove: (e) => {
             dispatch(removeFile(e.currentTarget.dataset.idx));

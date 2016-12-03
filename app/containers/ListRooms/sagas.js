@@ -11,6 +11,7 @@ import {
   UPLOAD_FILE,
   REMOVE_FILE,
   SUBMIT_FORM,
+  CHANGE_IMAGE,
 } from './constants';
 import {
   arrayRemove,
@@ -25,6 +26,17 @@ const API_URL = process.env.RENTGENE_API_URL;
 export function* remove(action) {
   const idx = parseInt(action.idx, 10);
   yield put(arrayRemove('ListRoomsForm', 'images', idx));
+}
+export function* changeImage(action){
+  const files = action.files
+  const idx = action.idx
+  const direction = action.direction
+  var add
+
+  direction == 'left' ? add = +1 : add = -1;
+
+  console.log(add)
+
 }
 
 export function* uploadFileToS3(action) {
@@ -83,6 +95,7 @@ function* submit(action) {
 export function* watcher() {
   yield [
     takeEvery(UPLOAD_FILE, uploadFileToS3),
+    takeEvery(CHANGE_IMAGE, changeImage),
     takeEvery(REMOVE_FILE, remove),
     takeEvery(SUBMIT_FORM, submit),
   ];

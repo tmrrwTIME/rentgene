@@ -77,6 +77,12 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                     <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbButton}`} data-idx={i}>
                       <i className="fa fa-times"></i>
                     </button>
+                    <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbLeft}`} data-idx={i}>
+                      <i className="fa fa-arrow-circle-o-left"></i>
+                    </button>
+                    <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbRight}`} data-idx={i}>
+                      <i className="fa fa-arrow-circle-o-right"></i>
+                    </button>
                     <div className={styles.thumbMain}>
                       <img className={styles.image} src={image.preview} alt="" />
                     </div>

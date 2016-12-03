@@ -87,7 +87,7 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
       filters[name] = e.currentTarget.value;
     }
     this.setState({ filters }, () => {
-      console.log(this.state.filters);
+      // console.log(this.state.filters);
     });
   }
 
@@ -100,8 +100,9 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
       filters: {},
       text: '',
     }, () => {
-      this.props.loadEntries(this.state);
-    });
+      this.props.loadEntries(this.state)
+    })
+    document.getElementById('filters').reset()
   }
   toggleFilters(animate, rotate){
     if (animate === 'contract') {
@@ -162,7 +163,7 @@ function mapDispatchToProps(dispatch) {
     handleRefine: (e) => {
       const form = document.querySelector('form');
       const data = serialize(form, { hash: true });
-      console.log('DATA', data);
+      // console.log('DATA', data);
     },
     dispatch,
   };

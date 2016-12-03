@@ -13,3 +13,4 @@ export const UPLOAD_FILE = 'app/ListRooms/UPLOAD_FILE';
 export const REMOVE_FILE = 'app/ListRooms/REMOVE_FILE';
 export const STOP_LOADING = 'app/ListRooms/STOP_LOADING';
 export const REFRESH = 'app/ListRooms/REFRESH';
+export const CHANGE_FILE_POSITION = 'app/ListRooms/CHANGE_FILE_POSITION'

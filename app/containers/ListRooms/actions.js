@@ -14,6 +14,7 @@ import {
   SUBMIT_FORM_SUCCESS,
   SUBMIT_FORM_ERROR,
   REFRESH,
+  CHANGE_FILE_POSITION
 } from './constants';
 
 export function defaultAction() {
@@ -33,7 +34,13 @@ export function loading() {
     type: LOADING,
   };
 }
+export function changeFilePosition(files){
+  return {
+    type : CHANGE_FILE_POSITION,
+    files,
+  }
 
+}
 export function uploadFile(files) {
   return {
     type: UPLOAD_FILE,

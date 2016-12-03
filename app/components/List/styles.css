@@ -80,13 +80,16 @@
     display: table;
 }
 
-@media screen and (max-width: 414px) {
+@media screen and (max-width: 640px) {
   .sticky{
     display: none;
   }
   .mapContainer{
     display: none;
   }
+}
+
+@media screen and (max-width: 768px) {
   .item{
     flex-direction: column;
     justify-content: center;

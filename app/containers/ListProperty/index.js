@@ -77,7 +77,6 @@ export class ListProperty extends React.Component { // eslint-disable-line react
   }
   componentDidMount(){
 
-    console.log(this.state);
     var this2 = this
     function changeState(object, this2){
       console.log('change state');

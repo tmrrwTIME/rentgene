@@ -13,12 +13,11 @@ import styles from './styles.css';
 import Input from 'components/Input';
 import Select from 'components/Select';
 import Dropzone from 'react-dropzone';
-import { uploadFile, removeFile, submitForm } from './actions';
+import { uploadFile, removeFile, submitForm, changeFilePosition } from './actions';
 import SizeImage from 'assets/images/size.png';
 import ThankView from 'components/ThankView';
 import { isEmpty } from 'lodash';
 import validate from './validate';
-
 
 const beds = ['', 1, 2, 3, 4, 5, 6, 7];
 const leaseDuration = ['lease', 'Month to Month', '6 months', '1 year'];
@@ -33,18 +32,23 @@ var objectData = {
   'locality': '',
   'region': ''
 }
+var imagesData = {}
 
 export class ListRooms extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor(props){
+    super(props)
+    this.state = {
+      images : ''
+    }
+    this.goLeft = this.goLeft.bind(this)
+  }
   componentDidMount(){
-
-    console.log(this.state);
+    this.setState({images:this.props.formValues.images})
     var this2 = this
     function changeState(object, this2){
-      console.log('change state');
       this2.setState(object)
 
     }
-    console.log(this2.props);
     function load(url) {
       return new Promise(function(resolve, reject) {
         var script = document.createElement('script');
@@ -65,7 +69,6 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
 
 
             var data = searchBox.getPlace()
-            console.log(data);
             var adr_address = data.adr_address.split('</span>')
 
             var objectAry = Object.keys(objectData)
@@ -78,9 +81,6 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                 }
               }
             }
-
-            console.log(objectData)
-
         })
 
       })
@@ -88,8 +88,34 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
         console.error('Something went wrong!', err);
     })
   }
+
+  goLeft(i) {
+
+    var prev = this.props.formValues.images[i-1]
+    var current = this.props.formValues.images[i]
+    this.props.formValues.images[i-1] = current
+    this.props.formValues.images[i] = prev
+    this.setState({images: this.props.formValues.images})
+
+    imagesData = this.props.formValues.images
+    console.log(imagesData);
+    this.changeFilePosition
+  }
+  goRight(i) {
+    var next = this.props.formValues.images[i+1]
+    var current = this.props.formValues.images[i]
+    this.props.formValues.images[i+1] = current
+    this.props.formValues.images[i] = next
+    this.setState({images: this.props.formValues.images})
+
+    imagesData = this.props.formValues.images
+
+  }
+
+
   render() {
-    const { handleSubmit, formValues, handleFileRemove, loading, submitted } = this.props;
+
+    const { handleSubmit, formValues, handleFileRemove, loading, submitted, goRight, goLeft, change, handleChange} = this.props;
     let imagesBlock = '';
     if (formValues.images && formValues.images.length) {
       imagesBlock = (
@@ -97,6 +123,8 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
           <div className="row">
             {formValues.images.map((image, i) => {
                 const key = `images-${i}`;
+
+
               if (image.uploading) {
                 return (
                   <div key={key} className="col-sm-3">
@@ -113,12 +141,16 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
               }
               return (
                 <div key={key} className="col-sm-3">
-                  <div className={styles.thumb}>
+                  <div className={styles.thumb} >
                     <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbButton}`} data-idx={i}>
                       <i className="fa fa-times"></i>
                     </button>
+                    <button type="button" onClick={()=> handleChange(formValues.images, i)} className={`btn ${styles.thumbLeft} ${i == 0 ? 'hide':'show'}`} data-idx={i}><i className="fa fa-arrow-circle-o-left"></i></button>
+
+                    <button type="button" onClick={()=> this.goRight(i)} className={`btn ${styles.thumbRight}`} data-idx={i}><i className="fa fa-arrow-circle-o-right"></i></button>
+
                     <div className={styles.thumbMain}>
-                      <img className={styles.image} src={image.preview} alt="" />
+                      <img className={styles.image} src={image.preview} alt="" id={`img-${i}`}  />
                     </div>
                     <img src={SizeImage} className={styles.size} alt="" />
                   </div>
@@ -151,6 +183,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                         onDrop={this.props.handleDrop}
                         accept="image/*"
                         style={{ width: '100%' }}
+                        multiple={true}
                       >
                         <div className={styles.drag}>
                           <div className={styles.dragText}>
@@ -162,12 +195,6 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                         </div>
                       </Dropzone>
                       {imagesBlock}
-                      {/*
-                        {this.state.files.length > 0 ? <div style={{border: '1px solid black', marginTop:'5px', padding: 5, borderRadius: 5}}>
-                        <h2>You are missing {count} photos</h2>
-                        <div>{this.state.files.map((file) => <img src={file.preview} className={styles.imgPreview} /> )}</div>
-                        </div> : null}
-                      */}
                       <div className={styles.content}>
                         <h4 className={styles.normalTitle}>Description</h4>
                         <Field
@@ -335,6 +362,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                     {loading ? <i className="fa fa-spinner fa-spin"></i> : ''}
                     Submit
                   </button>
+
                 </div>
               </form></div>}
           </div>
@@ -346,6 +374,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
       ListRooms.propTypes = {
         handleSubmit: React.PropTypes.func.isRequired,
         handleDrop: React.PropTypes.func.isRequired,
+        handleChange: React.PropTypes.func,
         handleFileRemove: React.PropTypes.func,
         formValues: React.PropTypes.object,
         loading: React.PropTypes.bool,
@@ -357,7 +386,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
       function mapDispatchToProps(dispatch) {
         return {
           onSubmit: (values) => {
-            console.log('hola');
+            console.log(values);
             const errors = validate(values);
             if (!isEmpty(errors)) {
               if (errors.images) {
@@ -372,9 +401,10 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                 send['city'] = objectData['locality']
                 send['street'] = objectData['street-address']
                 send['state'] = objectData['region']
-
+                send['images'] = imagesData
+                console.log('files', imagesData);
+                console.log('final ', send);
                 dispatch(submitForm(send));
-              }
             }
           },
           handleFileRemove: (e) => {
@@ -383,6 +413,21 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
           handleDrop: (files) => {
             if (files.length) {
               dispatch(uploadFile(files));
+            }
+          },
+          handleChange: (files, id) => {
+
+
+
+            // var files = imagesData
+            if (files.length) {
+              var prev = files.images[id-1]
+              var current = files.images[id]
+              files.images[id-1] = current
+              files.images[id] = prev
+              // this.setState({images: this.props.formValues.images})
+              console.log('sucedo!!', files);
+              dispatch(changeFilePosition(files));
             }
           },
           dispatch,

@@ -34,21 +34,25 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
       currentIndex: "",
       images: [],
       imagesModal: [],
-      height: ''
+      modalHeight: '',
+      modalWidth: '',
+      sizes:[]
     }
     this.expandImage = this.expandImage.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.onSlide = this.onSlide.bind(this)
     this.onImageLoad = this.onImageLoad.bind(this)
+    this.modalSize = this.modalSize.bind(this)
   }
   componentDidMount() {
     this.props.fetchEntry(this.props.routeParams.slug);
   }
   expandImage(e){
-    this.setState({modalIsOpen: true})
     if (screen.width > 768) {
-      this.setState({height: e.target.height*2})
+      this.setState({modalIsOpen: true})
+      this.modalSize(e.target.width, e.target.height)
     }
+    console.log('width: '+e.target.width, 'height: '+e.target.height);
   }
   closeModal(){
     this.setState({modalIsOpen:false})
@@ -68,28 +72,32 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
   onSlide(index){
     this.setState({currentIndex: index})
   }
+  modalSize(width, height){
+    this.setState({modalHeight: height})
+    this.setState({modalWidth: width})
+  }
   onImageLoad(e){
     var width = e.target.width;
     var height = e.target.height;
-    this.setState({imgWidth:width, imgHeight:height})
+    this.state.sizes.push({id:e.target.src, width:e.target.width, height:e.target.height})
+    let factor
     if (screen.width > 768) {
-      if (height < width) {
-        let w = (400/height) * width
-        e.target.width = w
-        e.target.height = 400
-      }
       if (height > width) {
-        let h = (400/width) * height
-        e.target.height = h
-        e.target.width = 440
+        factor = height/400
+        e.target.height = height/factor
+        e.target.width = width/factor
+      }else {
+        factor = width/440
+        e.target.height = height/factor
+        e.target.width = width/factor
       }
     }
-    // console.log('width: ' + e.target.width, 'height: ' + e.target.height);
+    console.log(this.state.sizes);
   }
   render() {
     //CustomStyles for modal
-    var height = (screen.width > 768)? this.state.height: '';
-    var width = (screen.width > 768)? '800px': '';
+    let modalWidth = this.state.modalWidth
+    let modalHeight = this.state.modalHeight
     const customStyles = {
       overlay : {
         position          : 'fixed',
@@ -101,20 +109,21 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
         zIndex            : 100
       },
       content : {
+        transition                 : '1s',
         position                   : 'absolute',
         top                        : '40px',
-        left                       : window.innerWidth/2 - 400,
+        left                       : window.innerWidth/2 - modalWidth/2,
         right                      : '40px',
         bottom                     : '40px',
         border                     : '1px solid #ccc',
         background                 : '#fff',
-        overflow                   : 'auto',
+        overflow                   : 'hidden',
         WebkitOverflowScrolling    : 'touch',
         borderRadius               : '4px',
         outline                    : 'none',
         padding                    : '20px',
-        width                      :  width,
-        height                     :  height
+        width                      :  modalWidth,
+        height                     :  modalHeight*1.2
       }
     }
     // console.log(this.props)
@@ -283,6 +292,8 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
           <GalleryModal
             images={this.state.imagesModal}
             startIndex={this.state.currentIndex == "" ? 0:this.state.currentIndex}
+            modalSize={this.modalSize}
+            sizes={this.state.sizes}
           />
           {/* <img className={styles.modalImg} src={this.state.currentImage} alt="" /> */}
         </Modal>

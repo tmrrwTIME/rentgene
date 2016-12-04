@@ -52,6 +52,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
     const { handleSubmit, formValues, handleFileRemove, loading, submitted, changeImage} = this.props;
     let imagesBlock = '';
     let realImages = []
+
     //clean the array of images
 
     if (formValues.images && formValues.images.length) {
@@ -65,9 +66,28 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
             })}
 
             {realImages.map((image, i) => {
+              let leftOptions = (
+                <button type="button" onClick={()=>{changeImage(formValues.images, i, 'left')}} className={`btn ${styles.thumbLeft}`} data-idx={i}>
+                  <i className="fa fa-arrow-circle-o-left"></i>
+                </button>
+              )
+              let rightOptions = (
+                <button type="button" onClick={()=>{changeImage(formValues.images, i, 'right')}} className={`btn ${styles.thumbRight}`} data-idx={i}>
+                  <i className="fa fa-arrow-circle-o-right"></i>
+                </button>
+              );
+
+              if (realImages.length == 1 && i == 0){
+                leftOptions = ''
+                rightOptions = ''
+              } else if (realImages.length-1 == i){
+                rightOptions = ''
+              } else if (realImages.length > 1 && i == 0){
+                leftOptions = ''
+              }
 
 
-                const key = `images-${i}`;
+              const key = `images-${i}`;
               if (image.uploading) {
                 return (
                   <div key={key} className="col-sm-3">
@@ -85,14 +105,10 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
               return (
                 <div key={key} className="col-sm-3">
                   <div className={styles.thumb}>
+                    {leftOptions}
+                    {rightOptions}
                     <button type="button" onClick={handleFileRemove} className={`btn ${styles.thumbButton}`} data-idx={i}>
                       <i className="fa fa-times"></i>
-                    </button>
-                    <button type="button" onClick={()=>{changeImage(formValues.images, i, 'left')}} className={`btn ${styles.thumbLeft}`} data-idx={i}>
-                      <i className="fa fa-arrow-circle-o-left"></i>
-                    </button>
-                    <button type="button" onClick={()=>{changeImage(formValues.images, i, 'right')}} className={`btn ${styles.thumbRight}`} data-idx={i}>
-                      <i className="fa fa-arrow-circle-o-right"></i>
                     </button>
                     <div className={styles.thumbMain}>
                       <img className={styles.image} src={image.preview} alt="" />

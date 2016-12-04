@@ -14,14 +14,22 @@ import {
   CHANGE_IMAGE,
 } from './constants';
 import {
-  arrayRemove,
+  arraySwap,
+  touch,
   arrayPush,
   arrayPop,
   stopSubmit,
+  arrayInsert,
+  arrayRemove
 } from 'redux-form';
 import { isEmpty } from 'lodash';
 
 const API_URL = process.env.RENTGENE_API_URL;
+let swaps = 0;
+
+let makeRefresh = function(){
+
+}
 
 export function* remove(action) {
   const idx = parseInt(action.idx, 10);
@@ -32,10 +40,20 @@ export function* changeImage(action){
   const idx = action.idx
   const direction = action.direction
   var add
+  direction == 'left' ? add = -1 : add = +1;
 
-  direction == 'left' ? add = +1 : add = -1;
+  const falseImg = {preview:false}
+  var prev = files[idx+add]
+  var current = files[idx]
 
-  console.log(add)
+  yield put(arraySwap('ListRoomsForm', 'images', idx, idx+add))
+  if (swaps == 0){
+    yield put(arrayPush('ListRoomsForm', 'images', falseImg))
+    swaps++
+  } else {
+    yield put(arrayPop('ListRoomsForm', 'images'))
+    swaps = 0
+  }
 
 }
 
@@ -60,6 +78,11 @@ export function* uploadFileToS3(action) {
     const uploadResponse = yield call(simpleRequest, uploadURL, options);
     if (uploadResponse.data.status === 200) {
       yield put(arrayPop('ListRoomsForm', stateField));
+      if (swaps != 0){
+        yield put(arrayPop('ListRoomsForm', stateField))
+        swaps = 0
+      }
+
       yield put(arrayPush('ListRoomsForm', stateField, { preview: file.preview, uploading: false, name: file.name }));
       yield put(stopLoading());
     } else {

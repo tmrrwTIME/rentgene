@@ -51,11 +51,22 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
   render() {
     const { handleSubmit, formValues, handleFileRemove, loading, submitted, changeImage} = this.props;
     let imagesBlock = '';
+    let realImages = []
+    //clean the array of images
+
     if (formValues.images && formValues.images.length) {
       imagesBlock = (
         <div className={styles.drag}>
           <div className="row">
-            {formValues.images.map((image, i) => {
+            {formValues.images.map((image,i)=>{
+              if (image.preview) {
+                realImages.push(image)
+              }
+            })}
+
+            {realImages.map((image, i) => {
+
+
                 const key = `images-${i}`;
               if (image.uploading) {
                 return (

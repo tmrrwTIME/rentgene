@@ -18,6 +18,7 @@ import {
 const initialState = fromJS({
   initialValues: {
     images: [],
+    text: [],
   },
   loading: false,
   submitted: false,

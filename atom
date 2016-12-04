@@ -1,0 +1,15 @@
+diff --git a/app/containers/ListRooms/sagas.js b/app/containers/ListRooms/sagas.js
+index 649689e..68eb913 100644
+--- a/app/containers/ListRooms/sagas.js
++++ b/app/containers/ListRooms/sagas.js
+@@ -100,8 +100,10 @@ export function* defaultSaga() {
+ 
+ function* submit(action) {
+   yield put(loading());
++
+   const requestURL = `${API_URL}/createEntry`;
+   const values = Object.assign(action.values, { type: 'rooms' });
++  console.log(values);
+   const response = yield call(request, requestURL, buildOptions({ values }));
+   if (!response.err) {
+     if (isEmpty(response.data.errors)) {

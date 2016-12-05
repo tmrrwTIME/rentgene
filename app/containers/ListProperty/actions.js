@@ -14,6 +14,7 @@ import {
   SUBMIT_FORM_SUCCESS,
   SUBMIT_FORM_ERROR,
   REFRESH,
+  CHANGE_IMAGE
 } from './constants';
 
 export function defaultAction() {
@@ -31,6 +32,14 @@ export function stopLoading() {
 export function loading() {
   return {
     type: LOADING,
+  };
+}
+export function changeImage(files, idx, direction){
+  return {
+    type: CHANGE_IMAGE,
+    files,
+    idx,
+    direction
   };
 }
 

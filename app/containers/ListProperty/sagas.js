@@ -11,20 +11,48 @@ import {
   UPLOAD_FILE,
   REMOVE_FILE,
   SUBMIT_FORM,
+  CHANGE_IMAGE,
 } from './constants';
 import {
-  arrayRemove,
+  arraySwap,
+  touch,
   arrayPush,
   arrayPop,
   stopSubmit,
+  arrayInsert,
+  arrayRemove
 } from 'redux-form';
 import { isEmpty } from 'lodash';
 
 const API_URL = process.env.RENTGENE_API_URL;
+let swaps = 0;
 
 export function* remove(action) {
   const idx = parseInt(action.idx, 10);
   yield put(arrayRemove('ListApartmentForm', 'images', idx));
+}
+
+export function* changeImage(action){
+  console.log('this was saga talking');
+  const files = action.files
+  const idx = action.idx
+  const direction = action.direction
+  var add
+  direction == 'left' ? add = -1 : add = +1;
+
+  const falseImg = {preview:false}
+  var prev = files[idx+add]
+  var current = files[idx]
+
+  yield put(arraySwap('ListApartmentForm', 'images', idx, idx+add))
+  if (swaps == 0){
+    yield put(arrayPush('ListApartmentForm', 'images', falseImg))
+    swaps++
+  } else {
+    yield put(arrayPop('ListApartmentForm', 'images'))
+    swaps = 0
+  }
+
 }
 
 export function* uploadFileToS3(action) {
@@ -48,6 +76,10 @@ export function* uploadFileToS3(action) {
     const uploadResponse = yield call(simpleRequest, uploadURL, options);
     if (uploadResponse.data.status === 200) {
       yield put(arrayPop('ListApartmentForm', stateField));
+      if (swaps != 0){
+        yield put(arrayPop('ListApartmentForm', stateField))
+        swaps = 0
+      }
       yield put(arrayPush('ListApartmentForm', stateField, { preview: file.preview, uploading: false, name: file.name }));
       yield put(stopLoading());
     } else {
@@ -85,6 +117,7 @@ export function* watcher() {
   yield [
     takeEvery(UPLOAD_FILE, uploadFileToS3),
     takeEvery(REMOVE_FILE, remove),
+    takeEvery(CHANGE_IMAGE, changeImage),
     takeEvery(SUBMIT_FORM, submit),
   ];
 }

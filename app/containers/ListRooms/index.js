@@ -86,7 +86,6 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                 leftOptions = ''
               }
 
-
               const key = `images-${i}`;
               if (image.uploading) {
                 return (
@@ -351,7 +350,6 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
       function mapDispatchToProps(dispatch) {
         return {
           onSubmit: (values) => {
-            console.log('hola');
             const errors = validate(values);
             if (!isEmpty(errors)) {
               if (errors.images) {

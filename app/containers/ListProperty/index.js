@@ -27,12 +27,17 @@ const days = ['Day', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
 
 import styles from './styles.css';
 var searchBox // make it global so It can be accessed anywhere...
-var objectData = {}
+var objectData = {
+  'postal-code':'',
+  'street-address':'',
+  'country-name':'',
+  'locality':'',
+  'region':'',
+}
 
 export class ListProperty extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount(){
     var this2 = this
-    console.log(this2.props);
     function load(url) {
       return new Promise(function(resolve, reject) {
         var script = document.createElement('script');
@@ -57,7 +62,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
             var adr_address = data.adr_address.split('</span>')
 
 
-
+            console.log(objectData);
             var objectAry = Object.keys(objectData)
 
             for (var i = 0; i != adr_address.length; i++){
@@ -68,23 +73,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                 }
               }
             }
-
-
-            var address = document.getElementById('address')
-            var zipcode = document.getElementById('zipcode')
-            var city = document.getElementById('city')
-            var state = document.getElementById('state')
-
-
-            document.getElementById('zipcode').value ='243534534534'
-            console.log(this.fields.zipcode)
-            address.value = objectData['street-address']
-            zipcode.value = objectData['postal-code']
-            city.value = objectData['locality']
-            state.value = objectData['region']
-
-
-
+            console.log(objectData);
 
 
 
@@ -375,36 +364,6 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         placeholder='Address'
                         className={`${styles.searchBox} form-control input-sm`}
                       />
-                      <Field
-                        component={Input}
-                        type="text"
-                        className="form-control input-sm"
-                        name='address'
-                        id='address'
-                      />
-                      <Field
-                        component={Input}
-                        type="text"
-                        className="form-control input-sm"
-                        name='city'
-                        id='city'
-                      />
-                      <Field
-                        component={Input}
-                        type="text"
-                        className="form-control input-sm"
-                        name='state'
-                        id='state'
-                      />
-                      <Field
-                        component={Input}
-                        type="number"
-                        className="form-control input-sm"
-                        id='zipcode'
-                        name='zipcode'
-
-                      />
-
 
                       <div className="row">
                         <div className="col-sm-6">

@@ -27,10 +27,6 @@ import { isEmpty } from 'lodash';
 const API_URL = process.env.RENTGENE_API_URL;
 let swaps = 0;
 
-let makeRefresh = function(){
-
-}
-
 export function* remove(action) {
   const idx = parseInt(action.idx, 10);
   yield put(arrayRemove('ListRoomsForm', 'images', idx));
@@ -100,9 +96,9 @@ export function* defaultSaga() {
 
 function* submit(action) {
   yield put(loading());
-
   const requestURL = `${API_URL}/createEntry`;
-  const values = Object.assign(action.values, { type: 'rooms' });
+  const values = action.values;
+  // const values = Object.assign(action.values, { type: 'rooms' });
   console.log(values);
   const response = yield call(request, requestURL, buildOptions({ values }));
   if (!response.err) {

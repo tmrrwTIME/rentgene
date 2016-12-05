@@ -24,6 +24,14 @@ const beds = ['', 1, 2, 3, 4, 5, 6, 7];
 const leaseDuration = ['lease', 'Month to Month', '6 months', '1 year'];
 const months = ['Months', 'Jan', 'Feb', 'Mar', 'Apr', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 const days = ['Day', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31];
+var searchBox // make it global so It can be accessed anywhere...
+var objectData = {
+  'postal-code':'',
+  'street-address':'',
+  'country-name':'',
+  'locality':'',
+  'region':'',
+}
 
 export class ListRooms extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount(){
@@ -42,7 +50,27 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
     load('https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyA1vQdzV7nTSFUe2klAEgwpokdsA9aDpzU')
     .then(function() {
       var input = document.getElementById('search')
-      var searchBox = new google.maps.places.SearchBox(input)
+      searchBox = new google.maps.places.SearchBox(input)
+      searchBox.addListener('place_changed', ()=>{
+
+
+          var data = searchBox.getPlace()
+          var adr_address = data.adr_address.split('</span>')
+
+
+
+          var objectAry = Object.keys(objectData)
+
+          for (var i = 0; i != adr_address.length; i++){
+
+            for (var a = 0; a!= objectAry.length; a ++){
+              if (adr_address[i].match(objectAry[a])){
+                objectData[objectAry[a]] = adr_address[i].split('>').pop()
+              }
+            }
+          }
+
+      })
     })
     .catch(function(err) {
       console.error('Something went wrong!', err);
@@ -358,7 +386,15 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
               dispatch(stopSubmit('ListRoomsForm', errors));
               throw new SubmissionError(errors);
             } else {
-              dispatch(submitForm(values.toJS()));
+
+              var send = values.toJS()
+
+              send['address'] = objectData['postal-code']
+              send['city'] = objectData['locality']
+              send['street'] = objectData['street-address']
+              send['state'] = objectData['region']
+
+              dispatch(submitForm(send));
             }
           },
           changeImage:(files, idx, direction) => {

@@ -29,13 +29,19 @@ class Gallery extends Component{
                 className={`${id}-slides`}
                 src={`https://s3-us-west-2.amazonaws.com/rentgene-uploads/images/${item.name}`}
                 role="presentation"
-                style={{height:250, width: '100%'}}
+                style={{height:250, margin:'0 auto'}}
               />
             </Link>
           </Carousel.Item>
         )
       })
     )
+  }
+  changeSize(e){
+    console.log(e);
+    var element = document.getElementsByClassName('carousel-inner')[0]
+    var width = window.getComputedStyle(element).height;
+    console.log(width);
   }
   componentWillReceiveProps(nextProps){
     this.setState({images: nextProps.images})
@@ -48,7 +54,7 @@ class Gallery extends Component{
   }
   render(){
     return(
-      <Carousel indicators={false} interval={0} controls={true}>
+      <Carousel indicators={false} interval={0} controls={true} onSelect={this.changeSize}>
         {this.renderItems()}
       </Carousel>
     )

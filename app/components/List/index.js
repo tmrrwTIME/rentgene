@@ -99,7 +99,7 @@ class List extends React.Component { // eslint-disable-line
       <div>
         <div className="row">
           <div className={`col-xs-12 col-sm-12 col-md-6 ${styles.item}`}>
-            <div className={styles.list} ref="list">
+            <div className={`col-xs-12 col-sm-12`} ref="list">
               {entries ? entries.map((entry, i) => {
                 const key = `entry-${i}`;
                 // let image;
@@ -128,7 +128,7 @@ class List extends React.Component { // eslint-disable-line
                   <div
                     id={`entry-${entry.entryId}`}
                     key={key}
-                    className={`list-item col-sm-6 ${column}`}
+                    className={`col-xs-6 col-sm-6${column}`}
                     onMouseOver={(e)=>this.onMouseOver(e, marks)}
                     onMouseOut={(e)=>this.onMouseOut(e, marks)}
                     data-id={entry.entryId}

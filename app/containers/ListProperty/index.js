@@ -56,13 +56,9 @@ export class ListProperty extends React.Component { // eslint-disable-line react
         searchBox = new google.maps.places.Autocomplete(input)
         searchBox.addListener('place_changed', ()=>{
 
-
             var data = searchBox.getPlace()
-            console.log(data.adr_address);
             var adr_address = data.adr_address.split('</span>')
 
-
-            console.log(objectData);
             var objectAry = Object.keys(objectData)
 
             for (var i = 0; i != adr_address.length; i++){

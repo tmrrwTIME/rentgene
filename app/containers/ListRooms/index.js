@@ -167,6 +167,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                       <Dropzone
                         onDrop={this.props.handleDrop}
                         accept="image/*"
+                        multiple = 'true'
                         style={{ width: '100%' }}
                       >
                         <div className={styles.drag}>
@@ -394,7 +395,12 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
           },
           handleDrop: (files) => {
             if (files.length) {
-              dispatch(uploadFile(files));
+              files.map((image, i)=>{
+                console.log(image);
+                dispatch(uploadFile(image));
+              })
+
+
             }
           },
           dispatch,

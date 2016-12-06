@@ -17,6 +17,8 @@ import {
   arraySwap,
   touch,
   arrayPush,
+  arrayShift,
+  arrayUnshift,
   arrayPop,
   stopSubmit,
   arrayInsert,
@@ -55,7 +57,11 @@ export function* changeImage(action){
 
 export function* uploadFileToS3(action) {
   yield put(loading());
-  const file = action.files[0];
+  console.log(action);
+  // const file = action.files[0];
+  // console.log('This is action >', action);
+  // console.log(ListRoomsForm);
+  const file = action.files
   const stateField = 'images';
   let signedUrl = `${API_URL}/getSignedUrl`;
   signedUrl += `?filename=${stateField}/${file.name}&filetype=${file.type}`;
@@ -79,7 +85,7 @@ export function* uploadFileToS3(action) {
         swaps = 0
       }
 
-      yield put(arrayPush('ListRoomsForm', stateField, { preview: file.preview, uploading: false, name: file.name }));
+      yield put(arrayUnshift('ListRoomsForm', stateField, { preview: file.preview, uploading: false, name: file.name }));
       yield put(stopLoading());
     } else {
       yield put(stopLoading());

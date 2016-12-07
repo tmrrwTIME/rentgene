@@ -18,6 +18,7 @@ import {
   touch,
   arrayPush,
   arrayPop,
+  arrayUnshift,
   stopSubmit,
   arrayInsert,
   arrayRemove
@@ -57,7 +58,7 @@ export function* changeImage(action){
 
 export function* uploadFileToS3(action) {
   yield put(loading());
-  const file = action.files[0];
+  const file = action.files;
   const stateField = 'images';
   let signedUrl = `${API_URL}/getSignedUrl`;
   signedUrl += `?filename=${stateField}/${file.name}&filetype=${file.type}`;
@@ -80,7 +81,7 @@ export function* uploadFileToS3(action) {
         yield put(arrayPop('ListApartmentForm', stateField))
         swaps = 0
       }
-      yield put(arrayPush('ListApartmentForm', stateField, { preview: file.preview, uploading: false, name: file.name }));
+      yield put(arrayUnshift('ListApartmentForm', stateField, { preview: file.preview, uploading: false, name: file.name }));
       yield put(stopLoading());
     } else {
       yield put(stopLoading());

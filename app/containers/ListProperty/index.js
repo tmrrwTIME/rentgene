@@ -585,7 +585,10 @@ function mapDispatchToProps(dispatch) {
     },
     handleDrop: (files) => {
       if (files.length) {
-        dispatch(uploadFile(files));
+        files.map((image, i)=>{
+          console.log(image);
+          dispatch(uploadFile(image));
+        })
       }
     },
     dispatch,

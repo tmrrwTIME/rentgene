@@ -52,7 +52,6 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
       this.setState({modalIsOpen: true})
       this.modalSize(e.target.width, e.target.height)
     }
-    console.log('width: '+e.target.width, 'height: '+e.target.height);
   }
   closeModal(){
     this.setState({modalIsOpen:false})
@@ -92,7 +91,6 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
         e.target.width = width/factor
       }
     }
-    console.log(this.state.sizes);
   }
   render() {
     //CustomStyles for modal
@@ -123,7 +121,7 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
         outline                    : 'none',
         padding                    : '20px',
         width                      :  modalWidth,
-        height                     :  modalHeight*1.2
+        height                     :  modalHeight*1.1
       }
     }
     // console.log(this.props)

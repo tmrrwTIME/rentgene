@@ -79,3 +79,22 @@
     opacity: 0.8 !important;
   }
 }
+
+:global(.image-gallery-thumbnail > img){
+  width: 69px !important;
+  height:69px;
+}
+:global(.image-gallery-slide){
+  overflow: hidden;
+}
+:global(.image-gallery-slide img){
+  width: auto !important;
+}
+
+:global(.image-gallery-image){
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 440px;
+  height: 400px;
+}

@@ -128,7 +128,7 @@ class List extends React.Component { // eslint-disable-line
                   <div
                     id={`entry-${entry.entryId}`}
                     key={key}
-                    className={`col-xs-6 col-sm-6${column}`}
+                    className={`col-sm-6 ${column}`}
                     onMouseOver={(e)=>this.onMouseOver(e, marks)}
                     onMouseOut={(e)=>this.onMouseOut(e, marks)}
                     data-id={entry.entryId}

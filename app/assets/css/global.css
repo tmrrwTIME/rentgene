@@ -98,3 +98,18 @@
   width: 440px;
   height: 400px;
 }
+:global(.carousel-inner){
+  height: 250px;
+  width: 240px
+}
+
+:global(.ScaledImg) {
+  height: 250px;
+  display: block;
+}
+:global(.ScaledImg img){
+    max-width:100%;
+    max-height:100%;
+    display: list-item;
+    margin: 0 auto;
+}

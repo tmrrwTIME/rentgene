@@ -104,7 +104,10 @@
   height: 250px;
   width: 240px
 }
-
+:global(#modal > .carousel .carousel-inner){
+  height: 100%;
+  width: 100%;
+}
 :global(.ScaledImg) {
   margin: 0.5em 0;
   height: 250px;

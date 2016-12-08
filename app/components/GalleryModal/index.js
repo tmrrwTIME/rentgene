@@ -35,14 +35,16 @@ class GalleryModal extends Component{
   }
   render(){
     return(
-      <Carousel
-        interval={0}
-        defaultActiveIndex={this.props.startIndex}
-        indicators={false}
-        onSelect={this.onEvent}
-      >
-        {this.renderItems()}
-      </Carousel>
+      <div id='modal'>
+        <Carousel
+          interval={0}
+          defaultActiveIndex={this.props.startIndex}
+          indicators={false}
+          onSelect={this.onEvent}
+        >
+          {this.renderItems()}
+        </Carousel>
+      </div>
     )
   }
 }

@@ -135,8 +135,8 @@ class List extends React.Component { // eslint-disable-line
                     style={hoverStyle}
                   >
                     <div className={styles.ads}>
-                      <div className={styles.thumb}>
-                        {/* <Link className={styles.thumbMain} to={`/v/${entry.entryId}`}>
+                      {/*<div className={styles.thumb}>
+                         <Link className={styles.thumbMain} to={`/v/${entry.entryId}`}>
                           <img className={styles.image} src={`https://s3-us-west-2.amazonaws.com/rentgene-uploads/images/${image}`} alt="" />
                           </Link>
                         <img src={SizeImage} className={styles.size} alt="" /> */}
@@ -145,7 +145,7 @@ class List extends React.Component { // eslint-disable-line
                           images={this.state.images[i]}
                           to={`/v/${entry.entryId}`}
                         />
-                      </div>
+                      {/*</div>*/}
                       <Link className={styles.title} to={`/v/${entry.entryId}`}>
                         <span>{address}</span>
                       </Link>

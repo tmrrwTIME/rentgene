@@ -25,9 +25,17 @@ function listingsReducer(state = initialState, action) {
     case LOADING:
       return state.set('loading', true);
     case ENTRIES_LOADED:
+
+      var entries = action.entries.filter((entry)=>{
+        if (entry.status != 'approved'){
+          return false
+        }
+        return true
+      })
+
       return state
         .set('loading', false)
-        .set('entries', fromJS(action.entries));
+        .set('entries', fromJS(entries));
     case ENTRIES_LOADED_ERROR:
       return state
         .set('loading', false)

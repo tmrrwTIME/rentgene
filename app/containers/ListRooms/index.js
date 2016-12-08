@@ -51,8 +51,9 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
     load('https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyA1vQdzV7nTSFUe2klAEgwpokdsA9aDpzU')
     .then(function() {
       var input = document.getElementById('search')
-      searchBox = new google.maps.places.SearchBox(input).addListener('place_changed', ()=>{
-        console.log('place changed');
+      searchBox = new google.maps.places.Autocomplete(input)
+      searchBox.addListener('place_changed', ()=>{
+
           var data = searchBox.getPlace()
           var adr_address = data.adr_address.split('</span>')
 
@@ -66,6 +67,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
               }
             }
           }
+          console.log('whatt??');
           console.log(objectData);
       })
     })
@@ -167,7 +169,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                       <Dropzone
                         onDrop={this.props.handleDrop}
                         accept="image/*"
-                        multiple = 'true'
+                        multiple = {true}
                         style={{ width: '100%' }}
                       >
                         <div className={styles.drag}>
@@ -384,7 +386,14 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
               dispatch(stopSubmit('ListRoomsForm', errors));
               throw new SubmissionError(errors);
             } else {
-              dispatch(submitForm(values.toJS()));
+              var send = values.toJS()
+
+              send['address'] = objectData['postal-code']
+              send['city'] = objectData['locality']
+              send['street'] = objectData['street-address']
+              send['state'] = objectData['region']
+
+              dispatch(submitForm(send));
             }
           },
           changeImage:(files, idx, direction) => {

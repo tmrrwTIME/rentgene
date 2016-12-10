@@ -79,6 +79,7 @@
  }
   :global(.carousel-control:hover){
     opacity: 0.8 !important;
+    height:400px;
   }
 }
 
@@ -107,6 +108,11 @@
 :global(#modal > .carousel .carousel-inner){
   height: 100%;
   width: 100%;
+}
+
+:global(#modal > a.carousel-control){
+  height: 450px
+
 }
 :global(.ScaledImg) {
   margin: 0.5em 0;

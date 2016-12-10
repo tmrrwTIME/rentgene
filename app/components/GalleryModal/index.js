@@ -26,16 +26,16 @@ class GalleryModal extends Component{
     )
   }
   onEvent(index){
-    var images = this.props.images[index].original
-    this.props.sizes.map((item)=>{
-      if (item.id === images) {
-        this.props.modalSize(item.width, item.height)
-      }
-    })
+    // var images = this.props.images[index].original
+    // this.props.sizes.map((item)=>{
+    //   if (item.id === images) {
+    //     this.props.modalSize(item.width, item.height)
+    //   }
+    // })
   }
   render(){
     return(
-      <div id='modal'>
+
         <Carousel
           interval={0}
           defaultActiveIndex={this.props.startIndex}
@@ -44,7 +44,7 @@ class GalleryModal extends Component{
         >
           {this.renderItems()}
         </Carousel>
-      </div>
+    
     )
   }
 }

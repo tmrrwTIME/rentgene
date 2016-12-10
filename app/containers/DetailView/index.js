@@ -34,8 +34,8 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
       currentIndex: "",
       images: [],
       imagesModal: [],
-      modalHeight: '',
-      modalWidth: '',
+      modalHeight: '800px',
+      modalWidth: '500px',
       sizes:[]
     }
     this.expandImage = this.expandImage.bind(this)
@@ -50,7 +50,8 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
   expandImage(e){
     if (screen.width > 768) {
       this.setState({modalIsOpen: true})
-      this.modalSize(e.target.width, e.target.height)
+      // this.modalSize(e.target.width, e.target.height)
+      this.modalSize('650', '450')
     }
   }
   closeModal(){
@@ -285,16 +286,18 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
             </div>
           </div>
         </div>
-        <Modal isOpen={this.state.modalIsOpen} style={customStyles}>
+          <Modal isOpen={this.state.modalIsOpen} style={customStyles}>
           <button onClick={this.closeModal}>close</button><br/>
+          <div id='modal'>
           <GalleryModal
             images={this.state.imagesModal}
             startIndex={this.state.currentIndex == "" ? 0:this.state.currentIndex}
             modalSize={this.modalSize}
             sizes={this.state.sizes}
           />
+          </div>
           {/* <img className={styles.modalImg} src={this.state.currentImage} alt="" /> */}
-        </Modal>
+          </Modal>
       </div>
     );
   }

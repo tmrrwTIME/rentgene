@@ -4,6 +4,9 @@
 *
 */
 
+//listing gallery from where modal is executed
+
+
 import React,{Component} from 'react';
 import { Link } from 'react-router';
 import {Carousel} from 'react-bootstrap'

@@ -55,6 +55,8 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
       searchBox.addListener('place_changed', ()=>{
 
           var data = searchBox.getPlace()
+          objectData.lng = data.geometry.location.lng();
+          objectData.lat = data.geometry.location.lat();
           var adr_address = data.adr_address.split('</span>')
 
           var objectAry = Object.keys(objectData)
@@ -67,6 +69,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
               }
             }
           }
+
           console.log('whatt??');
           console.log(objectData);
       })
@@ -392,6 +395,8 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
               send['city'] = objectData['locality']
               send['street'] = objectData['street-address']
               send['state'] = objectData['region']
+              send['lat'] = objectData['lat']
+              send['lng'] = objectData['lng']
 
               dispatch(submitForm(send));
             }

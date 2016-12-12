@@ -79,6 +79,9 @@
  }
   :global(.carousel-control:hover){
     opacity: 0.8 !important;
+  }
+  :global(#modal> .carousel-control:hover){
+    opacity: 0.8 !important;
     height:400px;
   }
 }

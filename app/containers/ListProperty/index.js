@@ -321,12 +321,12 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                       <h4 className={styles.normalTitle}>Pets</h4>
                       <div className={`radio ${styles.checkbox}`}>
                         <label htmlFor="pets" style={{ marginRight: 10 }}>
-                          <Field name="pets" component="input" type="radio" value="yes" required /> Yes
+                          <Field name="pets" component="input" type="radio" value="true" required /> Yes
                         </label>
                       </div>
                       <div className={`radio ${styles.checkbox}`}>
                         <label htmlFor="pets" style={{ marginRight: 10 }}>
-                          <Field name="pets" component="input" type="radio" value="no" required /> No
+                          <Field name="pets" component="input" type="radio" value="false" required /> No
                         </label>
                       </div>
                     </div>
@@ -334,12 +334,12 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                       <h4 className={styles.normalTitle}>Parking</h4>
                       <div className={`radio ${styles.checkbox}`}>
                         <label htmlFor="parking" style={{ marginRight: 10 }}>
-                          <Field name="parking" component="input" type="radio" value="yes" required /> Yes
+                          <Field name="parking" component="input" type="radio" value="true" required /> Yes
                         </label>
                       </div>
                       <div className={`radio ${styles.checkbox}`}>
                         <label htmlFor="parking" style={{ marginRight: 10 }}>
-                          <Field name="parking" component="input" type="radio" value="no" required /> No
+                          <Field name="parking" component="input" type="radio" value="false" required /> No
                         </label>
                       </div>
                     </div>

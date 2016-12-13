@@ -26,7 +26,7 @@ function ThankView() {
         <br />
         <br />
         <p>
-          Thank you! For Listing us. If your listing is up tp standards it
+          Thank you for listing with us! If your listing passes our approval process, it
           should be posted within the next hour!
         </p>
         <br />

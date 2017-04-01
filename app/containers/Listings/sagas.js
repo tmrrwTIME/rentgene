@@ -98,6 +98,8 @@ function* loadEntries(action) {
     }
   }
 
+  body.size(10000);
+
   console.log(JSON.stringify(body.build('v2')));
 
   const requestURL = `${BASE_URL}/_search`;

@@ -107,17 +107,22 @@ function* submit(action) {
   // const values = Object.assign(action.values, { type: 'rooms' });
   values.type = 'rooms';
   console.log(values);
-  const response = yield call(request, requestURL, buildOptions({ values }));
-  if (!response.err) {
-    if (isEmpty(response.data.errors)) {
-      yield put(submitFormSuccess());
-    } else {
-      yield put(stopSubmit('ListRoomsForm', response.data.errors));
-      yield put(submitFormError(response.data.errors));
-    }
-  } else {
-    yield put(submitFormError(response.err));
-  }
+   try {
+      const response = yield call(request, requestURL, buildOptions({ values }));
+      if (!response.err) {
+        if (isEmpty(response.data.errors)) {
+          yield put(submitFormSuccess());
+        } else {
+          yield put(stopSubmit('ListRoomsForm', response.data.errors));
+          yield put(submitFormError(response.data.errors));
+        }
+      } else {
+        yield put(submitFormError(response.err));
+      }
+   } catch (e) {
+      console.log("PIYUSH  : Inside Exception block of submit()");
+      console.log(e.message);
+   }
 }
 
 export function* watcher() {

@@ -105,7 +105,7 @@ function* submit(action) {
   const requestURL = `${API_URL}/createEntry`;
   const values = action.values;
   // const values = Object.assign(action.values, { type: 'rooms' });
-  values.type = 'rooms'
+  values.type = 'rooms';
   console.log(values);
   const response = yield call(request, requestURL, buildOptions({ values }));
   if (!response.err) {

@@ -206,6 +206,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           className={`${styles.searchBox} form-control input-sm`}
                           name="address"
                         />
+                        <p className="hint">*YOUR ADDRESS WILL NOT BE SHOWN, THIS IS ONLY FOR THE MAP</p>
                         <div className="row">
                           <div className="col-sm-6">
                             <Field

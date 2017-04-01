@@ -131,3 +131,7 @@
     margin: auto;
     vertical-align: middle;
 }
+:global(.hint) {
+  color: green;
+  font-size: 10px;
+}

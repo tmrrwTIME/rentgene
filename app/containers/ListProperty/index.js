@@ -60,6 +60,21 @@ export class ListProperty extends React.Component { // eslint-disable-line react
       }
       console.log(objectData);
     });
+
+    $('#search').on("keyup", function(e) { 
+      var currentAddress = $('#search').val();
+      if(!currentAddress) {
+        console.log(objectData);
+        objectData = {
+          'postal-code':'',
+          'street-address':'',
+          'country-name':'',
+          'locality':'',
+          'region':'',
+        };
+        console.log(objectData);
+      }
+    })
   }
   
   render() {

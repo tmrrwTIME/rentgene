@@ -57,7 +57,22 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
           }
         }
         console.log(objectData);
-    })
+    });
+
+    $('#search').on("keyup", function(e) { 
+      var currentAddress = $('#search').val();
+      if(!currentAddress) {
+        console.log(objectData);
+        objectData = {
+          'postal-code':'',
+          'street-address':'',
+          'country-name':'',
+          'locality':'',
+          'region':'',
+        };
+        console.log(objectData);
+      }
+    });
   }
   render() {
     const { handleSubmit, formValues, handleFileRemove, loading, submitted, changeImage} = this.props;

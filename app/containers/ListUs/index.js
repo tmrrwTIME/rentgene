@@ -19,29 +19,9 @@ const propertyTypes = ['choose', 'Room', 'Apartment', 'House'];
 
 export class ListUs extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount(){
-    function load(url) {
-      return new Promise(function(resolve, reject) {
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.async = true;
-        script.src = url;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-      })
-    }
-
-    load('https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyA1vQdzV7nTSFUe2klAEgwpokdsA9aDpzU')
-      .then(function() {
-        console.log('Loaded!');
-        var input = document.getElementById('search')
-        console.log(input);
-        console.log(google.maps);
-        var searchBox = new google.maps.places.SearchBox(input)
-      })
-      .catch(function(err) {
-        console.error('Something went wrong!', err);
-    })
+    console.log('Loaded!');
+    var input = document.getElementById('search');
+    var searchBox = new google.maps.places.SearchBox(input);
   }
   render() {
     const { handleSubmit, submitted, loading } = this.props;

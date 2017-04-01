@@ -35,47 +35,28 @@ var objectData = {
 
 export class ListRooms extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount(){
-    var this2 = this
-    function load(url) {
-      return new Promise(function(resolve, reject) {
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.async = true;
-        script.src = url;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-      })
-    }
+    var input = document.getElementById('search')
+    searchBox = new google.maps.places.Autocomplete(input, {
+                                                        types: ['address'],
+                                                        componentRestrictions: {country: "us"}
+                                                    })
+    searchBox.addListener('place_changed', ()=>{
+        var data = searchBox.getPlace()
+        objectData.lng = data.geometry.location.lng();
+        objectData.lat = data.geometry.location.lat();
+        var adr_address = data.adr_address.split('</span>')
 
-    load('https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyA1vQdzV7nTSFUe2klAEgwpokdsA9aDpzU')
-    .then(function() {
-      var input = document.getElementById('search')
-      searchBox = new google.maps.places.Autocomplete(input)
-      searchBox.addListener('place_changed', ()=>{
+        var objectAry = Object.keys(objectData)
 
-          var data = searchBox.getPlace()
-          objectData.lng = data.geometry.location.lng();
-          objectData.lat = data.geometry.location.lat();
-          var adr_address = data.adr_address.split('</span>')
+        for (var i = 0; i != adr_address.length; i++){
 
-          var objectAry = Object.keys(objectData)
-
-          for (var i = 0; i != adr_address.length; i++){
-
-            for (var a = 0; a!= objectAry.length; a ++){
-              if (adr_address[i].match(objectAry[a])){
-                objectData[objectAry[a]] = adr_address[i].split('>').pop()
-              }
+          for (var a = 0; a!= objectAry.length; a ++){
+            if (adr_address[i].match(objectAry[a])){
+              objectData[objectAry[a]] = adr_address[i].split('>').pop()
             }
           }
-
-          console.log('whatt??');
-          console.log(objectData);
-      })
-    })
-    .catch(function(err) {
-      console.error('Something went wrong!', err);
+        }
+        console.log(objectData);
     })
   }
   render() {

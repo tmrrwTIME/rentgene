@@ -540,10 +540,13 @@ const mapStateToProps = selectListProperty();
 function mapDispatchToProps(dispatch) {
   return {
     onSubmit: (values) => {
-      const errors = validate(values)
+      const errors = validate(values, objectData)
       if (!isEmpty(errors)) {
         if (errors.images) {
           alert(errors.images); // eslint-disable-line
+        }
+        if (errors.address) {
+          alert(errors.address); // eslint-disable-line
         }
         dispatch(stopSubmit('ListApartmentForm', errors));
         throw new SubmissionError(errors);

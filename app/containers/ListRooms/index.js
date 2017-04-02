@@ -61,7 +61,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
 
     $('#search').on("keyup", function(e) { 
       var currentAddress = $('#search').val();
-      if(!currentAddress) {
+      if(!e.keyCode != 13) {
         console.log(objectData);
         objectData = {
           'postal-code':'',

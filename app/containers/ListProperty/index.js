@@ -74,7 +74,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
         };
         console.log(objectData);
       }
-    })
+    });
   }
   
   render() {
@@ -573,7 +573,7 @@ function mapDispatchToProps(dispatch) {
         send['state'] = objectData['region']
         send['lat'] = objectData['lat']
         send['lng'] = objectData['lng']
-
+        console.log(send);
         dispatch(submitForm(send));
       }
     },

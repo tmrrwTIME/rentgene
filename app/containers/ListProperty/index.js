@@ -61,7 +61,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
       console.log(objectData);
     });
 
-    $('#search').on("keyup", function(e) { 
+    $('#search').on("keyup", function(e) {
       var currentAddress = $('#search').val();
       if(!e.keyCode != 13) {
         console.log(objectData);
@@ -76,7 +76,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
       }
     });
   }
-  
+
   render() {
     const { handleSubmit, formValues, changeImage,handleFileRemove, submitted, loading } = this.props;
     let imagesBlock = '';

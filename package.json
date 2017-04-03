@@ -213,6 +213,7 @@
     "sanitize.css": "4.1.0",
     "stickyfill": "^1.1.1",
     "superagent": "^2.3.0",
+    "uuid": "^3.0.1",
     "warning": "3.0.0",
     "whatwg-fetch": "1.0.0"
   },

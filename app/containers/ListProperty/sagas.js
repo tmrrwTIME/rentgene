@@ -24,6 +24,7 @@ import {
   arrayRemove
 } from 'redux-form';
 import { isEmpty } from 'lodash';
+import uuidV4 from 'uuid/v4';
 
 const API_URL = process.env.RENTGENE_API_URL;
 let swaps = 0;
@@ -59,9 +60,10 @@ export function* changeImage(action){
 export function* uploadFileToS3(action) {
   yield put(loading());
   const file = action.files;
+  const fileName = uuidV4();
   const stateField = 'images';
   let signedUrl = `${API_URL}/getSignedUrl`;
-  signedUrl += `?filename=${stateField}/${file.name}&filetype=${file.type}`;
+  signedUrl += `?filename=${stateField}/${fileName}&filetype=${file.type}`;
   const signedUrlResponse = yield call(request, signedUrl);
 
   if (!signedUrlResponse.err) {
@@ -73,7 +75,7 @@ export function* uploadFileToS3(action) {
       },
       body: file,
     };
-    yield put(arrayPush('ListApartmentForm', stateField, { preview: file.preview, uploading: true, name: file.name }));
+    yield put(arrayPush('ListApartmentForm', stateField, { preview: file.preview, uploading: true, name: fileName }));
     const uploadResponse = yield call(simpleRequest, uploadURL, options);
     if (uploadResponse.data.status === 200) {
       yield put(arrayPop('ListApartmentForm', stateField));
@@ -81,7 +83,7 @@ export function* uploadFileToS3(action) {
         yield put(arrayPop('ListApartmentForm', stateField))
         swaps = 0
       }
-      yield put(arrayUnshift('ListApartmentForm', stateField, { preview: file.preview, uploading: false, name: file.name }));
+      yield put(arrayUnshift('ListApartmentForm', stateField, { preview: file.preview, uploading: false, name: fileName }));
       yield put(stopLoading());
     } else {
       yield put(stopLoading());

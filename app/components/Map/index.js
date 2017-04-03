@@ -11,6 +11,8 @@ import {
   Marker,
 } from 'react-google-maps';
 
+import markerIcon from '../../assets/images/map_marker_20x40.png';
+
 var style = {
   fontSize:10
 }
@@ -27,6 +29,7 @@ const Map = withGoogleMap((props) => (
     {props.markers ? props.markers.map((marker, index) => (
       <Marker
         key={`marker-${index}`}
+        icon={markerIcon}
         {...marker}
         onClick={() => props.handleMarkerClick(marker)}
         // animation={props.animation}

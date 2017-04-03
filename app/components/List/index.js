@@ -30,7 +30,6 @@ class List extends React.Component { // eslint-disable-line
     const stickyfill = Stickyfill(); // eslint-disable-line
     stickyfill.add(document.getElementById('stickyContainer'));
     window.stickyfill = stickyfill;
-    this.refs.map.style.height = `1000px`; // eslint-disable-line
     var images = new Array()
     this.props.entries.map((item)=>{
       images.push(item.images)
@@ -97,7 +96,7 @@ class List extends React.Component { // eslint-disable-line
     }
     return (
       <div>
-        <div className="row">
+        <div className={`row ${styles.mainContainer}`}>
           <div className={`col-xs-12 col-sm-12 col-md-6 ${styles.item}`}>
             <div className={`col-xs-12 col-sm-12`} ref="list">
               {entries ? entries.map((entry, i) => {
@@ -163,7 +162,7 @@ class List extends React.Component { // eslint-disable-line
               }) : ''}
             </div>
           </div>
-          <div className={`col-xs-12 col-sm-12 col-md-6 ${styles.mapContainer}`} ref="map">
+          <div className={`col-xs-12 col-sm-12 col-md-6 ${styles.mapContainer}`}>
             <div id="stickyContainer" className={styles.sticky}>
               <Map
                 containerElement={

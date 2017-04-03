@@ -9,6 +9,18 @@
   margin-right: -15px;
 }
 
+.mainContainer {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.mainContainer > div {
+  flex: 0 0 auto;
+}
+
 .item {
   display: -webkit-box;
   display: -moz-box;

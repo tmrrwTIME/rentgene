@@ -144,6 +144,7 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
     } else {
       entryTitle = entry.title;
     }
+
     return (
       <div className={styles.detailView}>
         <Helmet
@@ -170,7 +171,7 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
                   onSlide={this.onSlide}
                 />
                 <h3>Description</h3>
-                <p>
+                <p className={styles.descriptionText}>
                   {entry.description}
                 </p>
                 {entry.type !== 'rooms' ? <div>

@@ -93,6 +93,18 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
       }
     }
   }
+
+  handleMapLoad = this.handleMapLoad.bind(this);
+  handleMapLoad(map) {
+    if (map) {
+      this.map = map
+      var callback = function(obj){
+        obj.map.panTo({lat:obj.props.entry.lat,lng:obj.props.entry.lng})
+      };
+      window.setTimeout(callback, 1000, this);
+    }
+  }
+
   render() {
     //CustomStyles for modal
     let modalWidth = this.state.modalWidth
@@ -221,6 +233,7 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
                     <div style={{ height: 300 }} />
                   }
                   markers={markers}
+                  onMapLoad={this.handleMapLoad}
                 />
                 <h4>Contact</h4>
                 <div>

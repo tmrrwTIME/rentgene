@@ -19,6 +19,7 @@ var style = {
 
 const Map = withGoogleMap((props) => (
   <GoogleMap
+    ref={props.onMapLoad}
     defaultZoom={10}
     defaultCenter={{ lat: 34.0105057, lng: -118.3540964 }}
     onClick={() => {}}

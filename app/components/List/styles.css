@@ -78,6 +78,7 @@
   width: 100%;
   color: #000;
   margin-bottom: 10px;
+  min-height: 60px;
 }
 
 .sticky {

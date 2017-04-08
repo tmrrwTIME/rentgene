@@ -135,7 +135,3 @@
   color: green;
   font-size: 10px;
 }
-
-:global(div.row.mainContainer__app-components-List-styles__2AZVe div.item__app-components-List-styles__m1XNL div.col-sm-12 div.col-sm-6) {
-    min-height: 370px;
-}

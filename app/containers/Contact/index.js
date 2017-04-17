@@ -32,8 +32,7 @@ export class Contact extends React.Component { // eslint-disable-line react/pref
         "message": this.refs.message.value
       }
     })
-    // .withCredentials()
-    // .accept('application/json')
+
     .end((err, res)=>{
       console.log(err);
       if(err) throw err
@@ -46,7 +45,7 @@ export class Contact extends React.Component { // eslint-disable-line react/pref
         this.refs.message.value = ''
         this.setState({isOk: true})
       }
-    })
+    }) 
   }
   render() {
     const { submitContact, submitted } = this.props;
@@ -55,8 +54,8 @@ export class Contact extends React.Component { // eslint-disable-line react/pref
         <Helmet
           title="Contact"
           meta={[
-            { name: 'description', content: 'Description of Contact' },
-          ]}
+            { name: 'description', content: 'Description of Contact' }
+          ]}  
         />
         <div className="row">
           <div className="col-md-6 col-md-offset-3">
@@ -64,7 +63,7 @@ export class Contact extends React.Component { // eslint-disable-line react/pref
               <h3>Contact Us</h3>
               {this.state.isOk ? <h4>We have received your comments, Thank you.</h4> : ''}
             </div>
-            {/* <form onSubmit={this.submit} action="https://1ylns3kelg.execute-api.us-west-2.amazonaws.com/dev/submitContact" method ="post"> */}
+
             <form action='POST' onSubmit={submitContact}>
               <input ref='name' type="text" className="form-control" placeholder="Name" required /> <br/>
               <input ref='email' type="email" className="form-control" placeholder="Email" required />

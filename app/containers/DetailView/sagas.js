@@ -1,14 +1,14 @@
 import { call, put } from 'redux-saga/effects';
 import { takeEvery } from 'redux-saga';
-import request from 'utils/request';
+import request, { buildOptions } from 'utils/request';
 import { LOAD_ENTRY } from './constants';
 import { SUBMIT_FLAG_LISTING } from './constants';
 import {
   loading,
   loadEntrySuccess,
   loadEntryError,
-  submitFeedbackSuccess,
-  submitFeedbackError,
+  submitFlagListingSuccess,
+  submitFlagListingError,
 } from './actions';
 
 // const API_URL = process.env.RENTGENE_API_URL;
@@ -80,9 +80,10 @@ function* fetchEntry(action) {
 }
 
 function* submit(action) {
+  console.log('submit from sagas')
   yield put(loading());
   const requestURL = `${API_URL}/flagListing`;
-  const response = yield call(request, requestURL, buildOptions({ flagMessage: action.flagMessage }));
+  const response = yield call(request, requestURL, buildOptions({ flagListingMessage: action.flagListingMessage }));
   if (!response.err) {
     yield put(submitFlagListingSuccess());
   } else {
@@ -93,11 +94,13 @@ function* submit(action) {
 function* watcher() {
   yield [
     takeEvery(LOAD_ENTRY, fetchEntry),
+    takeEvery(SUBMIT_FLAG_LISTING, fetchEntry),
   ];
 }
 
 export function* defaultSaga() {
   // TODO: get entry information using url token
+  yield* takeEvery(SUBMIT_FLAG_LISTING, submit);
 }
 // All sagas to be loaded
 export default [

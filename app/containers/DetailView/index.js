@@ -49,7 +49,6 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
     this.onSlide = this.onSlide.bind(this)
     this.onImageLoad = this.onImageLoad.bind(this)
     this.modalSize = this.modalSize.bind(this)
-    this.submit = this.submit.bind(this)
   }
   componentDidMount() {
     this.props.fetchEntry(this.props.routeParams.slug);
@@ -72,12 +71,14 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
   }
   componentWillReceiveProps(nextProps){
     var images = new Array()
-    for (var i = 0; i < nextProps.entry.images.length; i++) {
-      var url_images = `https://s3-us-west-2.amazonaws.com/rentgene-uploads/images/${nextProps.entry.images[i].name}`
-      var src = {original: url_images,thumbnail: url_images}
-      images.push(src)
+    if(nextProps.entry.images){
+      for (var i = 0; i < nextProps.entry.images.length; i++) {
+        var url_images = `https://s3-us-west-2.amazonaws.com/rentgene-uploads/images/${nextProps.entry.images[i].name}`
+        var src = {original: url_images,thumbnail: url_images}
+        images.push(src)
+      }  
     }
-    if (images.length != undefined) {
+    if (images.length > 0) {
       this.setState({images:images})
       this.setState({imagesModal: images})
     }
@@ -116,26 +117,6 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
       };
       window.setTimeout(callback, 1000, this);
     }
-  }
-
-  submit(e){
-    e.preventDefault()
-    request.post(e.target.action)
-    .send({
-      "subject": null,
-      "mail": null,
-      "message": this.refs.message.value
-    })
-    .withCredentials()
-    .accept('application/json')
-    .end((err, res)=>{
-      if(err) throw err
-      console.log(JSON.parse(res.text).code);
-      if (JSON.parse(res.text).code === 'ok') {
-        this.refs.message.value = ''
-        this.setState({isOk: true})
-      }
-    })
   }
 
   render() {
@@ -343,7 +324,7 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
             </div>
           </div>
         </div>
-          <Modal isOpen={this.state.modalIsOpen} style={customStyles}>
+          <Modal contentLabel="Listing Image" isOpen={this.state.modalIsOpen} style={customStyles}>
           <button onClick={this.closeModal}>close</button><br/>
           <div id='modal'>
           <GalleryModal
@@ -355,7 +336,7 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
           </div>
           {/* <img className={styles.modalImg} src={this.state.currentImage} alt="" /> */}
           </Modal>
-          <Modal isOpen={this.state.flagModalIsOpen} style={customStyles}>
+          <Modal contentLabel="Flag Listing" isOpen={this.state.flagModalIsOpen} style={customStyles}>
             <button onClick={this.closeFlagModal}>close</button><br/>
             <div id='flagModal'>
             {!this.flagListingSubmitted ? <form method='POST'>
@@ -384,6 +365,8 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
 
 DetailView.propTypes = {
   handleBack: React.PropTypes.func,
+  submitFlagListing: React.PropTypes.func.isRequired,
+  flagListingSubmitted: React.PropTypes.bool,
 };
 
 

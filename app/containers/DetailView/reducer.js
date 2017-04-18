@@ -18,6 +18,7 @@ const initialState = fromJS({
   loading: false,
   entry: {},
   error: '',
+  flagListingSubmitted: false,
 });
 
 function detailViewReducer(state = initialState, action) {

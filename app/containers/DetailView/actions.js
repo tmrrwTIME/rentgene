@@ -49,6 +49,7 @@ export function loadEntryError(error) {
 }
 
 export function submitFlagListing(flagListingMessage) {
+  console.log('submitFlagListing')
   return {
     type: SUBMIT_FLAG_LISTING,
     flagListingMessage,

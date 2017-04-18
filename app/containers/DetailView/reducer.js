@@ -10,6 +10,8 @@ import {
   LOADING,
   LOAD_ENTRY_SUCCESS,
   LOAD_ENTRY_ERROR,
+  SUBMIT_FLAG_LISTING_SUCCESS,
+  SUBMIT_FLAG_LISTING_ERROR,
 } from './constants';
 
 const initialState = fromJS({
@@ -32,6 +34,12 @@ function detailViewReducer(state = initialState, action) {
       return state
         .set('loading', false)
         .set('error', action.error);
+    case SUBMIT_FLAG_LISTING_SUCCESS:
+      return state
+        .set('flagListingSubmitted', true)
+        .set('loading', false);
+    case SUBMIT_FLAG_LISTING_ERROR:
+      return state.set('loading', false);
     default:
       return state;
   }

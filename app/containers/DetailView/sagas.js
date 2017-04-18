@@ -2,10 +2,13 @@ import { call, put } from 'redux-saga/effects';
 import { takeEvery } from 'redux-saga';
 import request from 'utils/request';
 import { LOAD_ENTRY } from './constants';
+import { SUBMIT_FLAG_LISTING } from './constants';
 import {
   loading,
   loadEntrySuccess,
   loadEntryError,
+  submitFeedbackSuccess,
+  submitFeedbackError,
 } from './actions';
 
 // const API_URL = process.env.RENTGENE_API_URL;
@@ -73,6 +76,17 @@ function* fetchEntry(action) {
     yield put(loadEntrySuccess(entry.data));
   } else {
     yield put(loadEntryError(entry.err));
+  }
+}
+
+function* submit(action) {
+  yield put(loading());
+  const requestURL = `${API_URL}/flagListing`;
+  const response = yield call(request, requestURL, buildOptions({ flagMessage: action.flagMessage }));
+  if (!response.err) {
+    yield put(submitFlagListingSuccess());
+  } else {
+    yield put(submitFlagListingError());
   }
 }
 

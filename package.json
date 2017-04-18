@@ -205,6 +205,7 @@
     "react-router": "2.6.1",
     "react-router-redux": "4.0.5",
     "react-router-scroll": "0.2.1",
+    "react-skylight": "^0.4.1",
     "redux": "3.5.2",
     "redux-form": "^6.0.2",
     "redux-immutable": "3.0.7",

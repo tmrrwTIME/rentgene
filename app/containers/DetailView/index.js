@@ -7,6 +7,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+import SkyLight from 'react-skylight';
 import selectDetailView from './selectors';
 import styles from './styles.css';
 import "../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
@@ -21,6 +22,7 @@ import ImageGallery from 'react-image-gallery'
 import Modal from 'react-modal'
 
 import { goBack } from 'react-router-redux';
+import { submitFlagListing as submit } from './actions';
 import { loadEntry } from './actions';
 import Map from 'components/Map';
 import { Link } from 'react-router';
@@ -31,6 +33,8 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
     super(props)
     this.state = {
       modalIsOpen: false,
+      flagModalIsOpen: false,
+      flagListingSubmitted: false,
       currentIndex: "",
       images: [],
       imagesModal: [],
@@ -40,9 +44,12 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
     }
     this.expandImage = this.expandImage.bind(this)
     this.closeModal = this.closeModal.bind(this)
+    this.closeFlagModal = this.closeFlagModal.bind(this)
+    this.openFlagModal = this.openFlagModal.bind(this)
     this.onSlide = this.onSlide.bind(this)
     this.onImageLoad = this.onImageLoad.bind(this)
     this.modalSize = this.modalSize.bind(this)
+    this.submit = this.submit.bind(this)
   }
   componentDidMount() {
     this.props.fetchEntry(this.props.routeParams.slug);
@@ -56,6 +63,12 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
   }
   closeModal(){
     this.setState({modalIsOpen:false})
+  }
+  closeFlagModal(){
+    this.setState({flagModalIsOpen:false})
+  }
+  openFlagModal(){
+    this.setState({flagModalIsOpen:true}) 
   }
   componentWillReceiveProps(nextProps){
     var images = new Array()
@@ -103,6 +116,26 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
       };
       window.setTimeout(callback, 1000, this);
     }
+  }
+
+  submit(e){
+    e.preventDefault()
+    request.post(e.target.action)
+    .send({
+      "subject": null,
+      "mail": null,
+      "message": this.refs.message.value
+    })
+    .withCredentials()
+    .accept('application/json')
+    .end((err, res)=>{
+      if(err) throw err
+      console.log(JSON.parse(res.text).code);
+      if (JSON.parse(res.text).code === 'ok') {
+        this.refs.message.value = ''
+        this.setState({isOk: true})
+      }
+    })
   }
 
   render() {
@@ -156,6 +189,7 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
     } else {
       entryTitle = entry.title;
     }
+    const { submitFlagListing, flagListingSubmitted } = this.props;
 
     return (
       <div className={styles.detailView}>
@@ -273,6 +307,15 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
                     </div>
                     </div>
                   </a>
+                  <a className="resp-sharing-button__link" onClick={this.openFlagModal} aria-label="">
+                    <div className="resp-sharing-button resp-sharing-button--email resp-sharing-button--small"><div aria-hidden="true" className="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                      <svg version="1.1" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 24 20" enableBackground="new 0 0 24 20">
+                        <polygon style={{"fill":"#CC4B4C"}} points="25,8.5 10,15 10,22 10,1"/>
+                        <path style={{"fill":"#CC4B4C"}} d="M9,0C8.448,0,8,0.447,8,1v3v55c0,0.553,0.448,1,1,1s1-0.447,1-1V4V1C10,0.447,9.552,0,9,0z"/>
+                      </svg>
+                    </div>
+                    </div>
+                  </a>
                   {/* <Link style={{color: 'red', fontWeight:'bold'}} to={'/feedback'}>Problem?</Link> */}
                 </div>
                 <div className={styles.date}>
@@ -312,6 +355,28 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
           </div>
           {/* <img className={styles.modalImg} src={this.state.currentImage} alt="" /> */}
           </Modal>
+          <Modal isOpen={this.state.flagModalIsOpen} style={customStyles}>
+            <button onClick={this.closeFlagModal}>close</button><br/>
+            <div id='flagModal'>
+            {!this.flagListingSubmitted ? <form method='POST'>
+              <textarea
+                id="flagListingMessage"
+                name="flagListingMessage"
+                rows="8"
+                cols="40"
+                className={`form-control ${styles.textarea}`}
+                ref='message'
+                required
+              ></textarea>
+              <button className={`btn btn-xs ${styles.button}`}
+                onClick={submitFlagListing}
+              >
+                Submit
+              </button>
+            </form> : <h1>Thanks</h1>}
+            </div>
+            {/* <img className={styles.modalImg} src={this.state.currentImage} alt="" /> */}
+          </Modal>
       </div>
     );
   }
@@ -331,6 +396,12 @@ function mapDispatchToProps(dispatch) {
     },
     fetchEntry: (entryId) => {
       dispatch(loadEntry(entryId));
+    },
+    submitFlagListing: (e) => {
+      e.preventDefault();
+      const el = document.getElementById('flagListingMessage');
+      const value = el.value;
+      dispatch(submit(value));
     },
     dispatch,
   };

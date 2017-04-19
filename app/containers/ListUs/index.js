@@ -160,7 +160,13 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                             name="whom" 
                             className={`form-control input-sm ${styles.select}`} 
                             component={Select} 
-                            items={['land a lord', 'tenant']} 
+                            validate={(value) => { 
+                              if(!value) return "required"  
+                            }}
+                            firstEmpty
+                            required
+                            value="land a lord"
+                            items={['', 'land a lord', 'tenant']} 
                             />
                         </div>
                         <div className={styles.content}>

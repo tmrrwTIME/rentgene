@@ -13,6 +13,7 @@ import {
   SUBMIT_FLAG_LISTING,
   SUBMIT_FLAG_LISTING_SUCCESS,
   SUBMIT_FLAG_LISTING_ERROR,
+  RESET_SUBMITTED_FLAG
 } from './constants';
 
 export function defaultAction() {
@@ -48,11 +49,12 @@ export function loadEntryError(error) {
   };
 }
 
-export function submitFlagListing(flagListingMessage) {
+export function submitFlagListing(flagListingMessage, listingId) {
   console.log('submitFlagListing')
   return {
     type: SUBMIT_FLAG_LISTING,
     flagListingMessage,
+    listingId
   };
 }
 
@@ -68,3 +70,10 @@ export function submitFlagListingError() {
     type: SUBMIT_FLAG_LISTING_ERROR,
   };
 }
+
+export function resetSubmittedProp() {
+  return {
+    type: RESET_SUBMITTED_FLAG,
+  };
+}
+

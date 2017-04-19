@@ -81,9 +81,12 @@ function* fetchEntry(action) {
 
 function* submit(action) {
   console.log('submit from sagas')
+  console.log(action)
   yield put(loading());
   const requestURL = `${API_URL}/flagListing`;
-  const response = yield call(request, requestURL, buildOptions({ flagListingMessage: action.flagListingMessage }));
+  // const response = yield call(request, requestURL, buildOptions({ listingId: action.listingId, flagListingMessage: action.flagListingMessage }));
+  const response = {}
+  console.log(response)
   if (!response.err) {
     yield put(submitFlagListingSuccess());
   } else {

@@ -12,6 +12,7 @@ import {
   LOAD_ENTRY_ERROR,
   SUBMIT_FLAG_LISTING_SUCCESS,
   SUBMIT_FLAG_LISTING_ERROR,
+  RESET_SUBMITTED_FLAG,
 } from './constants';
 
 const initialState = fromJS({
@@ -30,7 +31,7 @@ function detailViewReducer(state = initialState, action) {
     case LOAD_ENTRY_SUCCESS:
       return state
         .set('loading', false)
-        .set('entry', fromJS(action.entry));
+        .set('entry', fromJS(action.entry))
     case LOAD_ENTRY_ERROR:
       return state
         .set('loading', false)
@@ -38,9 +39,17 @@ function detailViewReducer(state = initialState, action) {
     case SUBMIT_FLAG_LISTING_SUCCESS:
       return state
         .set('flagListingSubmitted', true)
+        // .set('entry', fromJS(action.entry))
         .set('loading', false);
     case SUBMIT_FLAG_LISTING_ERROR:
-      return state.set('loading', false);
+      return state
+        .set('flagListingSubmitted', true)
+        // .set('entry', fromJS(action.entry))
+        .set('loading', false);
+    case RESET_SUBMITTED_FLAG:
+      return state
+        .set('flagListingSubmitted', false)
+        .set('loading', false);
     default:
       return state;
   }

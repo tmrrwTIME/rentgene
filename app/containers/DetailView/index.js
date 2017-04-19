@@ -7,7 +7,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import SkyLight from 'react-skylight';
 import selectDetailView from './selectors';
 import styles from './styles.css';
 import "../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
@@ -22,7 +21,7 @@ import ImageGallery from 'react-image-gallery'
 import Modal from 'react-modal'
 
 import { goBack } from 'react-router-redux';
-import { submitFlagListing as submit } from './actions';
+import { resetSubmittedProp, submitFlagListing as submit } from './actions';
 import { loadEntry } from './actions';
 import Map from 'components/Map';
 import { Link } from 'react-router';
@@ -34,7 +33,6 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
     this.state = {
       modalIsOpen: false,
       flagModalIsOpen: false,
-      flagListingSubmitted: false,
       currentIndex: "",
       images: [],
       imagesModal: [],
@@ -67,6 +65,7 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
     this.setState({flagModalIsOpen:false})
   }
   openFlagModal(){
+    this.props.resetSubmittedProp()
     this.setState({flagModalIsOpen:true}) 
   }
   componentWillReceiveProps(nextProps){
@@ -339,10 +338,10 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
           <Modal contentLabel="Flag Listing" isOpen={this.state.flagModalIsOpen} style={customStyles}>
             <button onClick={this.closeFlagModal}>close</button><br/>
             <div id='flagModal'>
-            {!this.flagListingSubmitted ? <form method='POST'>
+            {!flagListingSubmitted ? <form method='POST'>
               <textarea
                 id="flagListingMessage"
-                name="flagListingMessage"
+                name={this.props.routeParams.slug}
                 rows="8"
                 cols="40"
                 className={`form-control ${styles.textarea}`}
@@ -367,6 +366,7 @@ DetailView.propTypes = {
   handleBack: React.PropTypes.func,
   submitFlagListing: React.PropTypes.func.isRequired,
   flagListingSubmitted: React.PropTypes.bool,
+  resetSubmittedProp: React.PropTypes.func,
 };
 
 
@@ -383,8 +383,12 @@ function mapDispatchToProps(dispatch) {
     submitFlagListing: (e) => {
       e.preventDefault();
       const el = document.getElementById('flagListingMessage');
-      const value = el.value;
-      dispatch(submit(value));
+      const flagMessage = el.value;
+      const listingId = el.name;
+      dispatch(submit(flagMessage, listingId));
+    },
+    resetSubmittedProp: () => {
+      dispatch(resetSubmittedProp())
     },
     dispatch,
   };

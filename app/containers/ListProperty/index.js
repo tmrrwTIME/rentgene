@@ -185,6 +185,9 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                       <h4 className={styles.normalTitle}>Description</h4>
                       <Field
                         type="text"
+                        validate={(value) => { 
+                          if(!value) return "required"  
+                        }}
                         required
                         name="description"
                         className="form-control"
@@ -315,12 +318,28 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                       <h4 className={styles.normalTitle}>Pets</h4>
                       <div className={`radio ${styles.checkbox}`}>
                         <label htmlFor="pets" style={{ marginRight: 10 }}>
-                          <Field name="pets" component="input" type="radio" value="true" required /> Yes
+                          <Field 
+                            name="pets" 
+                            component="input" 
+                            type="radio" 
+                            value="true" 
+                            validate={(value) => { 
+                              if(!value) return "required"  
+                            }}
+                            required /> Yes
                         </label>
                       </div>
                       <div className={`radio ${styles.checkbox}`}>
                         <label htmlFor="pets" style={{ marginRight: 10 }}>
-                          <Field name="pets" component="input" type="radio" value="false" required /> No
+                          <Field 
+                            name="pets" 
+                            component="input" 
+                            type="radio" 
+                            value="false" 
+                            validate={(value) => { 
+                              if(!value) return "required"  
+                            }}
+                            required /> No
                         </label>
                       </div>
                     </div>
@@ -328,12 +347,28 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                       <h4 className={styles.normalTitle}>Parking</h4>
                       <div className={`radio ${styles.checkbox}`}>
                         <label htmlFor="parking" style={{ marginRight: 10 }}>
-                          <Field name="parking" component="input" type="radio" value="true" required /> Yes
+                          <Field 
+                            name="parking" 
+                            component="input" 
+                            type="radio" 
+                            value="true" 
+                            validate={(value) => { 
+                              if(!value) return "required"  
+                            }}
+                            required /> Yes
                         </label>
                       </div>
                       <div className={`radio ${styles.checkbox}`}>
                         <label htmlFor="parking" style={{ marginRight: 10 }}>
-                          <Field name="parking" component="input" type="radio" value="false" required /> No
+                          <Field 
+                            name="parking" 
+                            component="input" 
+                            type="radio" 
+                            value="false"
+                            validate={(value) => { 
+                              if(!value) return "required"  
+                            }} 
+                            required /> No
                         </label>
                       </div>
                     </div>
@@ -347,6 +382,9 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         component={Select}
                         items={['type', 'apartment', 'house']}
                         firstEmpty
+                        validate={(value) => { 
+                          if(!value) return "required"  
+                        }}
                         required
                       />
                       <Field
@@ -360,6 +398,9 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         <div className="col-sm-6">
                           <Field
                             type="number"
+                            validate={(value) => { 
+                              if(!value) return "required"  
+                            }}
                             required
                             name="price"
                             className="form-control input-sm"
@@ -371,12 +412,28 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                           <div>first/last rent?</div>
                           <div className={`radio ${styles.checkbox}`}>
                             <label htmlFor="rentType">
-                              <Field name="rentType" component="input" type="radio" value="yes" required /> Yes
+                              <Field 
+                                name="rentType" 
+                                component="input" 
+                                type="radio" 
+                                value="yes" 
+                                validate={(value) => { 
+                                  if(!value) return "required"  
+                                }}
+                                required /> Yes
                             </label>
                           </div>
                           <div className={`checkbox ${styles.checkbox}`}>
                             <label htmlFor="rentType">
-                              <Field name="rentType" component="input" type="radio" value="no" required /> No
+                              <Field 
+                                name="rentType" 
+                                component="input" 
+                                type="radio" 
+                                value="no" 
+                                validate={(value) => { 
+                                  if(!value) return "required"  
+                                }}
+                                required /> No
                             </label>
                           </div>
                         </div>
@@ -386,6 +443,9 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         <div className="col-sm-6">
                           <Field
                             type="number"
+                            validate={(value) => { 
+                              if(!value) return "required"  
+                            }}
                             required
                             name="squareFeet"
                             className="form-control input-sm"
@@ -402,6 +462,9 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         <div className={styles.title} style={{ float: 'left' }}>Name</div>
                         <Field
                           type="text"
+                          validate={(value) => { 
+                            if(!value) return "required"  
+                          }}
                           required
                           name="contactName"
                           className="form-control input-sm"
@@ -421,6 +484,9 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         <div className={styles.title} style={{ float: 'left' }}>Phone</div>
                         <Field
                           type="text"
+                          validate={(value) => { 
+                            if(!value) return "required"  
+                          }}
                           required
                           name="phone"
                           className="form-control input-sm"
@@ -438,6 +504,9 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         component={Select}
                         items={months}
                         firstEmpty
+                        validate={(value) => { 
+                          if(!value) return "required"  
+                        }}
                         required
                       />
                       <Field
@@ -446,6 +515,9 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         component={Select}
                         items={days}
                         firstEmpty
+                        validate={(value) => { 
+                          if(!value) return "required"  
+                        }}
                         required
                       />
                     </div>
@@ -455,6 +527,9 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         <div className="col-sm-6">
                           <Field
                             type="number"
+                            validate={(value) => { 
+                              if(!value) return "required"  
+                            }}
                             required
                             name="amount"
                             className="form-control input-sm"
@@ -469,6 +544,9 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         name="beds"
                         className={`form-control input-sm ${styles.select}`}
                         component={Select} items={beds}
+                        validate={(value) => { 
+                          if(!value) return "required"  
+                        }}
                         required
                       />
                       <span style={{ float: 'left', marginRight: 5 }}>Baths</span>
@@ -477,6 +555,9 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         className={`form-control input-sm ${styles.select}`}
                         component={Select}
                         items={beds}
+                        validate={(value) => { 
+                          if(!value) return "required"  
+                        }}
                         required
                       />
                     </div>
@@ -515,6 +596,9 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                             component={Select}
                             items={leaseDuration}
                             firstEmpty
+                            validate={(value) => { 
+                              if(!value) return "required"  
+                            }}
                             required
                           />
                         </div>

@@ -27,6 +27,7 @@ function* submit(action) {
   const requestURL = `${API_URL}/createEntry`;
   const values = Object.assign(action.values, { type: 'us' });
   const response = yield call(request, requestURL, buildOptions({ values }));
+  // const response = {err: "error"};
   if (!response.err) {
     if (isEmpty(response.data.errors)) {
       yield put(submitFormSuccess());

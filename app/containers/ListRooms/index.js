@@ -191,6 +191,9 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                         <h4 className={styles.normalTitle}>Description</h4>
                         <Field
                           type="text"
+                          validate={(value) => { 
+                            if(!value) return "required"  
+                          }}
                           required
                           name="description"
                           className="form-control"
@@ -206,6 +209,9 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                       <div className={styles.content}>
                         <Field
                           type="text"
+                          validate={(value) => { 
+                            if(!value) return "required"  
+                          }}
                           required
                           name="title"
                           className="form-control input-sm"
@@ -226,6 +232,9 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           <div className="col-sm-6">
                             <Field
                               type="number"
+                              validate={(value) => { 
+                                if(!value) return "required"  
+                              }}
                               required
                               name="price"
                               className="form-control input-sm"
@@ -237,12 +246,29 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                             <div>first/last rent?</div>
                             <div className={`radio ${styles.checkbox}`}>
                               <label htmlFor="rentType">
-                                <Field name="rentType" component="input" type="radio" value="yes" required /> Yes
+                                <Field 
+                                  name="rentType" 
+                                  component="input" 
+                                  type="radio" 
+                                  value="yes" 
+                                  validate={(value) => { 
+                                    if(!value) return "required"  
+                                  }}
+                                  required 
+                                /> Yes
                               </label>
                             </div>
                             <div className={`checkbox ${styles.checkbox}`}>
                               <label htmlFor="rentType">
-                                <Field name="rentType" component="input" type="radio" value="no" required /> No
+                                <Field 
+                                  name="rentType" 
+                                  component="input" 
+                                  type="radio" 
+                                  value="no"
+                                  validate={(value) => { 
+                                    if(!value) return "required"  
+                                  }} 
+                                  required /> No
                               </label>
                             </div>
                           </div>
@@ -253,7 +279,9 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           <div className="col-sm-6">
                             <Field
                               type="number"
-                              required
+                              validate={(value) => { 
+                                if(!value) return "required"  
+                              }}
                               name="amount"
                               className="form-control input-sm"
                               placeholder="Amount"
@@ -269,6 +297,9 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           <div className={styles.title} style={{ float: 'left' }}>Name</div>
                           <Field
                             type="text"
+                            validate={(value) => { 
+                              if(!value) return "required"  
+                            }}
                             required
                             name="contactName"
                             className="form-control input-sm"
@@ -288,6 +319,9 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           <div className={styles.title} style={{ float: 'left' }}>Phone</div>
                           <Field
                             type="text"
+                            validate={(value) => { 
+                              if(!value) return "required"  
+                            }}
                             required
                             name="phone"
                             className="form-control input-sm"
@@ -304,6 +338,9 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           component={Select}
                           items={months}
                           firstEmpty
+                          validate={(value) => { 
+                            if(!value || value == "Months") return "required"  
+                          }}
                           required
                         />
                         <Field
@@ -312,6 +349,9 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           component={Select}
                           items={days}
                           firstEmpty
+                          validate={(value) => { 
+                            if(!value || value == "Day") return "required"  
+                          }}
                           required
                         />
                       </div>
@@ -321,12 +361,28 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                             <h4 className={styles.normalTitle}>Utilities <small>incl</small></h4>
                             <div className={`radio ${styles.checkbox}`}>
                               <label htmlFor="rentType">
-                                <Field name="utilitiesIncluded" component="input" type="radio" value="yes" required /> Yes
+                                <Field 
+                                  name="utilitiesIncluded" 
+                                  component="input" 
+                                  type="radio" 
+                                  value="yes"
+                                  validate={(value) => { 
+                                    if(!value) return "required"  
+                                  }} 
+                                  required /> Yes
                               </label>
                             </div>
                             <div className={`checkbox ${styles.checkbox}`}>
                               <label htmlFor="rentType">
-                                <Field name="utilitiesIncluded" component="input" type="radio" value="no" required /> No
+                                <Field 
+                                  name="utilitiesIncluded" 
+                                  component="input" 
+                                  type="radio" 
+                                  value="no" 
+                                  validate={(value) => { 
+                                    if(!value) return "required"  
+                                  }}
+                                  required /> No
                               </label>
                             </div>
                           </div>
@@ -340,6 +396,9 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                               component={Select}
                               items={leaseDuration}
                               firstEmpty
+                              validate={(value) => { 
+                                if(!value) return "required"  
+                              }}
                               required
                             />
                           </div>

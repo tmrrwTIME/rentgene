@@ -69,6 +69,9 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                         className={`form-control input-sm ${styles.select}`}
                         component={Select}
                         items={propertyTypes}
+                        validate={(value) => { 
+                          if(!value) return "required"  
+                        }}
                         required
                         firstEmpty
                       />
@@ -95,6 +98,9 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                           <div>
                             <Field
                               type="text"
+                              validate={(value) => { 
+                                if(!value) return "required"  
+                              }}
                               required
                               name="first"
                               className="form-control input-sm"
@@ -104,6 +110,9 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                             />
                             <Field
                               type="text"
+                              validate={(value) => { 
+                                if(!value) return "required"  
+                              }}
                               required
                               name="last"
                               className="form-control input-sm"
@@ -119,6 +128,9 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                           </div>
                           <Field
                             type="text"
+                            validate={(value) => { 
+                              if(!value) return "required"  
+                            }}
                             required
                             name="mobile"
                             className="form-control input-sm"
@@ -131,6 +143,9 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                           </div>
                           <Field
                             type="email"
+                            validate={(value) => { 
+                              if(!value) return "required"  
+                            }}
                             required
                             name="email"
                             className="form-control input-sm"
@@ -141,7 +156,12 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                           <div>
                             are you a
                           </div>
-                          <Field name="whom" className={`form-control input-sm ${styles.select}`} component={Select} items={['land a lord', 'tenant']} />
+                          <Field 
+                            name="whom" 
+                            className={`form-control input-sm ${styles.select}`} 
+                            component={Select} 
+                            items={['land a lord', 'tenant']} 
+                            />
                         </div>
                         <div className={styles.content}>
                           <div>
@@ -194,6 +214,13 @@ const listUs = reduxForm({
     city: 'Los Angeles',
     state: 'CA',
   },
+  // validate: values => {
+  //   const errors = {}
+  //   if(!values.email){
+  //     errors.email = ['required']
+  //   }
+  //   return errors
+  // }
 })(ListUs);
 
 export default connect(mapStateToProps, mapDispatchToProps)(listUs);

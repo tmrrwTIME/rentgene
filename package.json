@@ -193,7 +193,7 @@
     "querystring": "^0.2.0",
     "rc-collapse": "^1.6.9",
     "react": "15.3.0",
-    "react-bootstrap": "^0.30.8",
+    "react-bootstrap": "^0.30.9",
     "react-dom": "15.3.0",
     "react-dropzone": "^3.6.0",
     "react-ga": "^2.2.0",

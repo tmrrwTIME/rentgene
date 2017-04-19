@@ -19,6 +19,8 @@ import ImageGallery from 'react-image-gallery'
 
 //Import modal Component
 import Modal from 'react-modal'
+import { Popover, OverlayTrigger } from 'react-bootstrap';
+
 
 import { goBack } from 'react-router-redux';
 import { resetSubmittedProp, submitFlagListing as submit } from './actions';
@@ -42,7 +44,6 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
     }
     this.expandImage = this.expandImage.bind(this)
     this.closeModal = this.closeModal.bind(this)
-    this.closeFlagModal = this.closeFlagModal.bind(this)
     this.openFlagModal = this.openFlagModal.bind(this)
     this.onSlide = this.onSlide.bind(this)
     this.onImageLoad = this.onImageLoad.bind(this)
@@ -61,12 +62,8 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
   closeModal(){
     this.setState({modalIsOpen:false})
   }
-  closeFlagModal(){
-    this.setState({flagModalIsOpen:false})
-  }
   openFlagModal(){
     this.props.resetSubmittedProp()
-    this.setState({flagModalIsOpen:true}) 
   }
   componentWillReceiveProps(nextProps){
     var images = new Array()
@@ -118,6 +115,8 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
     }
   }
 
+
+
   render() {
     //CustomStyles for modal
     let modalWidth = this.state.modalWidth
@@ -135,7 +134,7 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
       content : {
         transition                 : '1s',
         position                   : 'absolute',
-        top                        : '40px',
+        top                        : window.innerHeight/2 - modalHeight/2,
         left                       : window.innerWidth/2 - modalWidth/2,
         right                      : '40px',
         bottom                     : '40px',
@@ -170,6 +169,30 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
       entryTitle = entry.title;
     }
     const { submitFlagListing, flagListingSubmitted } = this.props;
+
+    const popoverTop = (
+      <Popover id="popover-positioned-top">
+        <div id='flagModal' style={{height: '250px', width: '200px'}}>
+        {!flagListingSubmitted ? <form method='POST'>
+          <textarea
+            id="flagListingMessage"
+            name={this.props.routeParams.slug}
+            rows="8"
+            cols="40"
+            className={`form-control ${styles.textarea}`}
+            ref='message'
+            placeholder="What's the problem with this listing?"
+            required
+          ></textarea>
+          <button className={`btn btn-xs ${styles.button}`}
+            onClick={submitFlagListing}
+          >
+            Submit
+          </button>
+        </form> : <p>Thank you! We will verify this listing shortly.</p>}
+        </div>
+      </Popover>
+    );
 
     return (
       <div className={styles.detailView}>
@@ -287,15 +310,19 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
                     </div>
                     </div>
                   </a>
-                  <a className="resp-sharing-button__link" onClick={this.openFlagModal} aria-label="">
-                    <div className="resp-sharing-button resp-sharing-button--email resp-sharing-button--small"><div aria-hidden="true" className="resp-sharing-button__icon resp-sharing-button__icon--solid">
-                      <svg version="1.1" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 24 20" enableBackground="new 0 0 24 20">
-                        <polygon style={{"fill":"#CC4B4C"}} points="25,8.5 10,15 10,22 10,1"/>
-                        <path style={{"fill":"#CC4B4C"}} d="M9,0C8.448,0,8,0.447,8,1v3v55c0,0.553,0.448,1,1,1s1-0.447,1-1V4V1C10,0.447,9.552,0,9,0z"/>
-                      </svg>
-                    </div>
-                    </div>
-                  </a>
+                  <OverlayTrigger trigger="click" rootClose placement="top" overlay={popoverTop}>
+                    <a className="resp-sharing-button__link" onClick={this.openFlagModal} aria-label="">
+                      <div className="resp-sharing-button resp-sharing-button--email resp-sharing-button--small">
+                        <div aria-hidden="true" className="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                          <svg version="1.1" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 24 20" enableBackground="new 0 0 24 20">
+                            <polygon style={{"fill":"#CC4B4C"}} points="25,8.5 10,15 10,22 10,1"/>
+                            <path style={{"fill":"#CC4B4C"}} d="M9,0C8.448,0,8,0.447,8,1v3v55c0,0.553,0.448,1,1,1s1-0.447,1-1V4V1C10,0.447,9.552,0,9,0z"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </a>
+                  </OverlayTrigger>
+
                   {/* <Link style={{color: 'red', fontWeight:'bold'}} to={'/feedback'}>Problem?</Link> */}
                 </div>
                 <div className={styles.date}>
@@ -334,28 +361,6 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
           />
           </div>
           {/* <img className={styles.modalImg} src={this.state.currentImage} alt="" /> */}
-          </Modal>
-          <Modal contentLabel="Flag Listing" isOpen={this.state.flagModalIsOpen} style={customStyles}>
-            <button onClick={this.closeFlagModal}>close</button><br/>
-            <div id='flagModal'>
-            {!flagListingSubmitted ? <form method='POST'>
-              <textarea
-                id="flagListingMessage"
-                name={this.props.routeParams.slug}
-                rows="8"
-                cols="40"
-                className={`form-control ${styles.textarea}`}
-                ref='message'
-                required
-              ></textarea>
-              <button className={`btn btn-xs ${styles.button}`}
-                onClick={submitFlagListing}
-              >
-                Submit
-              </button>
-            </form> : <h1>Thanks</h1>}
-            </div>
-            {/* <img className={styles.modalImg} src={this.state.currentImage} alt="" /> */}
           </Modal>
       </div>
     );

@@ -84,8 +84,8 @@ function* submit(action) {
   console.log(action)
   yield put(loading());
   const requestURL = `${API_URL}/flagListing`;
-  // const response = yield call(request, requestURL, buildOptions({ listingId: action.listingId, flagListingMessage: action.flagListingMessage }));
-  const response = {}
+  const response = yield call(request, requestURL, buildOptions({ listingId: action.listingId, flagListingMessage: action.flagListingMessage }));
+  // const response = {}
   console.log(response)
   if (!response.err) {
     yield put(submitFlagListingSuccess());
@@ -94,19 +94,15 @@ function* submit(action) {
   }
 }
 
-function* watcher() {
+export function* watcher() {
   yield [
     takeEvery(LOAD_ENTRY, fetchEntry),
-    takeEvery(SUBMIT_FLAG_LISTING, fetchEntry),
+    takeEvery(SUBMIT_FLAG_LISTING, submit),
   ];
 }
 
-export function* defaultSaga() {
-  // TODO: get entry information using url token
-  yield* takeEvery(SUBMIT_FLAG_LISTING, submit);
-}
+
 // All sagas to be loaded
 export default [
-  defaultSaga,
   watcher,
 ];

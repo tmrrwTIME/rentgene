@@ -24,8 +24,9 @@ export function* defaultSaga() {
 
 function* submit(action) {
   yield put(loading());
-  const requestURL = `${API_URL}/createEntry`;
+  const requestURL = `${API_URL}/haveUsCome`;
   const values = Object.assign(action.values, { type: 'us' });
+  console.log(values);
   const response = yield call(request, requestURL, buildOptions({ values }));
   if (!response.err) {
     if (isEmpty(response.data.errors)) {

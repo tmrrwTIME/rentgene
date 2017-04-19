@@ -6,10 +6,10 @@
 
 import {
   DEFAULT_ACTION,
-  SUBMIT_FEEDBACK,
+  SUBMIT_CONTACT,
   LOADING,
-  SUBMIT_FEEDBACK_SUCCESS,
-  SUBMIT_FEEDBACK_ERROR,
+  SUBMIT_CONTACT_SUCCESS,
+  SUBMIT_CONTACT_ERROR,
 } from './constants';
 
 export function defaultAction() {
@@ -17,9 +17,30 @@ export function defaultAction() {
     type: DEFAULT_ACTION,
   };
 }
-export function submitContact(feedback) {
+
+export function loading() {
   return {
-    type: SUBMIT_FEEDBACK,
-    feedback,
+    type: LOADING,
   };
+}
+
+export function submitContact(message, email, username) {
+  return {
+    type: SUBMIT_CONTACT,
+    message,
+    email,
+    username
+  };
+}
+
+export function submitContactSuccess(){
+  return {
+    type: SUBMIT_CONTACT_SUCCESS
+  };
+}
+
+export function submitContactError(){
+  return {
+    type: SUBMIT_CONTACT_ERROR
+  }
 }

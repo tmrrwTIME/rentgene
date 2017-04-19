@@ -8,8 +8,8 @@ import { fromJS } from 'immutable';
 import {
   DEFAULT_ACTION,
   LOADING,
-  SUBMIT_FEEDBACK_SUCCESS,
-  SUBMIT_FEEDBACK_ERROR,
+  SUBMIT_CONTACT_SUCCESS,
+  SUBMIT_CONTACT_ERROR,
 } from './constants';
 
 const initialState = fromJS({
@@ -23,11 +23,11 @@ function contactReducer(state = initialState, action) {
       return state;
     case LOADING:
       return state.set('loading', true);
-    case SUBMIT_FEEDBACK_SUCCESS:
+    case SUBMIT_CONTACT_SUCCESS:
       return state
         .set('submitted', true)
         .set('loading', false);
-    case SUBMIT_FEEDBACK_ERROR:
+    case SUBMIT_CONTACT_ERROR:
       return state.set('loading', false);
     default:
       return state;

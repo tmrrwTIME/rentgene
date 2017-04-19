@@ -213,14 +213,7 @@ const listUs = reduxForm({
   initialValues: {
     city: 'Los Angeles',
     state: 'CA',
-  },
-  // validate: values => {
-  //   const errors = {}
-  //   if(!values.email){
-  //     errors.email = ['required']
-  //   }
-  //   return errors
-  // }
+  }
 })(ListUs);
 
 export default connect(mapStateToProps, mapDispatchToProps)(listUs);

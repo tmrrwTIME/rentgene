@@ -282,11 +282,11 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                               validate={(value) => { 
                                 if(!value) return "required"  
                               }}
+                              required
                               name="amount"
                               className="form-control input-sm"
                               placeholder="Amount"
                               component={Input}
-                              required
                             />
                           </div>
                         </div>

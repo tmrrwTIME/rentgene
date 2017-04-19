@@ -21,6 +21,11 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import LanguageProvider from 'containers/LanguageProvider';
 import configureStore from './store';
 
+import ReactGA from 'react-ga';
+ReactGA.initialize('UA-88360688-1', {
+  // debug: true,
+});
+
 // Import i18n messages
 import { translationMessages } from './i18n';
 
@@ -50,6 +55,11 @@ const rootRoute = {
   childRoutes: createRoutes(store),
 };
 
+function logPageView() {
+  ReactGA.set({ page: window.location.pathname });
+  ReactGA.pageview(window.location.pathname);
+}
+
 
 
 const render = (translatedMessages) => {
@@ -59,6 +69,7 @@ const render = (translatedMessages) => {
         <Router
           history={history}
           routes={rootRoute}
+          onUpdate={logPageView}
         />
       </LanguageProvider>
     </Provider>,

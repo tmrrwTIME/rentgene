@@ -310,8 +310,8 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
                     </div>
                     </div>
                   </a>
-                  <OverlayTrigger trigger="click" rootClose placement="top" overlay={popoverTop}>
-                    <a className="resp-sharing-button__link" onClick={this.openFlagModal} aria-label="">
+                  <OverlayTrigger className="resp-sharing-button__link" trigger="click" rootClose placement="top" overlay={popoverTop}>
+                    <a className="resp-sharing-button__link" href="javascript:void(0)" onClick={this.openFlagModal} aria-label="">
                       <div className="resp-sharing-button resp-sharing-button--email resp-sharing-button--small">
                         <div aria-hidden="true" className="resp-sharing-button__icon resp-sharing-button__icon--solid">
                           <svg version="1.1" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 24 20" enableBackground="new 0 0 24 20">

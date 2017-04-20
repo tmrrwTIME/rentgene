@@ -26,17 +26,11 @@ function* submit(action) {
   yield put(loading());
   const requestURL = `${API_URL}/haveUsCome`;
   const values = Object.assign(action.values, { type: 'us' });
-  console.log(values);
   const response = yield call(request, requestURL, buildOptions({ values }));
   if (!response.err) {
-    if (isEmpty(response.data.errors)) {
-      yield put(submitFormSuccess());
-    } else {
-      yield put(stopSubmit('ListUsForm', response.data.errors));
-      yield put(submitFormError(response.data.errors));
-    }
+    yield put(submitFormSuccess());
   } else {
-    yield put(submitFormError(response.err));
+    yield put(submitFormError());
   }
 }
 

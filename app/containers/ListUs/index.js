@@ -81,8 +81,9 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                         Address
                       </div>
                       <div>
-                        <input
-                          type='text'
+                        <Field
+                          name="address"
+                          component={Input}
                           id='search'
                           placeholder='address'
                           className={`${styles.searchBox} form-control input-sm`}
@@ -208,7 +209,10 @@ const mapStateToProps = selectListUs();
 function mapDispatchToProps(dispatch) {
   return {
     onSubmit: (values) => {
-      dispatch(submitForm(values.toJS()));
+      var input = document.getElementById('search');
+      const valuesToSend = values.toJS();
+      valuesToSend.address = input.value
+      dispatch(submitForm(valuesToSend));
     },
     dispatch,
   };

@@ -35,15 +35,17 @@ export class Contact extends React.Component { // eslint-disable-line react/pref
           <div className="col-md-6 col-md-offset-3">
             <div className={styles.text}>
               <h3>Contact Us</h3>
-              {submitted ? <h4>We have received your comments, Thank you.</h4> : ''}
+              
             </div>
+            {submitted ? <h4>We have received your comments, Thank you.</h4> : 
+              <form action='POST' onSubmit={submitContact}>
+                <input ref='name' id="username" type="text" className="form-control" placeholder="Name" required /> <br/>
+                <input ref='email' id="email" type="email" className="form-control" placeholder="Email" required />
+                <textarea ref='message' id='message' className={`${styles.textarea} form-control`} rows="8" cols="40" required></textarea>
+                <button className="btn btn-xs">Submit</button>
+              </form>
+            }
 
-            <form action='POST' onSubmit={submitContact}>
-              <input ref='name' id="username" type="text" className="form-control" placeholder="Name" required /> <br/>
-              <input ref='email' id="email" type="email" className="form-control" placeholder="Email" required />
-              <textarea ref='message' id='message' className={`${styles.textarea} form-control`} rows="8" cols="40" required></textarea>
-              <button className="btn btn-xs">Submit</button>
-            </form>
           </div>
         </div>
       </div>

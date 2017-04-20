@@ -42,7 +42,7 @@
     "test:ie": "npm run test -- --browsers IE",
     "coveralls": "cat ./coverage/lcov/lcov.info | coveralls",
     "deployBuildToS3Dev": "aws s3 sync ./build s3://rentgene-dev --profile dana --acl public-read",
-    "deployBuildToS3Prod": "aws s3 sync ./build s3://rentgene-prod --profile dana --acl public-read"
+    "deployBuildToS3Prod": "aws s3 sync ./build s3://rentgene-april-2 --profile dana --acl public-read"
   },
   "lint-staged": {
     "*.js": "lint:eslint",

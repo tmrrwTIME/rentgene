@@ -27,6 +27,7 @@ class List extends React.Component { // eslint-disable-line
     };
   }
   componentDidMount() {
+    console.log("List componentDidMount")
     const stickyfill = Stickyfill(); // eslint-disable-line
     stickyfill.add(document.getElementById('stickyContainer'));
     window.stickyfill = stickyfill;
@@ -49,6 +50,32 @@ class List extends React.Component { // eslint-disable-line
       }
     });
     this.setState({markers: markers})
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("List: componentWillReceiveProps")
+    console.log(nextProps)
+    var images = new Array()
+    nextProps.entries.map((item)=>{
+      images.push(item.images)
+    })
+    this.setState({images: images})
+    const markers = [];
+    nextProps.entries.forEach(entry => {
+      if (entry.lat && entry.lng) {
+        markers.push({
+          position: {
+            lat: entry.lat,
+            lng: entry.lng,
+          },
+          key: entry.entryId,
+          defaultAnimation: 2,
+        });
+      }
+    });
+    this.setState({markers: markers})
+    console.log(this.state)
+    return true
   }
 
   onMouseOver(e, markers) {
@@ -87,6 +114,7 @@ class List extends React.Component { // eslint-disable-line
   render() {
     var animation
     const { entries } = this.props;
+    // console.log(entries.length)
     var marks = this.state.markers
     var column
     if (screen.width >= 480 && screen.width <= 640) {
@@ -141,7 +169,7 @@ class List extends React.Component { // eslint-disable-line
                         <img src={SizeImage} className={styles.size} alt="" /> */}
                         <Gallery
                           id={`gallery${i}`}
-                          images={this.state.images[i]}
+                          images={entry.images}
                           to={`/v/${entry.entryId}`}
                         />
                       {/*</div>*/}

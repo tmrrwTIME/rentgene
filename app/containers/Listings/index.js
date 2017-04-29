@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import selectListings from './selectors';
@@ -18,7 +19,7 @@ import serialize from 'form-serialize';
 import qs from 'querystring';
 import { isEmpty } from 'lodash';
 
-import { loadEntries } from './actions';
+import { loadEntries, loadMore } from './actions';
 
 export class Listings extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -29,12 +30,38 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
     this.handleRefine = this.handleRefine.bind(this);
     this.clear = this.clear.bind(this);
     this.toggleFilters = this.toggleFilters.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
     this.state = {
       listType: this.props.routeParams.type,
       sortBy: 'newest',
       filters: {},
-      animation:'contract'
+      animation:'contract',
+      from: 0,
+      size: 10
     };
+  }
+
+  handleScroll() {
+    // console.log("handleScroll")
+    // console.log(this)
+    const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+    const body = document.body;
+    const html = document.documentElement;
+    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
+    const windowBottom = windowHeight + window.pageYOffset;
+    // console.log(this.props.entries);
+    // console.log("loadingMore: " + this.props.loadingMore + "   entries.length" + this.props.entries.length);
+    if (windowBottom >= docHeight - 200 && this.props.loadingMore == false) {
+      console.log("bottom")
+      console.log((this.state.from + this.state.size + 1) + "  -  "+this.props.totalEntries)
+      if(this.state.from + this.state.size + 1 <= this.props.totalEntries){
+        this.setState({ from: this.state.from + this.state.size }, () => {
+          this.props.loadMore(this.state);
+        });
+      }
+      
+
+    }
   }
 
   componentWillMount() {
@@ -45,11 +72,17 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
   }
 
   componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll);
     this.props.loadEntries(this.state);
 
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+
   componentWillReceiveProps(nextProps) {
+    console.log("Listings: componentWillReceiveProps")
     if (this.props.routeParams.type !== nextProps.routeParams.type) {
       this.setState({ listType: nextProps.routeParams.type }, () => {
         this.props.loadEntries(this.state);
@@ -59,6 +92,7 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
   }
 
   search() {
+    console.log("handleScroll")
     const text = document.getElementById('textSearch').value;
     if (text.length) {
       this.setState({ text }, () => {
@@ -95,6 +129,8 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
     this.props.loadEntries(this.state);
   }
 
+
+
   clear() {
     this.setState({
       filters: {},
@@ -111,8 +147,9 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
       this.setState({animation:'contract'})
     }
   }
+
   render() {
-    const { loading, entries } = this.props;
+    const { loading, entries, loadingMore, totalEntries } = this.props;
     return (
       <div className={styles.listings}>
         <Helmet
@@ -137,8 +174,8 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
           toggleFilters={this.toggleFilters}
         />
         <button onClick={this.clear}>Clear filters</button>
-        <p>{entries.length} results.</p>
-        {loading ? <Loader /> : <List entries={entries} />}
+        <p>{totalEntries} results.</p>
+        {loading ? <Loader /> : <List ref="list" entries={entries} />}
       </div>
     );
   }
@@ -146,19 +183,28 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
 
 Listings.propTypes = {
   loading: React.PropTypes.bool,
+  loadingMore: React.PropTypes.bool,
   entries: React.PropTypes.array,
+  totalEntries: React.PropTypes.number,
   type: React.PropTypes.string,
   loadEntries: React.PropTypes.func,
+  loadMore: React.PropTypes.func,
   routeParams: React.PropTypes.object,
   handleRefine: React.PropTypes.func,
 };
 
 const mapStateToProps = selectListings();
+// const mapStateToProps = (state) => {
+//   return state.toJS().listings
+// }
 
 function mapDispatchToProps(dispatch) {
   return {
     loadEntries: (type) => {
       dispatch(loadEntries(type));
+    },
+    loadMore: (type) => {
+      dispatch(loadMore(type));
     },
     handleRefine: (e) => {
       const form = document.querySelector('form');

@@ -2,19 +2,57 @@ import { put, call } from 'redux-saga/effects';
 import { takeEvery } from 'redux-saga';
 import {
   loading,
+  loadingMore,
   entriesLoaded,
+  entriesLoadedMore,
   entriesLoadError,
 } from './actions';
 import request, { buildOptions } from 'utils/request';
-import { LOAD_ENTRIES } from './constants';
+import { LOAD_ENTRIES, LOAD_MORE } from './constants';
 import Bodybuilder from 'bodybuilder';
 const BASE_URL = 'https://search-rentgene-yu3r6zygjgykk5mnhc5wffnl2u.us-west-2.es.amazonaws.com/entries/entry';
+const requestURL = `${BASE_URL}/_search`;
 
 function* loadEntries(action) {
+  yield put(loading());
+  const body = getElasticSearchBody(action, 'entries');
+  console.log(body)
+  const entries = yield call(request, requestURL, body);
+  if (!entries.err) {
+    let hits = [];
+    if (entries.data.hits.total) {
+      hits = entries.data.hits.hits.map(hit => hit._source); // eslint-disable-line
+    }
+    console.log(hits)
+    yield put(entriesLoaded(hits, entries.data.hits.total));
+    
+  } else {
+    yield put(entriesLoadError(entries.err));
+  }
+}
+
+
+function* loadMore(action){
+  yield put(loadingMore());
+  const body = getElasticSearchBody(action, 'more');
+  const entries = yield call(request, requestURL, body);
+  if (!entries.err) {
+    let hits = [];
+    if (entries.data.hits.total) {
+      hits = entries.data.hits.hits.map((hit) => {
+        return hit._source
+      }); // eslint-disable-line
+    }
+    yield put(entriesLoadedMore(hits));
+  } else {
+    yield put(entriesLoadError(entries.err));
+  }
+}
+
+const getElasticSearchBody = function (action, type){
   const data = action.data;
   const body = new Bodybuilder();
   body.filter('term', 'type', data.listType);
-
   if (data.text) {
     body.query(
       'multiMatch',
@@ -22,7 +60,6 @@ function* loadEntries(action) {
       data.text
     );
   }
-
   if (data.sortBy) {
     if (data.sortBy === 'priceLowToHigh') {
       body.sort('price', 'asc');
@@ -32,7 +69,6 @@ function* loadEntries(action) {
       body.sort('createdAt', 'desc');
     }
   }
-
   if (Object.keys(data.filters)) {
     Object.keys(data.filters).map((key) => { // eslint-disable-line
       if (['beds', 'baths'].indexOf(key) !== -1) {
@@ -98,28 +134,22 @@ function* loadEntries(action) {
     }
   }
 
-  body.size(10000);
-
-  console.log(JSON.stringify(body.build('v2')));
-
-  const requestURL = `${BASE_URL}/_search`;
-  yield put(loading());
-  const entries = yield call(request, requestURL, buildOptions(body.build('v2')));
-  if (!entries.err) {
-    let hits = [];
-    if (entries.data.hits.total) {
-      hits = entries.data.hits.hits.map(hit => hit._source); // eslint-disable-line
+  console.log("loading from: "+data.from)
+  body.size(data.size);
+  body.from(data.from);
+  return Object.assign(body.build('v2'), {
+    "_source": {
+      "includes": [
+        "images"
+      ]
     }
-    yield put(entriesLoaded(hits));
-  } else {
-    yield put(entriesLoadError(entries.err));
-  }
+  })
 }
-
 
 function* watcher() {
   yield [
     takeEvery(LOAD_ENTRIES, loadEntries),
+    takeEvery(LOAD_MORE, loadMore),
   ];
 }
 

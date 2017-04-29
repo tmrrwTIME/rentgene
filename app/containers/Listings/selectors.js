@@ -16,7 +16,9 @@ const selectListingsDomain = () => state => state.get('listings');
 
 const selectListings = () => createSelector(
   selectListingsDomain(),
-  (substate) => substate.toJS()
+  (substate) => {
+    return substate.toJS()
+  }
 );
 
 export default selectListings;

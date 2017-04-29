@@ -100,8 +100,6 @@ function* loadEntries(action) {
 
   body.size(10000);
 
-  console.log(JSON.stringify(body.build('v2')));
-
   const requestURL = `${BASE_URL}/_search`;
   yield put(loading());
   const entries = yield call(request, requestURL, buildOptions(body.build('v2')));
@@ -109,7 +107,6 @@ function* loadEntries(action) {
     let hits = [];
     if (entries.data.hits.total) {
       hits = entries.data.hits.hits.map((hit) => {
-        console.log(hit._source)
         return {
           price: hit._source.price,
           beds: hit._source.beds,

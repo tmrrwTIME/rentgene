@@ -42,44 +42,24 @@ class Gallery extends Component{
       })
     )
   }
+  
   changeSize(e){
-    console.log(e);
     var element = document.getElementsByClassName('carousel-inner')[0]
     var height = window.getComputedStyle(element).height;
     var width = window.getComputedStyle(element).width;
-
-    console.log(width);
   }
+
   componentWillReceiveProps(nextProps){
     this.setState({images: nextProps.images})
-
   }
+
   componentDidMount(){
     var element = document.getElementsByClassName('carousel-inner')[0]
     var image = document.getElementsByClassName('carousel-images')
     var height = window.getComputedStyle(element).height;
     var width = window.getComputedStyle(element).width;
-
-
-
-    console.log(image);
-    console.log(this.state.images);
-    for (var i = 0; i < image.length; i++) {
-      console.log(image[i]);
-
-    }
-    // images.map((image)=>{
-    //   console.log(image);
-    // })
-    console.log('heigth', height);
-    console.log('width', width);
-
   }
-  componentWillUpdate(){
-  }
-  onMouseOver(){
-    console.log('hover');
-  }
+  
   render(){
     return(
       <Carousel indicators={false} interval={0} controls={true} onSelect={this.changeSize}>

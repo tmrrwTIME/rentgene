@@ -13,8 +13,6 @@ import jump from 'jump.js';
 import styles from './styles.css';
 import Gallery from 'components/Gallery'
 
-import LazyLoad from 'react-lazy-load';
-
 
 
 class List extends React.Component { // eslint-disable-line
@@ -121,7 +119,6 @@ class List extends React.Component { // eslint-disable-line
                   hoverStyle.backgroundColor = '';
                 }
                 return (
-                  <LazyLoad>
                   <div
                     id={`entry-${entry.entryId}`}
                     key={key}
@@ -156,7 +153,6 @@ class List extends React.Component { // eslint-disable-line
                       </div>
                     </div>
                   </div>
-                  </LazyLoad>
                 );
               }) : ''}
             </div>

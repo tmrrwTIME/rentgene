@@ -10,6 +10,7 @@
 import React,{Component} from 'react';
 import { Link } from 'react-router';
 import {Carousel} from 'react-bootstrap'
+import LazyLoad from 'react-lazy-load';
 
 import styles from './styles.css';
 
@@ -28,11 +29,13 @@ class Gallery extends Component{
         return(
           <Carousel.Item key={i}>
             <Link to={this.props.to} className='ScaledImg'>
-              <img
-                className={`${id}-slides`}
-                src={`https://s3-us-west-2.amazonaws.com/rentgene-uploads/images/${item.name}`}
-                role="presentation"
-              />
+              <LazyLoad>
+                <img
+                  className={`${id}-slides`}
+                  src={`https://s3-us-west-2.amazonaws.com/rentgene-uploads/images/${item.name}`}
+                  role="presentation"
+                />
+              </LazyLoad>
             </Link>
           </Carousel.Item>
         )

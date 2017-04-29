@@ -108,7 +108,26 @@ function* loadEntries(action) {
   if (!entries.err) {
     let hits = [];
     if (entries.data.hits.total) {
-      hits = entries.data.hits.hits.map(hit => hit._source); // eslint-disable-line
+      hits = entries.data.hits.hits.map((hit) => {
+        console.log(hit._source)
+        return {
+          price: hit._source.price,
+          beds: hit._source.beds,
+          baths: hit._source.baths,
+          address: hit._source.address,
+          city: hit._source.city,
+          state: hit._source.state,
+          zipcode: hit._source.zipcode,
+          title: hit._source.title,
+          entryId: hit._source.entryId,
+          squareFeet: hit._source.squareFeet,
+          images: hit._source.images,
+          status: hit._source.status,
+          lat: hit._source.lat,
+          lng: hit._source.lng,
+          type: hit._source.type
+        }
+      }); // eslint-disable-line
     }
     yield put(entriesLoaded(hits));
   } else {

@@ -13,6 +13,8 @@ import jump from 'jump.js';
 import styles from './styles.css';
 import Gallery from 'components/Gallery'
 
+import LazyLoad from 'react-lazy-load';
+
 
 
 class List extends React.Component { // eslint-disable-line
@@ -30,11 +32,6 @@ class List extends React.Component { // eslint-disable-line
     const stickyfill = Stickyfill(); // eslint-disable-line
     stickyfill.add(document.getElementById('stickyContainer'));
     window.stickyfill = stickyfill;
-    var images = new Array()
-    this.props.entries.map((item)=>{
-      images.push(item.images)
-    })
-    this.setState({images: images})
     const markers = [];
     this.props.entries.forEach(entry => {
       if (entry.lat && entry.lng) {
@@ -124,6 +121,7 @@ class List extends React.Component { // eslint-disable-line
                   hoverStyle.backgroundColor = '';
                 }
                 return (
+                  <LazyLoad>
                   <div
                     id={`entry-${entry.entryId}`}
                     key={key}
@@ -141,7 +139,7 @@ class List extends React.Component { // eslint-disable-line
                         <img src={SizeImage} className={styles.size} alt="" /> */}
                         <Gallery
                           id={`gallery${i}`}
-                          images={this.state.images[i]}
+                          images={entry.images}
                           to={`/v/${entry.entryId}`}
                         />
                       {/*</div>*/}
@@ -158,6 +156,7 @@ class List extends React.Component { // eslint-disable-line
                       </div>
                     </div>
                   </div>
+                  </LazyLoad>
                 );
               }) : ''}
             </div>

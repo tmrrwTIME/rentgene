@@ -22,7 +22,7 @@ import {actionCreators} from 'redux-form';
 
 const beds = ['', 1, 2, 3, 4, 5, 6, 7];
 const leaseDuration = ['lease', 'Month to Month', '6 months', '1 year'];
-const months = ['Months', 'Jan', 'Feb', 'Mar', 'Apr', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+const months = ['Months', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 const days = ['Day', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31];
 let searchBox;
 var objectData = {
@@ -274,7 +274,6 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           </div>
                         </div>
 
-                        <div>Deposit</div>
                         <div className="row">
                           <div className="col-sm-6">
                             <Field
@@ -285,7 +284,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                               required
                               name="amount"
                               className="form-control input-sm"
-                              placeholder="Amount"
+                              placeholder="Deposit"
                               component={Input}
                             />
                           </div>
@@ -294,7 +293,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                       <div className={styles.content}>
                         <h4 className={styles.normalTitle}>Contact</h4>
                         <div>
-                          <div className={styles.title} style={{ float: 'left' }}>Name</div>
+                          <div className={styles.title} style={{ float: 'left', width: '20%' }}>Name</div>
                           <Field
                             type="text"
                             validate={(value) => { 
@@ -307,7 +306,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           />
                         </div>
                         <div>
-                          <div className={styles.title} style={{ float: 'left' }}>Email</div>
+                          <div className={styles.title} style={{ float: 'left', width: '20%' }}>Email</div>
                           <Field
                             type="text"
                             name="contactEmail"
@@ -316,7 +315,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           />
                         </div>
                         <div>
-                          <div className={styles.title} style={{ float: 'left' }}>Phone</div>
+                          <div className={styles.title} style={{ float: 'left', width: '20%' }}>Phone</div>
                           <Field
                             type="text"
                             validate={(value) => { 
@@ -324,6 +323,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                             }}
                             required
                             name="phone"
+                            style={{float:'center'}}
                             className="form-control input-sm"
                             component={Input}
                           />

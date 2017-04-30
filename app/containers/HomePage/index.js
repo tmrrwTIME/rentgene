@@ -34,7 +34,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
         <HomeSearch />
 
         <p className="text-center">
-          *No Scams. All listings are checked by us! for perfect listings with all details and perfect photos!
+          All listings are checked by our team to ensure a pleasant, scam-free searching experience.
         </p>
       </div>
     );

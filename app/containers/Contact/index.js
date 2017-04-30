@@ -33,7 +33,7 @@ export class Contact extends React.Component { // eslint-disable-line react/pref
         />
         <div className="row">
           <div className="col-md-6 col-md-offset-3">
-            <div className={styles.text}>
+            <div style={{ textAlign: 'center'}} className={styles.text}>
               <h3>Contact Us</h3>
               
             </div>

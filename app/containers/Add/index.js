@@ -7,7 +7,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import AddImage from 'assets/images/add2.jpg';
+import AddImage from 'assets/images/add.jpg';
 import { Link } from 'react-router';
 
 

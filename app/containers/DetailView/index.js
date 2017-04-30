@@ -169,6 +169,7 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
       entryTitle = entry.title;
     }
     const { submitFlagListing, flagListingSubmitted } = this.props;
+    const uploadedAt = new Date(entry.createdAt).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })
 
     const popoverTop = (
       <Popover id="popover-positioned-top">
@@ -272,7 +273,12 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
                   markers={markers}
                   onMapLoad={this.handleMapLoad}
                 />
-                <h4>Contact</h4>
+                
+                <div>
+                  <h5 style={{marginTop:"30px"}}>Uploaded at: { uploadedAt }</h5>
+                </div>
+                
+                <h4 style={{marginTop:"30px"}}>Contact</h4>
                 <div>
                   {entry.contactName}
                 </div>
@@ -343,7 +349,8 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
                   </div>
                 : ''}
 
-                <h5>Duration</h5>
+
+                <h5 style={{marginTop:"30px"}}>Duration</h5>
                 <div className={styles.lineLeft}></div>
                 <div>{entry.leaseDuration}</div>
               </div>

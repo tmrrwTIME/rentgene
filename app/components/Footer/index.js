@@ -13,7 +13,7 @@ function Footer() {
   return (
     <div className={styles.footer}>
       <ul className={styles.list}>
-        <li>Copyright &copy; 2016</li>
+        <li>Copyright &copy; 2017</li>
         <li><Link to={'/blog'}>Blog</Link></li>
         <li><Link to={'/add'}>Submit listing</Link></li>
         <li><Link to={'/terms-and-conditions'}>Terms</Link></li>

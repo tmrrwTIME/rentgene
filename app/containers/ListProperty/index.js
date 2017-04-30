@@ -21,8 +21,9 @@ import { isEmpty } from 'lodash';
 import {actionCreators} from 'redux-form';
 
 const beds = ['', 1, 2, 3, 4, 5, 6, 7];
+const baths = ['', 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5];
 const leaseDuration = ['lease', 'Month to Month', '6 months', '1 year'];
-const months = ['Months', 'Jan', 'Feb', 'Mar', 'Apr', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+const months = ['Months', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 const days = ['Day', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31];
 
 import styles from './styles.css';
@@ -438,7 +439,21 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                           </div>
                         </div>
                       </div>
-
+                      <div className="row">
+                        <div className="col-sm-6">
+                          <Field
+                            type="number"
+                            validate={(value) => { 
+                              if(!value) return "required"  
+                            }}
+                            required
+                            name="amount"
+                            className="form-control input-sm"
+                            placeholder="Deposit"
+                            component={Input}
+                          />
+                        </div>
+                      </div>
                       <div className="row">
                         <div className="col-sm-6">
                           <Field
@@ -459,7 +474,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                     <div className={styles.content}>
                       <h4 className={styles.normalTitle}>Contact</h4>
                       <div>
-                        <div className={styles.title} style={{ float: 'left' }}>Name</div>
+                        <div className={styles.title} style={{ float: 'left', width: '20%'  }}>Name</div>
                         <Field
                           type="text"
                           validate={(value) => { 
@@ -472,7 +487,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         />
                       </div>
                       <div>
-                        <div className={styles.title} style={{ float: 'left' }}>Email</div>
+                        <div className={styles.title} style={{ float: 'left', width: '20%'  }}>Email</div>
                         <Field
                           type="text"
                           name="contactEmail"
@@ -481,7 +496,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         />
                       </div>
                       <div>
-                        <div className={styles.title} style={{ float: 'left' }}>Phone</div>
+                        <div className={styles.title} style={{ float: 'left', width: '20%'  }}>Phone</div>
                         <Field
                           type="text"
                           validate={(value) => { 
@@ -522,22 +537,6 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                       />
                     </div>
                     <div>
-                      <div>Deposit</div>
-                      <div className="row">
-                        <div className="col-sm-6">
-                          <Field
-                            type="number"
-                            validate={(value) => { 
-                              if(!value) return "required"  
-                            }}
-                            required
-                            name="amount"
-                            className="form-control input-sm"
-                            placeholder="Amount"
-                            component={Input}
-                          />
-                        </div>
-                      </div>
                       <span style={{ float: 'left', marginRight: 5 }}>Beds</span>
                       <Field
                         style={{ float: 'left', marginRight: 5 }}
@@ -554,7 +553,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
                         name="baths"
                         className={`form-control input-sm ${styles.select}`}
                         component={Select}
-                        items={beds}
+                        items={baths}
                         validate={(value) => { 
                           if(!value) return "required"  
                         }}

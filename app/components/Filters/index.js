@@ -9,6 +9,7 @@ import React from 'react';
 
 import styles from './styles.css';
 const beds = ['1+', '2+', '3+', '4+', '5+', '6+', '7+'];
+const baths = ['1+', '2+', '3+', '4+', '5+', '6+', '7+'];
 const prices = [400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 6000, 7000];
 
 function Filters(props) {
@@ -37,18 +38,6 @@ function Filters(props) {
             <select className={`form-control input-sm ${styles.select}`} name="">
               <option value="">Any</option>
               <option value="Los Angeles">Los Angeles</option>
-            </select>
-          </div>
-          <div className={styles.content}>
-            <div className={styles.title}>Area</div>
-            <select className={`form-control input-sm ${styles.select}`} name="">
-              <option value="">Any</option>
-              <option value="Westside">Westside</option>
-              <option value="East LA">East LA</option>
-              <option value="South LA">South LA</option>
-              <option value="The Valley">The Valley</option>
-              <option value="Central LA">Central LA</option>
-              <option value="Beach Cities">Beach Cities</option>
             </select>
           </div>
           <div className={styles.content}>
@@ -84,7 +73,7 @@ function Filters(props) {
             <div className={styles.content}>
               <div className={styles.title}>Baths</div>
               <select onChange={handleChange} name="baths" className={`form-control input-sm ${styles.select}`}>
-                {beds.map((bed, i) => {
+                {baths.map((bed, i) => {
                   const key = `baths-${i}`;
                     return <option key={key} value={i + 1}>{bed}</option>;
                 })}

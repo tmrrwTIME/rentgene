@@ -55,10 +55,8 @@ export class Feedback extends React.Component { // eslint-disable-line react/pre
           <div className="col-md-4 col-md-offset-4">
             <div className="fet-text">
               <p>
-                This site is just getting started to giving you
-                the best possible user experience for
-                finding a place to live. So your feedback is
-                greatly appreciated!
+                We want to give you the best possible user experience when finding a place to live. 
+So let us know what we can do to help!
               </p>
             </div>
             <br />

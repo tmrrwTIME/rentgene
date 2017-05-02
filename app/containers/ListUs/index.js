@@ -54,11 +54,9 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
               <div className="row">
                 <div className="col-sm-9">
                   <p className={styles.fetText}>
-                    We come out to you, take perfect photos,
-                    get all the info we need. Then list your place
-                    Free of charge!!
+                    We will come to your property, take quality photos and video of the entire place, gather all the information we need, and list the property for the world to see!
                   </p>
-                  <p>Just fill out the your info and pick a time and date within 3 days of today.</p>
+                  <p>Just fill out your information and we will call you to schedule a time!</p>
                   <div className={styles.border}>
                     <div className={styles.content}>
                       <div className={styles.title} style={{ float: 'left' }}>
@@ -169,11 +167,6 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
                             value="land a lord"
                             items={['', 'land a lord', 'tenant']} 
                             />
-                        </div>
-                        <div className={styles.content}>
-                          <div>
-                            We will call you to schedule a time!
-                          </div>
                         </div>
                       </div>
                       <div className="col-xs-6">

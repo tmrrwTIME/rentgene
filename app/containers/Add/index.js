@@ -41,7 +41,7 @@ export class Add extends React.Component { // eslint-disable-line react/prefer-s
                 <br />
                 <p>
                   <b>Rooms</b> <br />
-                  do you have a room for rent
+                  do you have a room for rent?
                 </p>
                 <div className="text-center" style={{marginBottom: 30}}>
                   <Link className={`btn btn-xs ${styles.button}`} to={'/add/rooms'}>Make your listing!</Link>
@@ -52,9 +52,7 @@ export class Add extends React.Component { // eslint-disable-line react/prefer-s
                   Have us come out to you
                 </div>
                 <p>
-                  Have us come, take photos,
-                  and list your place for you
-                  Free of Charge!s
+                  Have us come to you, take photos, and list your place for you!
                 </p>
                 <div className="text-center">
                   <Link className={`btn btn-xs ${styles.button}`} to={'/add/us'}>

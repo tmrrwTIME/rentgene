@@ -159,7 +159,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
             {submitted ? <ThankView /> : <div className="col-md-8 col-md-offset-2">
               <form onSubmit={handleSubmit}>
                 <div>
-                  <p className="text-center">Fill out everything for your listing 100% accurate! Everything must be filled out for you to submit your listing</p>
+                  <p className="text-center">Everything must be filled out accurately to submit your listing!</p>
                   <br />
                   <br />
                   <div className="row">
@@ -200,7 +200,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
                           component="textarea"
                           rows="8"
                           cols="40"
-                          placeholder="Fill out everything for your listing 100% accurate! Everything must"
+                          placeholder="Tell everyone what they can look forward to at this property!"
                         />
                       </div>
 

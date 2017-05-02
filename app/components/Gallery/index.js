@@ -32,7 +32,7 @@ class Gallery extends Component{
               <LazyLoad>
                 <img
                   className={`${id}-slides`}
-                  src={`https://s3-us-west-2.amazonaws.com/rentgene-uploads/images/${item.name}`}
+                  src={`https://s3-us-west-2.amazonaws.com/rentgene-uploads-reduced/images/${item.name}`}
                   role="presentation"
                 />
               </LazyLoad>

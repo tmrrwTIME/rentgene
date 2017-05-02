@@ -69,7 +69,7 @@ export class DetailView extends Component { // eslint-disable-line react/prefer-
     var images = new Array()
     if(nextProps.entry.images){
       for (var i = 0; i < nextProps.entry.images.length; i++) {
-        var url_images = `https://s3-us-west-2.amazonaws.com/rentgene-uploads/images/${nextProps.entry.images[i].name}`
+        var url_images = `https://s3-us-west-2.amazonaws.com/rentgene-uploads-reduced/images/${nextProps.entry.images[i].name}`
         var src = {original: url_images,thumbnail: url_images}
         images.push(src)
       }  

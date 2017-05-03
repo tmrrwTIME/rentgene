@@ -43,7 +43,7 @@ export class ListUs extends React.Component { // eslint-disable-line react/prefe
     return (
       <div className={styles.listUs}>
         <Helmet
-          title="ListUs"
+          title="Have Us Come"
           meta={[
             { name: 'description', content: 'Description of ListUs' },
           ]}

@@ -116,7 +116,7 @@ export class Listings extends React.Component { // eslint-disable-line react/pre
     return (
       <div className={styles.listings}>
         <Helmet
-          title="Listings"
+          title={this.props.routeParams.type == "rooms" ? "Rooms" : (this.props.routeParams.type == "apartments" ? "Apartments" : "Houses")}
           meta={[
             { name: 'description', content: 'Description of Listings' },
           ]}

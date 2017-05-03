@@ -151,7 +151,7 @@ export class ListProperty extends React.Component { // eslint-disable-line react
     return (
       <div>
         <Helmet
-          title="ListProperty"
+          title="List a Place"
           meta={[
             { name: 'description', content: 'Description of ListProperty' },
           ]}

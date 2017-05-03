@@ -15,7 +15,7 @@ export class TermsAndConditionsPage extends React.Component { // eslint-disable-
     return (
       <div className={styles.termsAndConditionsPage}>
         <Helmet
-          title="Terms And Conditions"
+          title="Terms"
           meta={[
             { name: 'description', content: '' },
           ]}

@@ -15,7 +15,7 @@ import { Link } from 'react-router';
 import styles from './styles.css';
 import PowEmoji from 'assets/images/poo-emoji.png';
 import CowEmoji from 'assets/images/cow-emoji.png';
-
+import Helmet from 'react-helmet';
 import HomeSearch from 'components/HomeSearch';
 
 export default class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -23,6 +23,12 @@ export default class HomePage extends React.Component { // eslint-disable-line r
   render() {
     return (
       <div className={styles.homepage}>
+        <Helmet
+          title="rentgene"
+          meta={[
+            { name: 'description', content: 'rentgene' },
+          ]}
+        />
         <div className={`text-center ${styles.headText}`}>
           <div style={{ lineHeight: '20px', marginRight: -10 }}>Apartment hunting without the</div>
           <div className={styles.link}>

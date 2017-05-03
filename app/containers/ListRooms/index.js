@@ -150,7 +150,7 @@ export class ListRooms extends React.Component { // eslint-disable-line react/pr
       return (
         <div className={styles.listRooms}>
           <Helmet
-            title="ListRooms"
+            title="List a Room"
             meta={[
               { name: 'description', content: 'Description of ListRooms' },
             ]}
